@@ -1,0 +1,4 @@
+.stitchSlider {
+    display: flex;
+    flex-direction: column;
+}

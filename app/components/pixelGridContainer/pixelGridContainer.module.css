@@ -1,0 +1,9 @@
+.pixelGridContainer {
+    margin: 3em;
+    display: flex;
+}
+
+.uploadedImageCanvas {
+    display: none;
+    visibility: hidden;
+  }

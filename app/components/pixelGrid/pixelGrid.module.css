@@ -1,0 +1,24 @@
+.uploadedImageCanvas {
+  display: none;
+  visibility: hidden;
+}
+
+
+.pixelGrid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  width: 50vw;
+  border-spacing: 0;
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: peachpuff;
+}
+
+.pixelGrid td {
+  height: 20px;
+  width: 20px;
+  margin: 0;
+  border: 0.001px solid black;
+}
