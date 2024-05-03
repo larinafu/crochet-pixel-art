@@ -1,19 +1,20 @@
-"use client";
-import { useState, useRef } from "react";
-import PixelGridContainer from "./components/pixelGridContainer/pixelGridContainer";
-import styles from "./page.module.css";
-
-export default function Home() {
-  console.log("home rerendered");
+export default function Everything() {
   const inputRef = useRef(null);
   const [image, setImage] = useState(null);
   const [fileName, setFileName] = useState("no_image");
-  function handleFileUpload(e) {
-    setFileName(e.target.value);
-    const imageFile = inputRef.current.files[0];
+  const [imgDim, imgData, canvasRef] = useImageData(curImg);
+  const [numStitches, setNumStitches] = useState(30);
+  const pixelsPerStich = imgDim && imgDim.width / numStitches;
+  const numRows = Math.floor(imgDim && imgDim.height / pixelsPerStich);
+  useEffect(() => {
+    const input = inputRef.current;
+    const imageFile = input.files[0];
     if (imageFile) {
       setImage(URL.createObjectURL(imageFile));
     }
+  }, [fileName]);
+  function handleFileUpload(e) {
+    setFileName(e.target.value);
   }
   return (
     <main className={styles.main}>

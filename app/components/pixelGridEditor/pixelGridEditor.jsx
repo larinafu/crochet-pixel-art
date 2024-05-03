@@ -1,13 +1,15 @@
 import { useState } from "react";
 
-import styles from './pixelGridEditor.module.css'
+import styles from "./pixelGridEditor.module.css";
 
 export default function PixelGridEditor({
   numStitches,
   setNumStitches,
   imgDim,
+  detectedColors,
 }) {
-  console.log('pixelGridEditor rerendered');
+  console.log("pixelGridEditor rerendered");
+  console.log(Object.keys(detectedColors), numStitches);
   const [sliderValueDisplay, setSliderValueDisplay] = useState(numStitches);
   const numRows = Math.floor(
     imgDim && imgDim.height / (imgDim.width / sliderValueDisplay)
@@ -35,6 +37,14 @@ export default function PixelGridEditor({
             setNumStitches(e.target.value);
           }}
         />
+      </section>
+      <section>
+        {Object.keys(detectedColors).map((colorName) => (
+          <div key={colorName}>
+            <input type="checkbox" id={colorName} name={colorName}></input>
+            <label htmlFor={colorName}>{colorName}</label>
+          </div>
+        ))}
       </section>
     </div>
   );
