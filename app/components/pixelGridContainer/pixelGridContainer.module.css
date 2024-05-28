@@ -1,9 +1,28 @@
 .pixelGridContainer {
-    margin: 3em;
-    display: flex;
+  width: 100vw;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .uploadedImageCanvas {
-    display: none;
-    visibility: hidden;
-  }
+  display: none;
+  visibility: hidden;
+}
+
+.leftPanel {
+  width: 20vw;
+}
+
+.centerPanel {
+  width: 50vw;
+}
+
+.rightPanel {
+  width: 20vw;
+}
+
+.userOptions {
+  position: fixed;
+  bottom: 2vw;
+  right: 2vw;
+}

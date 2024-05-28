@@ -1,0 +1,23 @@
+.gaugeContainer {
+    display: flex;
+    align-items: flex-start;
+}
+
+.gaugeSquare {
+    width: 100%;
+    aspect-ratio: 1;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gaugeLabel {
+    display: none;
+}
+
+.rowInput,
+.stitchInput {
+    height: 30px;
+    width: 50px;
+}

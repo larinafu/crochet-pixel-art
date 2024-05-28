@@ -1,0 +1,40 @@
+.rowDetailsContainer {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  height: 15vh;
+}
+
+.colorRow {
+  width: 100%;
+}
+
+.colorRow tbody tr {
+  display: flex;
+}
+
+.colorRow tbody tr td {
+  height: 20px;
+  flex-grow: 1;
+}
+
+.colorListContainer {
+  width: 95%;
+  margin: 0 auto;
+}
+
+.colorListContainer ul {
+  display: flex;
+  overflow-x: scroll;
+}
+
+.colorListContainer li {
+  display: flex;
+  flex-direction: row;
+  margin: 0.5em;
+}
+
+.colorListContainer li p {
+  margin-left: 0.5em;
+  white-space: nowrap;
+}

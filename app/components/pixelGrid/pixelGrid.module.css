@@ -3,22 +3,118 @@
   visibility: hidden;
 }
 
-
-.pixelGrid {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 80vh;
-  width: 50vw;
+.pixelGridContainer {
+  padding: 1em;
   border-spacing: 0;
   border: 1px solid black;
   border-radius: 10px;
-  background-color: peachpuff;
+  background-color: var(--primary-accent);
 }
 
-.pixelGrid td {
-  height: 20px;
-  width: 20px;
+.pixelGrid {
+  /* width: 60%; */
+  height: auto;
+  margin: 0 auto;
+}
+
+.colorCells {
+  display: flex;
+}
+
+.colorCell {
+  position: relative;
+  flex-grow: 1;
   margin: 0;
   border: 0.001px solid black;
 }
+
+.activeColor {
+  border: 0.5px solid gold;
+}
+
+.activeRow {
+  box-shadow: 0 0 4px gold;
+  transform: scale(1);
+}
+
+.mutedColor {
+  background-color: aliceblue;
+}
+
+.editToolbox {
+  position: absolute;
+  width: 10vw;
+  bottom: 20px;
+  left: 20px;
+}
+
+.editToolboxExit {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 1.5em;
+  height: 1.5em;
+  border: 1px solid black;
+  border-radius: 50px;
+  background-color: red;
+}
+
+.activeRow {
+  border: .01% solid gold;
+}
+
+.addGoldBorderLeftEdge,
+.addGoldBorderTopBottom,
+.addGoldBorderRightEdge {
+  border-top: .5px solid gold;
+  border-bottom: .5px solid gold;
+}
+
+.addGoldBorderLeftEdge {
+  border-left: .5px solid gold;
+  border-right: 0.5px solid black;
+}
+
+.addGoldBorderRightEdge {
+  border-left: 0.5px solid black;
+  border-right: .5px solid gold;
+}
+
+.addGoldBorderTopBottom {
+  border-left: 0.5px solid black;
+  border-right: 0.5px solid black;
+}
+
+.loadingState {
+  opacity: 0.5;
+}
+
+.loadingBanner {
+  display: flex;
+  align-items: center;
+  opacity: 1;
+  position: absolute;
+  background-color: #fff;
+  z-index: 1;
+}
+
+.loader {
+  width: 2vw;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  border: .5vw solid;
+  border-color: red orange yellow green;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 

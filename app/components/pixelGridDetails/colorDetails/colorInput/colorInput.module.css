@@ -1,0 +1,19 @@
+.colorSwapBtn {
+    border: none;
+    background-color: inherit;
+}
+
+.grayedOut {
+    background-color: black;
+}
+
+.x {
+    padding: .2em;
+    background-color: pink;
+    border-radius: 10px;
+    opacity: 1;
+}
+
+.colorSwapBtn:hover {
+    cursor: pointer;
+}

@@ -1,0 +1,29 @@
+.buttonBackground {
+    width: 4em;
+    height: 2em;
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    background-color: white;
+    padding: .2em;
+}
+
+.buttonSwitch {
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 20px;
+    background-color: brown;
+}
+
+.switchLeft {
+    justify-content: flex-start;
+}
+
+.switchRight {
+    justify-content: flex-end;
+}
+
+.imagePreview {
+    width: 80%;
+    border: 1px solid black;
+}

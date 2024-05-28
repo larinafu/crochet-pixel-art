@@ -1,135 +1,134 @@
-import { useImageData } from "@/app/utils/useImageData";
-import { useEffect, useState, useLayoutEffect } from "react";
-import { findClosestColor } from "@/app/utils/colorConverter";
-import colors from "@/app/utils/colors2.json";
+import { ModeContext } from "@/app/utils/ModeContext";
+import { useState, useContext } from "react";
+import ColorSwatch from "../colorSwatch/colorSwatch";
 import styles from "./pixelGrid.module.css";
 
 export default function PixelGrid({
-  numStitches,
-  imgDim,
-  imgData,
-  numRows,
-  detectedColors,
-  setDetectedColors,
+  pixels,
+  curPixel,
+  setPixel,
+  curRow,
+  setRow,
+  isColorSelected,
+  curColor,
+  widthHeightRatio,
+  isPending,
+  handlePixelSelect,
+  pixelsSelected,
 }) {
   console.log("pixelGrid rerendered");
-  const pixelRatio = ((imgDim && imgDim.width) || 0) / numStitches;
-  const [pixels, setPixels] = useState(null);
-  let cellSize =
-    600 /
-    (pixels && pixels.length > pixels[0].length ? pixels.length : numStitches);
+  const isEditMode = useContext(ModeContext);
 
-  useLayoutEffect(() => {
-    setPixels(
-      generatePixels(
-        pixelRatio,
-        imgData,
-        Object.keys(detectedColors).length === 0 ? colors : detectedColors
-      )
-    );
-  }, [imgData, numStitches]);
+  const [curColorClicked, setCurColorClicked] = useState("");
 
-  useEffect(() => {
-    setDetectedColors(generateColors(pixels))
-  }, [pixels])
-
-  function getColorIndicesForCoord(x, y) {
-    const red = y * (imgDim.width * 4) + x * 4;
-    return [red, red + 1, red + 2, red + 3];
-  }
-
-  function generateColors(pixels) {
-    let colorsFound = {};
-    if (pixels) {
-      for (const pixelRow of pixels) {
-        for (const pixel of pixelRow) {
-          if (!(pixel.colorName in colorsFound))
-            colorsFound[pixel.colorName] = pixel.hex;
-        }
+  const addRowBorder = (resRow, idx) => {
+    if (resRow === curRow) {
+      switch (idx) {
+        case 0:
+          return styles.addGoldBorderLeftEdge;
+        case curRow.length - 1:
+          return styles.addGoldBorderRightEdge;
+        default:
+          return styles.addGoldBorderTopBottom;
       }
+    } else {
+      return "";
     }
-    console.log(`colorsfound is ${Object.keys(colorsFound)}`);
-    return colorsFound;
-  }
-
-  function generatePixels(pixelRatio, imgData, colors) {
-    const nearestColor = require("nearest-color").from(colors);
-    if (imgDim && imgData && colors) {
-      const pixelGrid = [];
-      for (let yInterval = 0; yInterval < numRows; yInterval += 1) {
-        let pixelRow = [];
-        for (let xInterval = 0; xInterval < numStitches; xInterval += 1) {
-          pixelRow.push({
-            r: 0,
-            g: 0,
-            b: 0,
-            a: 0,
-            numPixels: 0,
-          });
-        }
-        pixelGrid.push(pixelRow);
-      }
-      for (let yCoord = 0; yCoord < imgDim.height; yCoord += 1) {
-        for (let xCoord = 0; xCoord < imgDim.width; xCoord += 1) {
-          const [r, g, b, a] = getColorIndicesForCoord(xCoord, yCoord);
-          const [yIndex, xIndex] = [
-            Math.floor(yCoord / pixelRatio),
-            Math.floor(xCoord / pixelRatio),
-          ];
-          if (yIndex < numRows) {
-            pixelGrid[yIndex][xIndex].r += imgData.data[r];
-            pixelGrid[yIndex][xIndex].g += imgData.data[g];
-            pixelGrid[yIndex][xIndex].b += imgData.data[b];
-            pixelGrid[yIndex][xIndex].a += imgData.data[a];
-            pixelGrid[yIndex][xIndex].numPixels += 1;
-          }
-        }
-      }
-      return pixelGrid.map((pixelRow) =>
-        pixelRow.map((pixel) => {
-          const colorMatch = nearestColor({
-            r: pixel.r / pixel.numPixels || 0,
-            g: pixel.g / pixel.numPixels || 0,
-            b: pixel.b / pixel.numPixels || 0,
-          });
-          const [hex, colorName] = [colorMatch.value, colorMatch.name];
-          return {
-            ...pixel,
-            hex: hex,
-            colorName: colorName,
-          };
-        })
-      );
-    }
-    return null;
-  }
-
-  function generatePixelsGivenSpecifiedColors() {}
+  };
 
   return (
-    <>
-      <table className={styles.pixelGrid}>
-        <tbody>
-          {pixels &&
-            pixels.map((resRow, idx) => {
-              return (
-                <tr key={idx}>
-                  {resRow.map((resItem, itemIdx) => (
-                    <td
+    <section className={styles.pixelGridContainer}>
+      {isPending && (
+        <div className={styles.loadingBanner}>
+          <p>Recalculating...</p> <span className={styles.loader}></span>
+        </div>
+      )}
+      <div
+        className={`${styles.pixelGrid} ${
+          isPending ? styles.loadingState : ""
+        }`}
+      >
+        {pixels &&
+          pixels.map((resRow, idx) => {
+            return (
+              <div
+                key={idx}
+                onClick={() => {
+                  !isEditMode && setRow(resRow);
+                }}
+                className={`${styles.colorCells}`}
+              >
+                {resRow.map((resItem, itemIdx) => {
+                  const borderStyle = addRowBorder(resRow, itemIdx);
+                  const isPixelSelected = pixelsSelected[
+                    resItem.colorName
+                  ]?.some(
+                    (colorObj) =>
+                      colorObj.row === idx &&
+                      colorObj.column === itemIdx &&
+                      colorObj.checked
+                  );
+
+                  const isCellHighlighted = isEditMode
+                    ? isPixelSelected
+                    : curColor === resItem.colorName;
+                  return (
+                    <div
                       key={itemIdx}
+                      onMouseOver={() => {
+                        if (!isColorSelected) {
+                          setPixel(`${idx},${itemIdx}`);
+                        }
+                      }}
+                      onMouseLeave={() => {
+                        if (!isColorSelected) {
+                          setPixel("");
+                        }
+                      }}
+                      onClick={() => {
+                        isEditMode && handlePixelSelect(idx, itemIdx, resItem);
+                      }}
                       style={{
                         backgroundColor: resItem.hex,
-                        height: "10px",
-                        width: cellSize,
-                        height: cellSize,
+                        aspectRatio: 1 / widthHeightRatio,
                       }}
-                    ></td>
-                  ))}
-                </tr>
-              );
-            })}
-        </tbody>
-      </table>
-    </>
+                      className={`${styles.colorCell} ${
+                        curColor
+                          ? resItem.colorName == curColor.colorName
+                            ? styles.activeColor
+                            : styles.mutedColor
+                          : curColorClicked === `${idx},${itemIdx}`
+                          ? styles.activeColor
+                          : ""
+                      } ${borderStyle}`}
+                    >
+                      {curColorClicked === `${idx},${itemIdx}` && (
+                        <div className={styles.editToolbox}>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCurColorClicked("");
+                            }}
+                            className={styles.editToolboxExit}
+                          >
+                            x
+                          </button>
+                          <section className="detailContainer">
+                            <ColorSwatch
+                              color={resItem.hex}
+                              size={20}
+                            ></ColorSwatch>
+                          </section>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+      </div>
+    </section>
   );
 }
