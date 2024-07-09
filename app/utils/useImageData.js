@@ -8,22 +8,20 @@ export function useImageData(curImg) {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    if (curImg) {
-      const img = new Image();
-      img.onload = () => {
-        if (!imgDim) {
-          setImgDim({
-            height: img.height,
-            width: img.width,
-          });
-        } else {
-          ctx.drawImage(img, 0, 0);
-          setImgData(ctx.getImageData(0, 0, canvas.width, canvas.height));
-        }
-      };
-      img.src = curImg;
-    }
-  }, [imgDim, curImg]);
+    const img = new Image();
+    img.onload = () => {
+      if (!imgDim) {
+        setImgDim({
+          height: img.height,
+          width: img.width,
+        });
+      } else {
+        ctx.drawImage(img, 0, 0);
+        setImgData(ctx.getImageData(0, 0, canvas.width, canvas.height));
+      }
+    };
+    img.src = curImg;
+  }, [imgDim]);
 
   return [imgDim, imgData, canvasRef];
 }

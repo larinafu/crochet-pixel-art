@@ -6,13 +6,13 @@
     "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
   --primary-color: #f6f5f2;
   --secondary-color: #f0ebe3;
-  --primary-accent: #ffefef;
-  --secondary-accent: #f3d0d7;
+  --primary-accent: #fff;
+  --secondary-accent: #fff;
 }
 
 .detailContainer {
   border: 1px solid black;
-  border-radius: 2px;
+  border-radius: 10px;
   padding: 5px;
   background-color: white;
 }

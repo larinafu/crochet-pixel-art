@@ -13,13 +13,13 @@ export default function PixelGrid({
   curColor,
   widthHeightRatio,
   isPending,
-  handlePixelSelect,
-  pixelsSelected,
+  pixelsDispatch,
+  selectedPixels,
+  setSelectedPixels,
 }) {
-  console.log("pixelGrid rerendered");
   const isEditMode = useContext(ModeContext);
 
-  const [curColorClicked, setCurColorClicked] = useState("");
+  const [curColorHovered, setCurColorHovered] = useState({});
 
   const addRowBorder = (resRow, idx) => {
     if (resRow === curRow) {
@@ -31,8 +31,43 @@ export default function PixelGrid({
         default:
           return styles.addGoldBorderTopBottom;
       }
+    }
+    return "";
+  };
+
+  const addPixelBorder = (pixel) => {
+    if (isEditMode) {
+      if (pixel.checked) {
+        return styles.activePixel;
+      } else if (pixel.colorChecked) {
+        return styles.activeColor;
+      }
+      if (
+        (pixel.rowNum === curColorHovered.rowNum &&
+          pixel.stitchNum === curColorHovered.stitchNum) ||
+        pixel.colorName === curColor
+      ) {
+        return styles.hoveredBorder;
+      }
+    }
+    return "";
+  };
+
+  const handlePixelClick = (pixel) => {
+    if (pixel.checked) {
+      setSelectedPixels(
+        selectedPixels.filter(
+          ([rowNum, stitchNum]) =>
+            rowNum !== pixel.rowNum || stitchNum !== pixel.stitchNum
+        )
+      );
+      pixelsDispatch({ type: "single_pixel_deselection", pixel: pixel });
     } else {
-      return "";
+      setSelectedPixels([...selectedPixels, [pixel.rowNum, pixel.stitchNum]]);
+      pixelsDispatch({
+        type: "single_pixel_selection",
+        pixel: pixel,
+      });
     }
   };
 
@@ -58,71 +93,29 @@ export default function PixelGrid({
                 }}
                 className={`${styles.colorCells}`}
               >
-                {resRow.map((resItem, itemIdx) => {
-                  const borderStyle = addRowBorder(resRow, itemIdx);
-                  const isPixelSelected = pixelsSelected[
-                    resItem.colorName
-                  ]?.some(
-                    (colorObj) =>
-                      colorObj.row === idx &&
-                      colorObj.column === itemIdx &&
-                      colorObj.checked
-                  );
-
-                  const isCellHighlighted = isEditMode
-                    ? isPixelSelected
-                    : curColor === resItem.colorName;
+                {resRow.map((resItem) => {
+                  const borderStyle = `${addRowBorder(
+                    resRow,
+                    resItem.stitchNum
+                  )} ${addPixelBorder(resItem)}`;
                   return (
                     <div
-                      key={itemIdx}
+                      key={resItem.stitchNum}
                       onMouseOver={() => {
-                        if (!isColorSelected) {
-                          setPixel(`${idx},${itemIdx}`);
-                        }
+                        setCurColorHovered(resItem);
                       }}
                       onMouseLeave={() => {
-                        if (!isColorSelected) {
-                          setPixel("");
-                        }
+                        setCurColorHovered({});
                       }}
                       onClick={() => {
-                        isEditMode && handlePixelSelect(idx, itemIdx, resItem);
+                        isEditMode && handlePixelClick(resItem);
                       }}
                       style={{
                         backgroundColor: resItem.hex,
                         aspectRatio: 1 / widthHeightRatio,
                       }}
-                      className={`${styles.colorCell} ${
-                        curColor
-                          ? resItem.colorName == curColor.colorName
-                            ? styles.activeColor
-                            : styles.mutedColor
-                          : curColorClicked === `${idx},${itemIdx}`
-                          ? styles.activeColor
-                          : ""
-                      } ${borderStyle}`}
-                    >
-                      {curColorClicked === `${idx},${itemIdx}` && (
-                        <div className={styles.editToolbox}>
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setCurColorClicked("");
-                            }}
-                            className={styles.editToolboxExit}
-                          >
-                            x
-                          </button>
-                          <section className="detailContainer">
-                            <ColorSwatch
-                              color={resItem.hex}
-                              size={20}
-                            ></ColorSwatch>
-                          </section>
-                        </div>
-                      )}
-                    </div>
+                      className={`${styles.colorCell} ${borderStyle}`}
+                    ></div>
                   );
                 })}
               </div>

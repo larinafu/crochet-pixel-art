@@ -1,0 +1,36 @@
+.editingBlockContainer {
+    margin-bottom: 1vh;
+    position: relative;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+}
+
+.header p {
+    margin-right: .5vw;
+}
+
+.colorDetails {
+    display: flex;
+    cursor: pointer;
+}
+
+.colorDetails p {
+    margin-left: .5vw;
+}
+
+.exitBtn {
+    position:absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    border: none;
+}
+
+.colorPalette {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}

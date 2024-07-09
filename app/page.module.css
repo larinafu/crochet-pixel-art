@@ -7,20 +7,17 @@
   background-color: var(--secondary-accent);
 }
 
-.uploadedImageCanvas {
-  display: none;
-  visibility: hidden;
-}
-
-.imageUploadForm input {
+.imgUploadForm input {
   opacity: 0;
+  width: 0;
 }
 
-.imageUploadForm label {
-  background-color: #7f9ccb;
-  padding: 5px 10px;
+.imgUploadContainer{
+  display: block;
+  padding: 10vh 20vw;
+  background-color: lightgray;
   border-radius: 5px;
-  border: 1px ridge black;
+  border: 1px dashed black;
   font-size: 0.8rem;
   height: auto;
 }

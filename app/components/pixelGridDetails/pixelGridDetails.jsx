@@ -16,10 +16,12 @@ export default function PixelGridDetails({
   curImg,
   color,
   setColor,
+  pixels,
   replacePixelsWithSelectedColor,
   swatch,
   handleGaugeChange,
   widthHeightRatio,
+  activeColorCounter,
 }) {
   const [tempSwatch, setTempSwatch] = useState(swatch);
   return (
@@ -45,6 +47,8 @@ export default function PixelGridDetails({
         color={color}
         setColor={setColor}
         replacePixelsWithSelectedColor={replacePixelsWithSelectedColor}
+        pixels={pixels}
+        activeColorCounter={activeColorCounter}
       />
     </div>
   );

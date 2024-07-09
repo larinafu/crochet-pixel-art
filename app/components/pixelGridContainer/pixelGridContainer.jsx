@@ -1,9 +1,4 @@
-import {
-  useDeferredValue,
-  useState,
-  useLayoutEffect,
-  useTransition,
-} from "react";
+import { useReducer, useState, useLayoutEffect, useTransition, useEffect } from "react";
 import { pixelsReducer } from "@/app/utils/pixelsReducer";
 import { useImageData } from "@/app/utils/useImageData";
 import PixelGrid from "../pixelGrid/pixelGrid";
@@ -12,11 +7,10 @@ import styles from "./pixelGridContainer.module.css";
 import colors from "@/app/utils/colors2.json";
 import { ModeContext } from "@/app/utils/ModeContext";
 import RowDetails from "../rowDetails/rowDetails";
+import PixelEditor from "../pixelEditor/pixelEditor";
 import ColorEditor from "../colorEditor/colorEditor";
-import PixelGridEditor from "../pixelGridEditor/pixelGridEditor";
 
 export default function PixelGridContainer({ curImg }) {
-  console.log("pixelGridContainer rerendered");
   const [isPending, startTransition] = useTransition();
   const [imgDim, imgData, canvasRef] = useImageData(curImg);
   const [numStitches, setNumStitches] = useState(30);
@@ -25,32 +19,46 @@ export default function PixelGridContainer({ curImg }) {
     height: 30,
   }); // width, height
   const [detectedColors, setDetectedColors] = useState({});
-  const [selectedColors, setSelectedColors] = useState({});
+  const [selectedColors, setSelectedColors] = useState([]);
   const [curPixel, setPixel] = useState("");
   const [pixels, pixelsDispatch] = useReducer(pixelsReducer, null);
+  const [selectedPixels, setSelectedPixels] = useState([]);
   const [curColor, setCurColor] = useState(null);
   const [curRow, setRow] = useState(null);
   const [isColorSelected, setColorSelected] = useState(false);
   const [isEditMode, setEditMode] = useState(false);
   const [colorMap, setColorMap] = useState(resetColorMap());
-  const [editType, setEditType] = useState("single");
-  const [pixelsSelected, setPixelsSelected] = useState({});
   const widthHeightRatio = swatch.width / swatch.height;
   const numRows = Math.floor(
     imgDim?.height /
       ((imgDim?.width / numStitches) * (swatch.width / swatch.height))
   );
+  let activeColorCounter = {};
+  if (pixels) {
+    for (const pixelRow of pixels) {
+      for (const pixel of pixelRow) {
+        if (pixel.colorName in activeColorCounter) {
+          activeColorCounter[pixel.colorName] += 1;
+        } else {
+          activeColorCounter[pixel.colorName] = 1;
+        }
+      }
+    }
+  }
 
-  useLayoutEffect(() => {
-    const colorsFound = generateNewPixelGridWithColorDetails(
-      colors,
-      numStitches,
-      widthHeightRatio
-    ) || {};
+  useEffect(() => {
+    const colorsFound =
+      generateNewPixelGridWithColorDetails(
+        colors,
+        numStitches,
+        widthHeightRatio
+      ) || {};
     setDetectedColors(colorsFound);
   }, [imgData]);
 
   function handleStitchChange(stitchNum) {
+    setSelectedPixels([])
+    setSelectedColors([])
     startTransition(() => {
       const colorsFound = generateNewPixelGridWithColorDetails(
         colors,
@@ -63,58 +71,16 @@ export default function PixelGridContainer({ curImg }) {
     });
   }
 
-  function handlePixelSelect(row, column, pixelObj) {
-    if (pixelObj.colorName in pixelsSelected) {
-      const pixelFound = pixelsSelected[pixelObj.colorName].find(
-        (obj) => obj.row === row && obj.column === column
-      );
-      if (pixelFound) {
-        if (!pixelFound.checked) {
-          setPixelsSelected({
-            ...pixelsSelected,
-            [pixelObj.colorName]: [
-              ...pixelsSelected[pixelObj.colorName],
-              { row: row, column: column, checked: true },
-            ],
-          });
-        }
-      } else {
-        console.log("in here");
-        setPixelsSelected({
-          ...pixelsSelected,
-          [pixelObj.colorName]: [
-            ...pixelsSelected[pixelObj.colorName],
-            { row: row, column: column, checked: true },
-          ],
-        });
-      }
-    } else {
-      setPixelsSelected({
-        ...pixelsSelected,
-        [pixelObj.colorName]: [{ row: row, column: column, checked: true }],
-      });
-    }
-  }
-
   function handleGaugeChange(swatch) {
     startTransition(() => {
-      const [generatedPixelGrid, colorsFound] = generatePixels(
+      const colorsFound = generateNewPixelGridWithColorDetails(
         colors,
         numStitches,
         swatch.width / swatch.height
       );
       setSwatch(swatch);
-      setPixels(generatedPixelGrid);
       setDetectedColors(colorsFound);
     });
-  }
-
-  function toggleColorFromSelectedColors(color) {
-    return color in selectedColors
-      ? Object.fromEntries(
-          Object.entries(selectedColors).filter(([key]) => key !== color)
-        )
-      : { ...selectedColors, [color]: detectedColors[color] };
   }
 
   function resetColorMap() {
@@ -123,7 +89,11 @@ export default function PixelGridContainer({ curImg }) {
     );
   }
 
-  function generateNewPixelGridWithColorDetails(colors, numStitches, widthHeightRatio) {
+  function generateNewPixelGridWithColorDetails(
+    colors,
+    numStitches,
+    widthHeightRatio
+  ) {
     const nearestColor = require("nearest-color").from(colors);
     if (imgDim && imgData && colors && numStitches) {
       const pixelRatio = ((imgDim && imgDim.width) || 0) / numStitches;
@@ -170,8 +140,8 @@ export default function PixelGridContainer({ curImg }) {
           }
         }
       }
-      const pixelGridWithColors = pixelGrid.map((pixelRow) =>
-        pixelRow.map((pixel) => {
+      const pixelGridWithColors = pixelGrid.map((pixelRow, rowNum) =>
+        pixelRow.map((pixel, stitchNum) => {
           const colorMatch = nearestColor({
             r: pixel.r / pixel.numPixels || 0,
             g: pixel.g / pixel.numPixels || 0,
@@ -185,10 +155,14 @@ export default function PixelGridContainer({ curImg }) {
             calculatedColorName: colorName,
             hex: hex,
             colorName: colorName,
+            rowNum: rowNum,
+            stitchNum: stitchNum,
+            checked: false,
+            colorChecked: false,
           };
         })
       );
-      pixelsDispatch({type: "refresh_pixels", pixels: pixelGridWithColors})
+      pixelsDispatch({ type: "refresh_pixels", pixels: pixelGridWithColors });
       return colorsFound;
     }
     return {};
@@ -254,6 +228,7 @@ export default function PixelGridContainer({ curImg }) {
               isEditMode={isEditMode}
               numStitches={numStitches}
               numRows={numRows}
+              pixels={pixels}
               replacePixelsWithSelectedColor={replacePixelsWithSelectedColor}
               setCurColor={setCurColor}
               setEditMode={setEditMode}
@@ -261,14 +236,11 @@ export default function PixelGridContainer({ curImg }) {
               setSwatch={setSwatch}
               handleGaugeChange={handleGaugeChange}
               widthHeightRatio={widthHeightRatio}
+              activeColorCounter={activeColorCounter}
             />
           </div>
           <div className={styles.centerPanel}>
-            {isEditMode ? (
-              <PixelGridEditor />
-            ) : (
-              <RowDetails row={curRow || []} />
-            )}
+            {!isEditMode && <RowDetails row={curRow || []} />}
             <PixelGrid
               pixels={pixels}
               curPixel={curPixel}
@@ -280,12 +252,27 @@ export default function PixelGridContainer({ curImg }) {
               curColor={curColor}
               widthHeightRatio={widthHeightRatio}
               isPending={isPending}
-              handlePixelSelect={handlePixelSelect}
-              pixelsSelected={pixelsSelected}
+              pixelsDispatch={pixelsDispatch}
+              selectedPixels={selectedPixels}
+              setSelectedPixels={setSelectedPixels}
             />
           </div>
           <div className={styles.rightPanel}>
-            <ColorEditor pixelsSelected={pixelsSelected} />
+            <ColorEditor
+              selectedColors={selectedColors}
+              setSelectedColors={setSelectedColors}
+              pixelsDispatch={pixelsDispatch}
+              activeColorCounter={activeColorCounter}
+            />
+            <PixelEditor
+              pixels={pixels}
+              pixelsDispatch={pixelsDispatch}
+              detectedColors={detectedColors}
+              selectedColors={selectedColors}
+              setSelectedColors={setSelectedColors}
+              selectedPixels={selectedPixels}
+              setSelectedPixels={setSelectedPixels}
+            />
           </div>
         </ModeContext.Provider>
       </section>

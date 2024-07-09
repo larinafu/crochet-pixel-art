@@ -1,27 +1,27 @@
-import ColorSwatch from "../colorSwatch/colorSwatch";
+import { act } from "react";
+import ColorEditingBlock from "./colorEditingBlock/colorEditingBlock";
+import styles from "./colorEditor.module.css";
 
-export default function ColorEditor({ pixelsSelected }) {
-  console.log(Object.keys(pixelsSelected));
+export default function ColorEditor({
+  selectedColors,
+  setSelectedColors,
+  pixelsDispatch,
+  activeColorCounter,
+}) {
   return (
-    <section className="detailContainer">
-      <ul>
-        {Object.keys(pixelsSelected).map((colorName) => (
-          <li>
-            <p>
-              <ColorSwatch size={20} color={colorName} /> {colorName} (
-              {pixelsSelected[colorName].length})
-            </p>
-            <ul>
-              {pixelsSelected[colorName].map((pixel) => (
-                <li>
-                  <input type="checkbox" checked={pixel.checked}></input>
-                  {pixel.row}, {pixel.column}
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
+    <section>
+      <h2>Selected Colors ({selectedColors.length})</h2>
+      {selectedColors.map((colorName) => (
+        <ColorEditingBlock
+          key={colorName[0]}
+          colorName={colorName[0]}
+          stitchCount={activeColorCounter[colorName[0]]}
+          hex={colorName[1]}
+          setSelectedColors={setSelectedColors}
+          selectedColors={selectedColors}
+          pixelsDispatch={pixelsDispatch}
+        />
+      ))}
     </section>
   );
 }

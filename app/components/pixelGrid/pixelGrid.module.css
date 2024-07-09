@@ -28,8 +28,12 @@
   border: 0.001px solid black;
 }
 
-.activeColor {
+.activePixel {
   border: 0.5px solid gold;
+}
+
+.activeColor {
+  border: 0.5px solid blue;
 }
 
 .activeRow {
@@ -83,6 +87,10 @@
 .addGoldBorderTopBottom {
   border-left: 0.5px solid black;
   border-right: 0.5px solid black;
+}
+
+.hoveredBorder {
+  border: .5px solid red;
 }
 
 .loadingState {
