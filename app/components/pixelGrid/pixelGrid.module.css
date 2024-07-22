@@ -5,16 +5,16 @@
 
 .pixelGridContainer {
   padding: 1em;
-  border-spacing: 0;
   border: 1px solid black;
   border-radius: 10px;
   background-color: var(--primary-accent);
+  height: 68vh;
+  overflow: scroll;
 }
 
 .pixelGrid {
-  /* width: 60%; */
-  height: auto;
   margin: 0 auto;
+  width: fit-content;
 }
 
 .colorCells {
@@ -23,9 +23,29 @@
 
 .colorCell {
   position: relative;
-  flex-grow: 1;
-  margin: 0;
-  border: 0.001px solid black;
+  width: 5px;
+  border: 0.05px solid black;
+}
+
+.hoveredBorder {
+  outline: .1vw solid red;
+  z-index: 1;
+}
+
+.leftGoldBorder {
+  border-left: 1.5px solid gold;
+}
+
+.bottomGoldBorder {
+  border-bottom: 1.5px solid gold;
+}
+
+.rightGoldBorder {
+  border-right: 1.5px solid gold;
+}
+
+.topGoldBorder {
+  border-top: 1.5px solid gold;
 }
 
 .activePixel {
@@ -45,52 +65,8 @@
   background-color: aliceblue;
 }
 
-.editToolbox {
-  position: absolute;
-  width: 10vw;
-  bottom: 20px;
-  left: 20px;
-}
-
-.editToolboxExit {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 1.5em;
-  height: 1.5em;
-  border: 1px solid black;
-  border-radius: 50px;
-  background-color: red;
-}
-
 .activeRow {
-  border: .01% solid gold;
-}
-
-.addGoldBorderLeftEdge,
-.addGoldBorderTopBottom,
-.addGoldBorderRightEdge {
-  border-top: .5px solid gold;
-  border-bottom: .5px solid gold;
-}
-
-.addGoldBorderLeftEdge {
-  border-left: .5px solid gold;
-  border-right: 0.5px solid black;
-}
-
-.addGoldBorderRightEdge {
-  border-left: 0.5px solid black;
-  border-right: .5px solid gold;
-}
-
-.addGoldBorderTopBottom {
-  border-left: 0.5px solid black;
-  border-right: 0.5px solid black;
-}
-
-.hoveredBorder {
-  border: .5px solid red;
+  border: 0.01% solid gold;
 }
 
 .loadingState {
@@ -112,7 +88,7 @@
   border-radius: 50%;
   display: inline-block;
   position: relative;
-  border: .5vw solid;
+  border: 0.5vw solid;
   border-color: red orange yellow green;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
@@ -125,4 +101,4 @@
   100% {
     transform: rotate(360deg);
   }
-} 
+}

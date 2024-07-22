@@ -1,10 +1,15 @@
 .main {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   min-height: 100vh;
-  background-color: var(--secondary-accent);
+  background-color: var(--secondary-accent); */
+  margin: 2vw 1vw;
+}
+
+.heading {
+  margin: 2vh 0;
 }
 
 .imgUploadForm input {
@@ -13,11 +18,18 @@
 }
 
 .imgUploadContainer{
-  display: block;
-  padding: 10vh 20vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40vw;
+  height: 40vw;
   background-color: lightgray;
   border-radius: 5px;
   border: 1px dashed black;
   font-size: 0.8rem;
-  height: auto;
+}
+
+.uploadedImg {
+  max-width: 90%;
+  max-height: 90%;
 }

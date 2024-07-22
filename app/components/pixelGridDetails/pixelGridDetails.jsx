@@ -12,12 +12,6 @@ export default function PixelGridDetails({
   detectedColors,
   handleStitchChange,
   setCurColor,
-  curColor,
-  curImg,
-  color,
-  setColor,
-  pixels,
-  replacePixelsWithSelectedColor,
   swatch,
   handleGaugeChange,
   widthHeightRatio,
@@ -36,18 +30,11 @@ export default function PixelGridDetails({
         numRows={numRows}
         tempSwatch={tempSwatch}
         widthHeightRatio={widthHeightRatio}
-        handleGaugeChange={handleGaugeChange}
-        curImg={curImg}
         handleStitchChange={handleStitchChange}
       />
       <ColorDetails
         detectedColors={detectedColors}
         setCurColor={setCurColor}
-        curColor={curColor}
-        color={color}
-        setColor={setColor}
-        replacePixelsWithSelectedColor={replacePixelsWithSelectedColor}
-        pixels={pixels}
         activeColorCounter={activeColorCounter}
       />
     </div>

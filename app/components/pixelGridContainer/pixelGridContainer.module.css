@@ -13,6 +13,11 @@
   width: 20vw;
 }
 
+.leftPanel > div {
+  position: sticky;
+  top: 1vw;
+}
+
 .centerPanel {
   width: 50vw;
 }
@@ -25,4 +30,8 @@
   position: fixed;
   bottom: 2vw;
   right: 2vw;
+}
+
+.imgReference {
+  width: 100%;
 }

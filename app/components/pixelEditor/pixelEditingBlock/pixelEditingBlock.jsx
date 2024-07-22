@@ -1,12 +1,6 @@
-import colors from "@/app/utils/colors2.json";
-
-import ColorSwatch from "../../colorSwatch/colorSwatch";
 import EditingBlockContainer from "../../editingBlockContainer/editingBlockContainer";
 
-import { useState } from "react";
-
 import styles from "./pixelEditingBlock.module.css";
-import ColorPalette from "../../colorPalette/colorPalette";
 
 export default function PixelEditingBlock({
   pixel,
@@ -16,23 +10,43 @@ export default function PixelEditingBlock({
   selectedPixels,
   setSelectedPixels,
 }) {
+  console.log(selectedPixels);
+  console.log(pixel);
   return (
     <EditingBlockContainer
+      colorName={pixel.colorName}
+      colorHex={pixel.colorHex}
       handleExitBtnClick={() => {
         setSelectedPixels(
           selectedPixels.filter(
-            ([rowNum, stitchNum]) =>
-              rowNum !== pixel.rowNum || stitchNum !== pixel.stitchNum
+            (p) =>
+              p.rowNum !== pixel.rowNum || p.stitchNum !== pixel.stitchNum
           )
         );
         pixelsDispatch({ type: "single_pixel_deselection", pixel: pixel });
       }}
-      colorPaletteSelectionDispatchType="single_pixel_color_change"
-      pixel={pixel}
-      pixelsDispatch={pixelsDispatch}
-      setSelectedColors={setSelectedColors}
-      selectedColors={selectedColors}
-      selectedPixels={selectedPixels}
-    />
+      handleColorPaletteSelection={(newColorName) => {
+        pixelsDispatch({
+          type: "single_pixel_selection_color_change",
+          pixel: pixel,
+          newColorName: newColorName,
+        });
+      }}
+    >
+      <div>
+        <p>
+          Row {pixel.rowNum}, Stitch {pixel.stitchNum}
+        </p>
+      </div>
+      <button
+        onClick={() => {
+          setSelectedColors([...selectedColors, [pixel.colorName, pixel.colorHex]]);
+        }}
+        disabled={selectedColors?.some((color) => color[0] === pixel.colorName)}
+        className={styles.selectAllBtn}
+      >
+        add to selected colors
+      </button>
+    </EditingBlockContainer>
   );
 }

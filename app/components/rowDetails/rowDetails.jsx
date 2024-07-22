@@ -14,7 +14,7 @@ export default function RowDetails({ row }) {
     }
   }
   return (
-    <section className={`${styles.rowDetailsContainer} detailContainer`}>
+    <section className={`${styles.container} detailContainer`}>
       <table className={styles.colorRow}>
         <tbody>
           {row && (
@@ -40,7 +40,9 @@ export default function RowDetails({ row }) {
           {rowColors.map((segment, idx) => (
             <li key={idx}>
               <ColorSwatch color={segment.colorName} size={20} />
-              <p>{segment.count} {segment.colorName}</p>
+              <p>
+                {segment.count} {segment.colorName}
+              </p>
             </li>
           ))}
         </ul>

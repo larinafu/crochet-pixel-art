@@ -16,33 +16,40 @@ export default function Home() {
   }
   return (
     <main className={styles.main}>
-      <h1>Knitting/Crochet Pixel Art Generator</h1>
       {showGridTools ? (
         <PixelGridContainer key={imageInfo[1]} curImg={imageInfo[0]} />
       ) : (
-        <form
-          className={styles.imgUploadForm}
-          onSubmit={(e) => {
-            e.preventDefault();
-            setShowGridTools(true);
-          }}
-        >
-          <label className={styles.imgUploadContainer} htmlFor="image_uploads">
-            Click to upload your image
-          </label>
-          <input
-            ref={inputRef}
-            type="file"
-            id="image_uploads"
-            name="image_uploads"
-            accept=".jpg, .jpeg, .png"
-            onChange={(e) => {
-              handleFileUpload(e);
+        <>
+          <h1 className={styles.heading}>
+            Knitting/Crochet Pixel Art Generator
+          </h1>
+          <form
+            className={styles.imgUploadForm}
+            onSubmit={(e) => {
+              e.preventDefault();
+              setShowGridTools(true);
             }}
-          />
-          {imageInfo && <img src={imageInfo[0]} />}
-          <button disabled={!imageInfo[0]}>Generate grid!</button>
-        </form>
+          >
+            <label htmlFor="image_uploads">upload image</label>
+            <input
+              ref={inputRef}
+              type="file"
+              id="image_uploads"
+              name="image_uploads"
+              accept=".jpg, .jpeg, .png"
+              onChange={(e) => {
+                handleFileUpload(e);
+              }}
+            />
+            <div className={styles.imgUploadContainer}>
+              {imageInfo && (
+                <img className={styles.uploadedImg} src={imageInfo[0]} />
+              )}
+            </div>
+
+            <button disabled={!imageInfo[0]}>Generate grid!</button>
+          </form>
+        </>
       )}
     </main>
   );

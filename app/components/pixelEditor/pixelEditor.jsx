@@ -1,10 +1,11 @@
+import { PixelsContext } from "@/app/utils/context";
+import { useContext } from "react";
+
 import PixelEditingBlock from "./pixelEditingBlock/pixelEditingBlock";
 
 import styles from "./pixelEditor.module.css";
 
 export default function PixelEditor({
-  pixels,
-  pixelsDispatch,
   detectedColors,
   selectedColors,
   setSelectedColors,
@@ -12,17 +13,17 @@ export default function PixelEditor({
   setSelectedPixels,
 }) {
   console.log(`pixelEditor rerendered`);
+  const [pixels, pixelsDispatch] = useContext(PixelsContext);
   const pixelsSelected = selectedPixels
-    .map(([rowNum, stitchNum]) => pixels[rowNum][stitchNum])
+    .map((p) => pixels[p.rowNum][p.stitchNum])
     .reverse();
   return (
-    <section className={styles.pixelEditorContainer}>
-      <h2>Selected Pixels ({pixelsSelected?.length || 0})</h2>
+    <section className={`detailContainer ${styles.pixelEditorContainer}`}>
+      <h3>Selected Pixels ({pixelsSelected?.length || 0})</h3>
       <ul className={styles.selectedColorsContainer}>
         {pixelsSelected?.map((pixel) => (
-          <li>
+          <li key={`${pixel.rowNum},${pixel.stitchNum},${pixel.colorName}`}>
             <PixelEditingBlock
-              key={`${pixel.rowNum},${pixel.stitchNum}`}
               pixel={pixel}
               pixelsDispatch={pixelsDispatch}
               detectedColors={detectedColors}

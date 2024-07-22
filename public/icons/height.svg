@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0 0 68 85" version="1.1" x="0px" y="0px">
+    <title>height, measure, dimension, fixed, size</title>
+    <desc>Created with Sketch.</desc>
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-176.000000, -296.000000)" fill="#000000" fill-rule="nonzero">
+            <path
+                d="M182,296 L238,296 C241.313708,296 244,298.686292 244,302 L244,358 C244,361.313708 241.313708,364 238,364 L182,364 C178.686292,364 176,361.313708 176,358 L176,302 C176,298.686292 178.686292,296 182,296 Z M182,300 C180.895431,300 180,300.895431 180,302 L180,358 C180,359.104569 180.895431,360 182,360 L238,360 C239.104569,360 240,359.104569 240,358 L240,302 C240,300.895431 239.104569,300 238,300 L182,300 Z M208,350 L208,310 L204,310 C202.895431,310 202,309.104569 202,308 C202,306.895431 202.895431,306 204,306 L216,306 C217.104569,306 218,306.895431 218,308 C218,309.104569 217.104569,310 216,310 L212,310 L212,350 L216,350 C217.104569,350 218,350.895431 218,352 C218,353.104569 217.104569,354 216,354 L204,354 C202.895431,354 202,353.104569 202,352 C202,350.895431 202.895431,350 204,350 L208,350 Z" />
+        </g>
+    </g>
+    <!-- <text x="0" y="83" fill="#000000" font-size="5px" font-weight="bold"
+        font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">Created by
+        Andrejs Kirma</text>
+    <text x="0" y="88" fill="#000000" font-size="5px" font-weight="bold"
+        font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">from the Noun
+        Project</text> -->
+</svg>

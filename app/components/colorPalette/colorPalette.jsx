@@ -8,9 +8,7 @@ const TOP_COLOR_NUM = 10;
 export default function ColorPalette({
   colorName,
   colorHex,
-  colorPaletteSelectionDispatchType,
-  pixel,
-  pixelsDispatch,
+  handleColorPaletteSelection,
   setColorPaletteShown,
   setPreviewColor,
 }) {
@@ -34,19 +32,16 @@ export default function ColorPalette({
       </p>
       {topClosestColors.map((color) => (
         <span
+          key={color.name}
           className={styles.colorOption}
           onMouseEnter={() => {
             setPreviewColor([color.name, color.value]);
           }}
           onMouseLeave={() => {
-            setPreviewColor([pixel.colorName, pixel.hex]);
+            setPreviewColor([colorName, colorHex]);
           }}
           onClick={() => {
-            pixelsDispatch({
-              type: colorPaletteSelectionDispatchType,
-              pixel: pixel,
-              newColorName: color.name,
-            });
+            handleColorPaletteSelection(color.name);
             setColorPaletteShown(false);
           }}
         >
@@ -57,19 +52,16 @@ export default function ColorPalette({
       <div className={styles.allColorOptionsContainer}>
         {Object.entries(colors).map(([key, val]) => (
           <span
+            key={key}
             className={styles.colorOption}
             onMouseEnter={() => {
               setPreviewColor([key, val]);
             }}
             onMouseLeave={() => {
-              setPreviewColor([pixel.colorName, pixel.hex]);
+              setPreviewColor([colorName, colorHex]);
             }}
             onClick={() => {
-              pixelsDispatch({
-                type: colorPaletteSelectionDispatchType,
-                pixel: pixel,
-                newColorName: key,
-              });
+              handleColorPaletteSelection(key);
               setColorPaletteShown(false);
             }}
           >

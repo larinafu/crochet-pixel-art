@@ -1,0 +1,16 @@
+.container {
+    display: flex;
+    position: sticky;
+    bottom: 1vh;
+    height: 10vh;
+    z-index: 1;
+    margin-top: 1vh;
+}
+
+.container section {
+    margin: 0 .5vw;
+}
+
+.colorPickerToolbar {
+    flex-grow: 9;
+}

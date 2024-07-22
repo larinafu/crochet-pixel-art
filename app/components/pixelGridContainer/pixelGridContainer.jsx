@@ -1,16 +1,21 @@
-import { useReducer, useState, useLayoutEffect, useTransition, useEffect } from "react";
+import Image from "next/image";
+
+import { useReducer, useState, useTransition, useEffect } from "react";
 import { pixelsReducer } from "@/app/utils/pixelsReducer";
 import { useImageData } from "@/app/utils/useImageData";
 import PixelGrid from "../pixelGrid/pixelGrid";
 import PixelGridDetails from "../pixelGridDetails/pixelGridDetails";
 import styles from "./pixelGridContainer.module.css";
 import colors from "@/app/utils/colors2.json";
-import { ModeContext } from "@/app/utils/ModeContext";
+import { ModeContext, PixelsContext } from "@/app/utils/context";
 import RowDetails from "../rowDetails/rowDetails";
 import PixelEditor from "../pixelEditor/pixelEditor";
 import ColorEditor from "../colorEditor/colorEditor";
+import ColorToolbar from "../colorToolbar/colorToolbar";
+import Toolbar from "../toolbar/toolbar";
 
 export default function PixelGridContainer({ curImg }) {
+  console.log("pixelGridContainer rerendered");
   const [isPending, startTransition] = useTransition();
   const [imgDim, imgData, canvasRef] = useImageData(curImg);
   const [numStitches, setNumStitches] = useState(30);
@@ -20,14 +25,17 @@ export default function PixelGridContainer({ curImg }) {
   }); // width, height
   const [detectedColors, setDetectedColors] = useState({});
   const [selectedColors, setSelectedColors] = useState([]);
-  const [curPixel, setPixel] = useState("");
   const [pixels, pixelsDispatch] = useReducer(pixelsReducer, null);
   const [selectedPixels, setSelectedPixels] = useState([]);
   const [curColor, setCurColor] = useState(null);
   const [curRow, setRow] = useState(null);
   const [isColorSelected, setColorSelected] = useState(false);
-  const [isEditMode, setEditMode] = useState(false);
-  const [colorMap, setColorMap] = useState(resetColorMap());
+  const [colorPalette, setColorPalette] = useState([]);
+  const [curPixelHovered, setCurPixelHovered] = useState(null);
+  const [toolSelections, setToolSelections] = useState({
+    // single_pixel_select, multi_pixel_select, single_color_select
+    selectionOption: "single_pixel_select",
+  });
   const widthHeightRatio = swatch.width / swatch.height;
   const numRows = Math.floor(
     imgDim?.height /
@@ -54,11 +62,16 @@ export default function PixelGridContainer({ curImg }) {
         widthHeightRatio
       ) || {};
     setDetectedColors(colorsFound);
+    setColorPalette(
+      Object.entries(colorsFound)
+        .sort((c1, c2) => c2[1].count - c1[1].count)
+        .slice(0, 10)
+    );
   }, [imgData]);
 
   function handleStitchChange(stitchNum) {
-    setSelectedPixels([])
-    setSelectedColors([])
+    setSelectedPixels([]);
+    setSelectedColors([]);
     startTransition(() => {
       const colorsFound = generateNewPixelGridWithColorDetails(
         colors,
@@ -83,12 +96,6 @@ export default function PixelGridContainer({ curImg }) {
     });
   }
 
-  function resetColorMap() {
-    return Object.fromEntries(
-      Object.keys(colors).map((colorName) => [colorName, colorName])
-    );
-  }
-
   function generateNewPixelGridWithColorDetails(
     colors,
     numStitches,
@@ -102,14 +109,13 @@ export default function PixelGridContainer({ curImg }) {
       const pixelRatioRows = pixelRatio * widthHeightRatio;
       const numRows = Math.floor(imgDim && imgDim.height / pixelsPerRow);
       const pixelGrid = [];
-      const colorsFound = Object.fromEntries(
-        Object.keys(colorMap).map((colorName) => [
-          colorName,
-          {
-            count: 0,
-          },
-        ])
-      );
+      const colorsFound = {};
+      for (const [key, value] of Object.entries(colors)) {
+        colorsFound[key] = {
+          hex: value,
+          count: 0,
+        };
+      }
       for (let yInterval = 0; yInterval < numRows; yInterval += 1) {
         let pixelRow = [];
         for (let xInterval = 0; xInterval < numStitches; xInterval += 1) {
@@ -153,11 +159,11 @@ export default function PixelGridContainer({ curImg }) {
             ...pixel,
             calculatedHex: hex,
             calculatedColorName: colorName,
-            hex: hex,
+            colorHex: hex,
             colorName: colorName,
             rowNum: rowNum,
             stitchNum: stitchNum,
-            checked: false,
+            singleSelected: false,
             colorChecked: false,
           };
         })
@@ -166,41 +172,6 @@ export default function PixelGridContainer({ curImg }) {
       return colorsFound;
     }
     return {};
-  }
-
-  function replacePixelsWithSelectedColor(color, replacer) {
-    const selectedColorName = color.colorName;
-    const replacerName = replacer.colorName;
-    const updatedColors = {
-      ...detectedColors,
-      [selectedColorName]: {
-        ...detectedColors[selectedColorName],
-        count: 0,
-      },
-      [replacerName]: {
-        ...detectedColors[replacerName],
-        count:
-          detectedColors[replacerName].count +
-          detectedColors[selectedColorName].count,
-      },
-    };
-    setDetectedColors(updatedColors);
-    setColorMap({ ...colorMap, [selectedColorName]: replacer });
-    setPixels(
-      pixels.map((pixelRow) =>
-        pixelRow.map((pixel) => {
-          if (pixel.colorName === selectedColorName) {
-            return {
-              ...pixel,
-              hex: colors[replacerName],
-              colorName: replacerName,
-            };
-          } else {
-            return pixel;
-          }
-        })
-      )
-    );
   }
 
   function getColorIndicesForCoord(x, y) {
@@ -217,34 +188,34 @@ export default function PixelGridContainer({ curImg }) {
           ref={canvasRef}
           className={styles.uploadedImageCanvas}
         ></canvas>
-        <ModeContext.Provider value={isEditMode}>
+        <PixelsContext.Provider value={[pixels, pixelsDispatch]}>
           <div className={styles.leftPanel}>
-            <PixelGridDetails
-              curColor={curColor}
-              curImg={curImg}
-              detectedColors={detectedColors}
-              handleStitchChange={handleStitchChange}
-              imgDim={imgDim}
-              isEditMode={isEditMode}
-              numStitches={numStitches}
-              numRows={numRows}
-              pixels={pixels}
-              replacePixelsWithSelectedColor={replacePixelsWithSelectedColor}
-              setCurColor={setCurColor}
-              setEditMode={setEditMode}
-              swatch={swatch}
-              setSwatch={setSwatch}
-              handleGaugeChange={handleGaugeChange}
-              widthHeightRatio={widthHeightRatio}
-              activeColorCounter={activeColorCounter}
-            />
+            <div>
+              <PixelGridDetails
+                curColor={curColor}
+                detectedColors={detectedColors}
+                handleStitchChange={handleStitchChange}
+                imgDim={imgDim}
+                numStitches={numStitches}
+                numRows={numRows}
+                setCurColor={setCurColor}
+                swatch={swatch}
+                setSwatch={setSwatch}
+                handleGaugeChange={handleGaugeChange}
+                widthHeightRatio={widthHeightRatio}
+                activeColorCounter={activeColorCounter}
+              />
+              <Toolbar
+                toolSelections={toolSelections}
+                setToolSelections={setToolSelections}
+              />
+            </div>
           </div>
           <div className={styles.centerPanel}>
-            {!isEditMode && <RowDetails row={curRow || []} />}
+            <RowDetails row={curRow || []} />
             <PixelGrid
-              pixels={pixels}
-              curPixel={curPixel}
-              setPixel={setPixel}
+              curPixelHovered={curPixelHovered}
+              setCurPixelHovered={setCurPixelHovered}
               curRow={curRow}
               setRow={setRow}
               isColorSelected={isColorSelected}
@@ -252,42 +223,42 @@ export default function PixelGridContainer({ curImg }) {
               curColor={curColor}
               widthHeightRatio={widthHeightRatio}
               isPending={isPending}
-              pixelsDispatch={pixelsDispatch}
               selectedPixels={selectedPixels}
               setSelectedPixels={setSelectedPixels}
+              toolSelections={toolSelections}
+            />
+            <ColorToolbar
+              colorPalette={colorPalette}
+              curPixelHovered={curPixelHovered}
+              selectedPixels={selectedPixels}
+              setSelectedPixels={setSelectedPixels}
+              toolSelections={toolSelections}
             />
           </div>
           <div className={styles.rightPanel}>
-            <ColorEditor
-              selectedColors={selectedColors}
-              setSelectedColors={setSelectedColors}
-              pixelsDispatch={pixelsDispatch}
-              activeColorCounter={activeColorCounter}
-            />
-            <PixelEditor
-              pixels={pixels}
-              pixelsDispatch={pixelsDispatch}
-              detectedColors={detectedColors}
-              selectedColors={selectedColors}
-              setSelectedColors={setSelectedColors}
-              selectedPixels={selectedPixels}
-              setSelectedPixels={setSelectedPixels}
-            />
+            {toolSelections.selectionOption === "multi_color_select" && (
+              <ColorEditor
+                selectedColors={selectedColors}
+                setSelectedColors={setSelectedColors}
+                activeColorCounter={activeColorCounter}
+              />
+            )}
+            {toolSelections.selectionOption === "multi_pixel_select" && (
+              <PixelEditor
+                detectedColors={detectedColors}
+                selectedColors={selectedColors}
+                setSelectedColors={setSelectedColors}
+                selectedPixels={selectedPixels}
+                setSelectedPixels={setSelectedPixels}
+              />
+            )}
+            <section className="detailContainer">
+              <img className={styles.imgReference} src={curImg} />
+            </section>
           </div>
-        </ModeContext.Provider>
+        </PixelsContext.Provider>
       </section>
-      <section className={styles.userOptions}>
-        <button
-          type="button"
-          onClick={() => {
-            setRow(null);
-            setEditMode(!isEditMode);
-          }}
-          className={styles.modeButton}
-        >
-          {isEditMode ? "Update Changes" : "Edit Project"}
-        </button>
-      </section>
+      <section className={styles.userOptions}></section>
     </>
   );
 }

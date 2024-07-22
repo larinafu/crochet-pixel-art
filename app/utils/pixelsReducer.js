@@ -4,47 +4,81 @@ export function pixelsReducer(pixels, action) {
   switch (action.type) {
     case "refresh_pixels":
       return action.pixels;
-    case "single_pixel_color_change":
+
+    // changing color
+    case "single_pixel_selection_color_change":
       return pixels.with(
         action.pixel.rowNum,
         pixels[action.pixel.rowNum].with(action.pixel.stitchNum, {
           ...pixels[action.pixel.rowNum][action.pixel.stitchNum],
-          hex: colors[action.newColorName],
+          colorHex: colors[action.newColorName],
           colorName: action.newColorName,
         })
       );
-    case "multi_pixel_color_change":
-      break;
-    case "single_pixel_selection":
+    case "multi_pixel_selection_color_change":
+      return pixels.map((pixelRow) =>
+        pixelRow.map((pixel) => {
+          if (
+            action.selectedPixels.some(
+              (pixelLoc) =>
+                pixelLoc.rowNum === pixel.rowNum &&
+                pixelLoc.stitchNum === pixel.stitchNum
+            )
+          ) {
+            return {
+              ...pixel,
+              colorName: action.newColorName,
+              colorHex: colors[action.newColorName],
+              singleSelected: false,
+            };
+          } else return pixel;
+        })
+      );
+    case "single_color_selection_color_change":
+      console.log(action.newColorName);
+      return pixels.map((pixelRow) =>
+        pixelRow.map((pixel) => {
+          if (pixel.singleSelected) {
+            return {
+              ...pixel,
+              colorName: action.newColorName,
+              colorHex: colors[action.newColorName],
+            };
+          } else return pixel;
+        })
+      );
+
+    // changing selected pixels
+    case "pixel_selection":
       return pixels.with(
         action.pixel.rowNum,
         pixels[action.pixel.rowNum].with(action.pixel.stitchNum, {
           ...action.pixel,
-          checked: true,
+          singleSelected: true,
         })
       );
-    case "multi_pixel_color_selection":
+    case "color_selection":
       return pixels.map((pixelRow) =>
         pixelRow.map((pixel) => {
-          if (pixel.colorName === action.colorName) {
-            return { ...pixel, colorChecked: true };
+          if (pixel.colorHex === action.colorHex) {
+            return { ...pixel, singleSelected: true };
+          } else return { ...pixel, singleSelected: false };
+        })
+      );
+    case "color_deselection":
+      return pixels.map((pixelRow) =>
+        pixelRow.map((pixel) => {
+          if (pixel.colorHex === action.colorHex) {
+            return { ...pixel, singleSelected: false };
           } else return pixel;
         })
       );
-    case "multi_pixel_color_deselection":
-      return pixels.map((pixelRow) =>
-        pixelRow.map((pixel) => {
-          if (pixel.colorName === action.colorName) {
-            return { ...pixel, colorChecked: false };
-          } else return pixel;
-        })
-      );
-    case "single_pixel_deselection":
+    case "pixel_deselection":
       return pixels.with(
         action.pixel.rowNum,
         pixels[action.pixel.rowNum].with(action.pixel.stitchNum, {
           ...action.pixel,
-          checked: false,
+          singleSelected: false,
         })
       );
     case "deselect_all_pixels":
