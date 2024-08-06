@@ -1,16 +1,56 @@
 .container {
     display: flex;
-    position: sticky;
-    bottom: 1vh;
-    height: 10vh;
+    align-items: flex-end;
+    position: fixed;
+    bottom: 2vh;
+    width: 50vw;
+    min-height: 10vh;
     z-index: 1;
     margin-top: 1vh;
 }
 
-.container section {
-    margin: 0 .5vw;
+.colorPickerToolbar {
+    width: 40vw;
+    min-height: 10vh;
 }
 
-.colorPickerToolbar {
-    flex-grow: 9;
+.color {
+    border: none;
+    background-color: white;
+    margin: .2%;
+}
+
+.expandedColors {
+    border-top: 1px solid black;
+    padding-top: 1%;
+}
+
+.palette {
+    display: flex;
+    align-items: flex-end;
+}
+
+.main {
+    display: flex;
+    justify-content: space-around;
+    flex-grow: 1;
+    height:fit-content;
+    overflow-x: scroll;
+}
+
+.recentlyUsedContainer {
+    flex-grow: 1;
+    height: fit-content;
+}
+
+.recentlyUsed {
+    display: flex;
+    justify-content: space-around;
+    overflow-x: scroll;
+}
+
+.divider {
+    height: 100%;
+    width: 1vw;
+    background-color: #000;
 }

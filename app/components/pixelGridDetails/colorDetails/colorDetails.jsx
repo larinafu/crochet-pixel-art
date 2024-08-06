@@ -6,9 +6,8 @@ import styles from "./colorDetails.module.css";
 import { ModeContext } from "@/app/utils/context";
 
 export default function ColorDetails({
-  detectedColors,
   setCurColor,
-  activeColorCounter,
+  colorCounter,
 }) {
   console.log("colorDetails rerendered");
   const [isPending, startTransition] = useTransition();
@@ -16,13 +15,9 @@ export default function ColorDetails({
   const [colorReplacer, setColorReplacer] = useState(null);
   const [colorTooltip, setColorTooltip] = useState(null);
 
-  let activeColors = [];
-
-  for (const colorName in colors) {
-    if (colorName in activeColorCounter) {
-      activeColors.push([colorName, activeColorCounter[colorName]]);
-    }
-  }
+  let activeColors = Object.entries(colorCounter)
+    .sort((c1, c2) => c2[1] - c1[1])
+    .filter(([_, count]) => count > 0);
 
   const handleColorClick = (color) => {
     const newColor = { ...detectedColors[color], colorName: color };
@@ -31,7 +26,7 @@ export default function ColorDetails({
 
   return (
     <section className="detailContainer">
-      <h3>Colors Detected</h3>
+      <h3>Color Frequency</h3>
       {activeColors.map(([colorName, count]) => {
         return (
           <div className={styles.colorAndTooltipContainer} key={colorName}>
@@ -50,7 +45,7 @@ export default function ColorDetails({
                 });
                 startTransition(() => {
                   setCurColor({
-                    ...detectedColors[colorName],
+                    // ...detectedColors[colorName],
                     colorName: colorName,
                   });
                 });
@@ -61,9 +56,9 @@ export default function ColorDetails({
                   setCurColor(null);
                 });
               }}
-              onClick={() => {
-                handleColorClick(colorName);
-              }}
+              // onClick={() => {
+              //   handleColorClick(colorName);
+              // }}
             >
               <ColorSwatch size={20} color={colors[colorName]} hover={true} />
             </div>

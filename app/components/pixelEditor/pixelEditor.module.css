@@ -1,4 +1,11 @@
-.selectedColorsContainer {
+.selectedPixelsContainer {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
     max-height: 30vh;
     overflow-y: scroll;
+}
+
+.selectedPixelsContainer li {
+    list-style-type: none;
 }

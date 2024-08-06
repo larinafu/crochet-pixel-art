@@ -9,14 +9,18 @@ import styles from "./pixelGridDetails.module.css";
 export default function PixelGridDetails({
   numStitches,
   numRows,
-  detectedColors,
   handleStitchChange,
   setCurColor,
   swatch,
   handleGaugeChange,
   widthHeightRatio,
-  activeColorCounter,
+  colorCounter,
+  pixelSize,
+  setPixelSize,
+  pixelSizePreview,
+  setPixelSizePreview,
 }) {
+  console.log("left panel rerendered");
   const [tempSwatch, setTempSwatch] = useState(swatch);
   return (
     <div className={styles.pixelGridDetailsContainer}>
@@ -31,11 +35,12 @@ export default function PixelGridDetails({
         tempSwatch={tempSwatch}
         widthHeightRatio={widthHeightRatio}
         handleStitchChange={handleStitchChange}
+        pixelSize={pixelSize}
+        setPixelSize={setPixelSize}
       />
       <ColorDetails
-        detectedColors={detectedColors}
         setCurColor={setCurColor}
-        activeColorCounter={activeColorCounter}
+        colorCounter={colorCounter}
       />
     </div>
   );

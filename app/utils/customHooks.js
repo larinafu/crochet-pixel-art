@@ -21,7 +21,7 @@ export function useImageData(curImg) {
       }
     };
     img.src = curImg;
-  }, [imgDim]);
+  }, [imgDim, curImg]);
 
   return [imgDim, imgData, canvasRef];
 }

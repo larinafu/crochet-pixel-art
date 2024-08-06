@@ -1,3 +1,9 @@
 .container {
-    flex-grow: 1;
+    width: 10vw;
+    height: fit-content;
+}
+
+.container p {
+    white-space: nowrap;
+    overflow-x: scroll;
 }

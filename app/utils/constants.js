@@ -1,0 +1,1 @@
+export const PIXEL_GRID_CONTAINER_PADDING = 1;

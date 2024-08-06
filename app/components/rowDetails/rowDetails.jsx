@@ -1,30 +1,37 @@
 import ColorSwatch from "../colorSwatch/colorSwatch";
 import styles from "./rowDetails.module.css";
+import { useContext } from "react";
+import { PixelsContext } from "@/app/utils/context";
 
-export default function RowDetails({ row }) {
+export default function RowDetails({ curRow }) {
+  console.log("row details rerendered");
+  const [pixels, _] = useContext(PixelsContext);
   let rowColors = [];
-  for (const rowColor of row) {
-    if (
-      rowColors.length !== 0 &&
-      rowColors[rowColors.length - 1].colorName === rowColor.colorName
-    ) {
-      rowColors[rowColors.length - 1].count += 1;
-    } else {
-      rowColors.push({ colorName: rowColor.colorName, count: 1 });
+  if (curRow) {
+    for (const pixel of pixels[curRow]) {
+      if (
+        rowColors.length !== 0 &&
+        rowColors[rowColors.length - 1].colorName === pixel.colorName
+      ) {
+        rowColors[rowColors.length - 1].count += 1;
+      } else {
+        rowColors.push({ colorName: pixel.colorName, count: 1 });
+      }
     }
   }
+
   return (
     <section className={`${styles.container} detailContainer`}>
       <table className={styles.colorRow}>
         <tbody>
-          {row && (
+          {curRow && (
             <tr>
-              {row.map((resItem, itemIdx) => {
+              {pixels[curRow].map((pixel, pixelIdx) => {
                 return (
                   <td
-                    key={itemIdx}
+                    key={pixelIdx}
                     style={{
-                      backgroundColor: resItem.colorName,
+                      backgroundColor: pixel.colorHex,
                     }}
                   ></td>
                 );

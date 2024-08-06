@@ -82,6 +82,8 @@ export function pixelsReducer(pixels, action) {
         })
       );
     case "deselect_all_pixels":
-      break;
+      return pixels.map((pixelRow) =>
+        pixelRow.map((pixel) => ({ ...pixel, singleSelected: false }))
+      );
   }
 }

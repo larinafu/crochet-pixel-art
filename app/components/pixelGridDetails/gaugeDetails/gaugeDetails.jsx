@@ -31,7 +31,7 @@ export default function GaugeDetails({
         <div>
           <div className={styles.gaugeSquare}>
             <p>
-              <strong>4" x 4"</strong>
+              <strong>4&quot; x 4&quot;</strong>
             </p>
           </div>{" "}
           <input

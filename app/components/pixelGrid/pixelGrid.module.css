@@ -4,7 +4,7 @@
 }
 
 .pixelGridContainer {
-  padding: 1em;
+  padding: 1vw;
   border: 1px solid black;
   border-radius: 10px;
   background-color: var(--primary-accent);
@@ -23,7 +23,6 @@
 
 .colorCell {
   position: relative;
-  width: 5px;
   border: 0.05px solid black;
 }
 
