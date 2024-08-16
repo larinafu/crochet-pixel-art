@@ -14,14 +14,11 @@ export default function PixelGrid({
   pixelSize,
   gridContainerRef
 }) {
-  console.log(`pixelSize ${pixelSize}`);
   const [pixels, pixelsDispatch] = useContext(PixelsContext);
   const pixelStyles = {
     width: `${pixelSize}px`,
     aspectRatio: 1 / widthHeightRatio,
   };
-
-  console.log(pixelStyles);
 
   const addBorder = (pixel) => {
     let borders = [];
@@ -126,7 +123,7 @@ export default function PixelGrid({
   };
 
   return (
-    <section className={styles.pixelGridContainer} ref={gridContainerRef}>
+    <section className={`${styles.pixelGridContainer} detailContainer`} ref={gridContainerRef}>
       {isPending && (
         <div className={styles.loadingBanner}>
           <p>Recalculating...</p> <span className={styles.loader}></span>

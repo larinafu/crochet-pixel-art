@@ -5,10 +5,12 @@ import ColorDetails from "./colorDetails/colorDetails";
 import GaugeDetails from "./gaugeDetails/gaugeDetails";
 
 import styles from "./pixelGridDetails.module.css";
+import ZoomDetails from "./zoomDetails/zoomDetails";
 
 export default function PixelGridDetails({
   numStitches,
   numRows,
+  maxStitches,
   handleStitchChange,
   setCurColor,
   swatch,
@@ -17,31 +19,30 @@ export default function PixelGridDetails({
   colorCounter,
   pixelSize,
   setPixelSize,
-  pixelSizePreview,
-  setPixelSizePreview,
+  imgDim,
+  pixelsPerRow
 }) {
   console.log("left panel rerendered");
-  const [tempSwatch, setTempSwatch] = useState(swatch);
   return (
     <div className={styles.pixelGridDetailsContainer}>
       <GaugeDetails
-        tempSwatch={tempSwatch}
-        setTempSwatch={setTempSwatch}
         handleGaugeChange={handleGaugeChange}
+        swatch={swatch}
       />
       <SizeDetails
+        key={`whRatio-${widthHeightRatio}`}
         numStitches={numStitches}
-        numRows={numRows}
-        tempSwatch={tempSwatch}
+        swatch={swatch}
         widthHeightRatio={widthHeightRatio}
         handleStitchChange={handleStitchChange}
-        pixelSize={pixelSize}
+        imgDim={imgDim}
+      />
+      <ZoomDetails
+        pixelSize={pixelSize}f
         setPixelSize={setPixelSize}
+        key={`initSize-${pixelSize}`}
       />
-      <ColorDetails
-        setCurColor={setCurColor}
-        colorCounter={colorCounter}
-      />
+      <ColorDetails setCurColor={setCurColor} colorCounter={colorCounter} />
     </div>
   );
 }

@@ -5,8 +5,6 @@
 
 .pixelGridContainer {
   padding: 1vw;
-  border: 1px solid black;
-  border-radius: 10px;
   background-color: var(--primary-accent);
   height: 68vh;
   overflow: scroll;

@@ -1,0 +1,12 @@
+.container {
+  margin-bottom: 2vh;
+}
+
+.updateBtn {
+  display: block;
+  margin: 0 0 0 auto;
+}
+
+.focused {
+    box-shadow: var(--highlighted-shadow);
+}

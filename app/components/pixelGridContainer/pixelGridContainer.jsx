@@ -22,17 +22,13 @@ export default function PixelGridContainer({ curImg }) {
   console.log("pixelGridContainer rerendered");
   const gridContainerRef = useRef(null);
   const [isPending, startTransition] = useTransition();
-  const [imgDim, imgData, canvasRef] = useImageData(curImg);
+  const [imgData, imgDim, canvasRef] = useImageData(curImg);
   const [numStitches, setNumStitches] = useState(30);
   const [swatch, setSwatch] = useState({
     width: 30,
     height: 30,
   }); // width, height
   const [pixels, pixelsDispatch] = useReducer(pixelsReducer, null);
-  const [isPixelsNull, setIsPixelsNull] = useState(true);
-  if (pixels && isPixelsNull) {
-    setIsPixelsNull(false);
-  }
   const [curColor, setCurColor] = useState(null);
   const [curRow, setCurRow] = useState(null);
   const [isColorSelected, setColorSelected] = useState(false);
@@ -45,12 +41,11 @@ export default function PixelGridContainer({ curImg }) {
   const [pixelSize, setPixelSize] = useState(0);
   const [viewableGridRatios, setViewableGridRatios] = useState(null);
   const widthHeightRatio = swatch.width / swatch.height;
-  const numRows = Math.floor(
-    imgDim?.height /
-      ((imgDim?.width / numStitches) * (swatch.width / swatch.height))
-  );
-  // const pixelGridContainerPadding
+  const pixelsPerStitch = imgDim?.width / numStitches;
+  const pixelsPerRow = pixelsPerStitch * widthHeightRatio;
+  const numRows = Math.floor(imgDim?.height / pixelsPerRow);
   let colorCounter = null;
+  console.log(pixels);
   if (pixels) {
     colorCounter = {};
     for (const colorName of Object.keys(colors)) {
@@ -63,90 +58,14 @@ export default function PixelGridContainer({ curImg }) {
     }
   }
 
+  // generate grid when img data collected
   useEffect(() => {
-    const pixels = generateNewPixelGrid(colors, numStitches, widthHeightRatio);
-    pixelsDispatch({ type: "refresh_pixels", pixels: pixels });
-    const initialPixelSize =
-      Math.ceil(
-        Math.min(
-          vhToPx(PIXELGRID_CONTAINER_HEIGHT) / pixels?.length,
-          vwToPx(PIXELGRID_CONTAINER_WIDTH) / pixels?.[0]?.length
-        ) / 5
-      ) * 5;
-    setPixelSize(initialPixelSize);
-  }, [imgData]);
-
-  useEffect(() => {
-    if (!isPixelsNull) {
-      const padding = vwToPx(PIXELGRID_CONTAINER_PADDING);
-      const handleScroll = () => {
-        setGridScrollPos({
-          x:
-            gridContainerRef.current?.scrollLeft /
-            (pixelSize * pixels[0].length),
-          y:
-            gridContainerRef.current?.scrollTop /
-            (pixelSize * widthHeightRatio * pixels.length),
-        });
-      };
-      const handleResize = () => {
-        setViewableGridRatios({
-          width: Math.min(
-            1,
-            PIXELGRID_CONTAINER_WIDTH /
-              (pxToVw(pixelSize * pixels[0].length) +
-                PIXELGRID_CONTAINER_PADDING * 2)
-          ),
-          height: Math.min(
-            1,
-            PIXELGRID_CONTAINER_HEIGHT /
-              pxToVh(pixelSize * widthHeightRatio * pixels.length + padding * 2)
-          ),
-        });
-      };
-
-      handleResize();
-      handleScroll();
-      window.addEventListener("resize", handleResize);
-      gridContainerRef.current.addEventListener("scroll", handleScroll);
-      return () => {
-        window.removeEventListener("resize", handleResize);
-        window.removeEventListener("scroll", handleScroll);
-      };
-    }
-  }, [isPixelsNull, numStitches, pixelSize]);
-
-  function handleStitchChange(stitchNum) {
-    setCurRow(null);
-    startTransition(() => {
-      const pixels = generateNewPixelGrid(colors, stitchNum, widthHeightRatio);
-      pixelsDispatch({ type: "refresh_pixels", pixels: pixels });
-      setNumStitches(stitchNum);
-      setCurColor(null);
-    });
-  }
-
-  function handleGaugeChange(swatch) {
-    startTransition(() => {
-      const pixels = generateNewPixelGrid(
-        colors,
-        numStitches,
-        swatch.width / swatch.height
-      );
-      pixelsDispatch({ type: "refresh_pixels", pixels: pixels });
-      setSwatch(swatch);
-      setCurRow(null);
-    });
-  }
-
-  function generateNewPixelGrid(colors, numStitches, widthHeightRatio) {
-    const nearestColor = require("nearest-color").from(colors);
-    if (imgDim && imgData && colors && numStitches) {
-      const pixelRatio = (imgDim.width || 0) / numStitches;
-      const pixelsPerStich = imgDim.width / numStitches;
-      const pixelsPerRow = pixelsPerStich * widthHeightRatio;
-      const pixelRatioRows = pixelRatio * widthHeightRatio;
-      const numRows = Math.floor(imgDim.height / pixelsPerRow);
+    const getColorIndicesForCoord = (x, y) => {
+      const red = y * (imgDim?.width * 4) + x * 4;
+      return [red, red + 1, red + 2, red + 3];
+    };
+    const generateNewPixelGrid = (numStitches) => {
+      const nearestColor = require("nearest-color").from(colors);
       const pixelGrid = [];
       for (let yInterval = 0; yInterval < numRows; yInterval += 1) {
         let pixelRow = [];
@@ -162,18 +81,18 @@ export default function PixelGridContainer({ curImg }) {
         pixelGrid.push(pixelRow);
       }
 
-      for (let yCoord = 0; yCoord < imgDim.height; yCoord += 1) {
-        for (let xCoord = 0; xCoord < imgDim.width; xCoord += 1) {
+      for (let yCoord = 0; yCoord < imgDim?.height; yCoord += 1) {
+        for (let xCoord = 0; xCoord < imgDim?.width; xCoord += 1) {
           const [r, g, b, a] = getColorIndicesForCoord(xCoord, yCoord);
           const [yIndex, xIndex] = [
-            Math.floor(yCoord / pixelRatioRows),
-            Math.floor(xCoord / pixelRatio),
+            Math.floor(yCoord / pixelsPerRow),
+            Math.floor(xCoord / pixelsPerStitch),
           ];
           if (yIndex < numRows) {
-            pixelGrid[yIndex][xIndex].r += imgData.data[r];
-            pixelGrid[yIndex][xIndex].g += imgData.data[g];
-            pixelGrid[yIndex][xIndex].b += imgData.data[b];
-            pixelGrid[yIndex][xIndex].a += imgData.data[a];
+            pixelGrid[yIndex][xIndex].r += imgData?.data[r];
+            pixelGrid[yIndex][xIndex].g += imgData?.data[g];
+            pixelGrid[yIndex][xIndex].b += imgData?.data[b];
+            pixelGrid[yIndex][xIndex].a += imgData?.data[a];
             pixelGrid[yIndex][xIndex].numPixels += 1;
           }
         }
@@ -199,13 +118,73 @@ export default function PixelGridContainer({ curImg }) {
         })
       );
       return pixelGridWithColors;
-    }
-    return null;
+    };
+    const pixels = generateNewPixelGrid(numStitches);
+    pixelsDispatch({ type: "refresh_pixels", pixels: pixels });
+    const initialPixelSize =
+      Math.ceil(
+        Math.min(
+          vhToPx(PIXELGRID_CONTAINER_HEIGHT) / pixels?.length,
+          vwToPx(PIXELGRID_CONTAINER_WIDTH) / pixels?.[0]?.length
+        ) / 5
+      ) * 5 || 0;
+    setPixelSize(initialPixelSize);
+  }, [
+    imgData,
+    imgDim,
+    numStitches,
+    numRows,
+    pixelsPerRow,
+    pixelsPerStitch,
+    widthHeightRatio,
+  ]);
+
+  useEffect(() => {
+    const containerRef = gridContainerRef.current
+    const padding = vwToPx(PIXELGRID_CONTAINER_PADDING);
+    const handleScroll = () => {
+      setGridScrollPos({
+        x: containerRef?.scrollLeft / (pixelSize * numStitches),
+        y:
+          containerRef?.scrollTop /
+          (pixelSize * widthHeightRatio * numRows),
+      });
+    };
+    const handleResize = () => {
+      setViewableGridRatios({
+        width: Math.min(
+          1,
+          PIXELGRID_CONTAINER_WIDTH /
+            (pxToVw(pixelSize * numStitches) + PIXELGRID_CONTAINER_PADDING * 2)
+        ),
+        height: Math.min(
+          1,
+          PIXELGRID_CONTAINER_HEIGHT /
+            pxToVh(pixelSize * widthHeightRatio * numRows + padding * 2)
+        ),
+      });
+    };
+
+    handleResize();
+    handleScroll();
+    containerRef?.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      containerRef?.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [pixelSize, numStitches, numRows, widthHeightRatio]);
+
+  function handleStitchChange(stitchNum) {
+    setCurRow(null);
+    setNumStitches(stitchNum);
+    setCurColor(null);
   }
 
-  function getColorIndicesForCoord(x, y) {
-    const red = y * (imgDim.width * 4) + x * 4;
-    return [red, red + 1, red + 2, red + 3];
+  function handleGaugeChange(swatch) {
+    setNumStitches(Math.min(numStitches, 150));
+    setSwatch(swatch);
+    setCurRow(null);
   }
 
   return (
@@ -235,6 +214,8 @@ export default function PixelGridContainer({ curImg }) {
                     colorCounter={colorCounter}
                     pixelSize={pixelSize}
                     setPixelSize={setPixelSize}
+                    imgDim={imgDim}
+                    pixelsPerRow={pixelsPerRow}
                   />
                   <Toolbar
                     toolSelections={toolSelections}
@@ -266,14 +247,10 @@ export default function PixelGridContainer({ curImg }) {
                 />
               </div>
               <div className={styles.rightPanel}>
-                {toolSelections.selectionOption === "multi_color_select" && (
-                  <ColorEditor
-                    colorCounter={colorCounter}
-                  />
+                {/* {toolSelections.selectionOption === "multi_color_select" && (
+                  <ColorEditor colorCounter={colorCounter} />
                 )}
-                <PixelEditor
-                  colorCounter={colorCounter}
-                />
+                <PixelEditor colorCounter={colorCounter} /> */}
                 <ImageViewbox
                   curImg={curImg}
                   viewableGridRatios={viewableGridRatios}

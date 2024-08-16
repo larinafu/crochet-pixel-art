@@ -8,18 +8,54 @@
   --secondary-color: #f0ebe3;
   --primary-accent: #fff;
   --secondary-accent: #fff;
-  --ruddy-blue: #79ADDC;
-  --peach: #FFC09F;
-  --flax: #FFEE93;
-  --lemmon-chif: #FCF5C7;
-  --celadon: #ADF7B6;
+  --ruddy-blue: #79addc;
+  --peach: #ffc09f;
+  --flax: #ffee93;
+  --lemmon-chif: #fcf5c7;
+  --celadon: #adf7b6;
+  --rust: #bf3100;
+  --amaranth: #a93f55;
+  --wine: #682734;
+  --shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.2);
+  --small-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),
+    0 3px 10px 0 rgba(0, 0, 0, 0.2);
+  --highlighted-shadow: 0 2px 4px 0 gold, 0 3px 10px 0 gold;
 }
 
 .detailContainer {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   border-radius: 10px;
-  padding: .5vw;
+  padding: 0.5vw;
   background-color: white;
+  box-shadow: var(--shadow);
+}
+
+.primaryBtn,
+.smallBtn {
+  background-color: var(--peach);
+  border: none;
+}
+
+.primaryBtn {
+  border-radius: 5px;
+  padding: 0.25em 0.5em;
+  box-shadow: var(--small-shadow);
+}
+
+.smallBtn {
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+}
+
+.primaryBtn:hover,
+.smallBtn:hover {
+  cursor: pointer;
+}
+
+.primaryBtnActive {
+  background-color: var(--amaranth);
+  color: #fff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -64,7 +100,7 @@
 html,
 body {
   max-width: 100vw;
-  overflow-x: clip;
+  background-color: var(--lemmon-chif);
 }
 
 body {

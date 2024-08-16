@@ -1,16 +1,22 @@
-import { useContext } from "react";
-
-import { ModeContext } from "@/app/utils/context";
+import { useState } from "react";
+import UpdateContainer from "../../updateContainer/updateContainer";
 
 import styles from "./gaugeDetails.module.css";
 
 export default function GaugeDetails({
-  tempSwatch,
-  setTempSwatch,
+  swatch,
   handleGaugeChange,
 }) {
+  const [tempSwatch, setTempSwatch] = useState(swatch);
   return (
-    <section className="detailContainer">
+    <UpdateContainer
+      handleUpdate={() => {
+        handleGaugeChange(tempSwatch);
+      }}
+      handleCancelledForm={() => {
+        setTempSwatch(swatch);
+      }}
+    >
       <h3>Gauge Swatch</h3>
       <div className={styles.gaugeContainer}>
         <input
@@ -19,8 +25,10 @@ export default function GaugeDetails({
           name="numRows"
           value={tempSwatch.height}
           onChange={(e) => {
-            setTempSwatch({ ...tempSwatch, height: e.target.value });
-            // handleGaugeChange({ ...tempSwatch, height: e.target.value });
+            setTempSwatch({
+              ...tempSwatch,
+              height: Math.max(3, Math.min(e.target.value, 50)),
+            });
           }}
           className={styles.rowInput}
         />
@@ -41,8 +49,10 @@ export default function GaugeDetails({
             className={styles.stitchInput}
             value={tempSwatch.width}
             onChange={(e) => {
-              setTempSwatch({ ...tempSwatch, width: e.target.value });
-              // handleGaugeChange({ ...tempSwatch, width: e.target.value });
+              setTempSwatch({
+                ...tempSwatch,
+                width: Math.max(3, Math.min(e.target.value, 50)),
+              });
             }}
           />
           <label htmlFor="numStitches" className={styles.gaugeLabel}>
@@ -50,14 +60,6 @@ export default function GaugeDetails({
           </label>
         </div>
       </div>
-      <button
-        type="button"
-        onClick={() => {
-          handleGaugeChange(tempSwatch);
-        }}
-      >
-        update
-      </button>
-    </section>
+    </UpdateContainer>
   );
 }

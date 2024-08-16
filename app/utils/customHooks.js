@@ -23,5 +23,5 @@ export function useImageData(curImg) {
     img.src = curImg;
   }, [imgDim, curImg]);
 
-  return [imgDim, imgData, canvasRef];
+  return [imgData, imgDim, canvasRef];
 }

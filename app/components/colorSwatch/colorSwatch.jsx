@@ -7,19 +7,26 @@ export default function ColorSwatch({
   emphasized,
   dotted,
   children,
+  empty,
 }) {
+  const customStyles = {
+    backgroundColor: color,
+    width: `${size}px`,
+    height: `${size}px`,
+  };
+  if (fadedOut) {
+    customStyles.opacity = "50%";
+  }
+  if (empty) {
+    customStyles.border = ".1rem dotted gray";
+    customStyles.backgroundColor = "#fff";
+  }
   return (
     <div
       className={`${
         hover || emphasized ? styles.swatchWithHover : styles.swatch
       }`}
-      style={{
-        backgroundColor: color,
-        width: `${size}px`,
-        height: `${size}px`,
-        opacity: fadedOut ? "50%" : 1,
-        border: `"0.1rem ${dotted ? "dotted gray" : "solid black"}`,
-      }}
+      style={customStyles}
     >
       {children}
     </div>

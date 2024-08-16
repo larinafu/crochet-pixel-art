@@ -25,7 +25,7 @@ export default function ColorDetails({
   };
 
   return (
-    <section className="detailContainer">
+    <section className={`detailContainer ${styles.container}`}>
       <h3>Color Frequency</h3>
       {activeColors.map(([colorName, count]) => {
         return (

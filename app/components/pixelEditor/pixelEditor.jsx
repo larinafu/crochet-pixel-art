@@ -12,7 +12,6 @@ export default function PixelEditor({
   const [pixels, pixelsDispatch] = useContext(PixelsContext);
 
   const pixelsSelected = pixels.flat().filter((pixel) => pixel.singleSelected);
-  console.log(pixelsSelected);
   return (
     <section className={`detailContainer ${styles.pixelEditorContainer}`}>
       <h3>Selected Pixel{pixelsSelected.length > 1 ? "s" : ""}</h3>

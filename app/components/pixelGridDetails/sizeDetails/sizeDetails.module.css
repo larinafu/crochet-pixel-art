@@ -1,49 +1,49 @@
 .buttonBackground {
-    width: 4em;
-    height: 2em;
-    display: flex;
-    align-items: center;
-    border-radius: 20px;
-    background-color: white;
-    padding: .2em;
+  width: 4em;
+  height: 2em;
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  background-color: white;
+  padding: 0.2em;
 }
 
 .buttonSwitch {
-    width: 1.5em;
-    height: 1.5em;
-    border-radius: 20px;
-    background-color: brown;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 20px;
+  background-color: brown;
 }
 
 .switchLeft {
-    justify-content: flex-start;
+  justify-content: flex-start;
 }
 
 .switchRight {
-    justify-content: flex-end;
+  justify-content: flex-end;
 }
 
 .imgHeightContainer {
-    /* width: 90%; */
-    margin: 0 auto;
+  /* width: 90%; */
+  margin: 0 auto;
 }
 
 .imgPreview {
-    max-width: 80%;
-    max-height: 100%;
-    border: 1px solid black;
+  max-width: 80%;
+  max-height: 100%;
+  border: 1px solid black;
 }
 
 .imgHeightContainer {
-    display: flex;
+  display: flex;
 }
 
 .imgWidthContainer {
-    width: 80%;
-    margin-left: auto;
+  width: 80%;
+  margin-left: auto;
 }
 
 .icon {
-    width: 2.5vw;
-    height: 2.5vw;
+  width: 2.5vw;
+  height: 2.5vw;
 }

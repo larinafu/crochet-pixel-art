@@ -35,7 +35,6 @@ export function pixelsReducer(pixels, action) {
         })
       );
     case "single_color_selection_color_change":
-      console.log(action.newColorName);
       return pixels.map((pixelRow) =>
         pixelRow.map((pixel) => {
           if (pixel.singleSelected) {

@@ -7,7 +7,7 @@ export default function RowDetails({ curRow }) {
   console.log("row details rerendered");
   const [pixels, _] = useContext(PixelsContext);
   let rowColors = [];
-  if (curRow) {
+  if (curRow !== null) {
     for (const pixel of pixels[curRow]) {
       if (
         rowColors.length !== 0 &&
