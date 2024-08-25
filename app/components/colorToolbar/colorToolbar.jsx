@@ -1,3 +1,5 @@
+import Image from "next/image";
+import expand from "../../../public/icons/expand.svg";
 import { PixelsContext } from "@/app/utils/context";
 import suggestedColorPicker from "@/app/utils/suggestedColorPicker";
 import { useContext, useState } from "react";
@@ -8,8 +10,7 @@ import ColorSwatch from "../colorSwatch/colorSwatch";
 import styles from "./colorToolbar.module.css";
 import SinglePixelInfo from "./singlePixelInfo/singlePixelInfo";
 
-const HIGHEST_FREQ_COLORS_NUM = 10;
-const NUM_RECENTLY_USED = 5;
+const NUM_RECENTLY_USED = 15;
 
 export default function ColorToolbar({
   curPixelHovered,
@@ -19,32 +20,33 @@ export default function ColorToolbar({
   const activeColorsByFreq = Object.entries(colorCounter).sort(
     (c1, c2) => c2[1] - c1[1]
   );
+  console.log(activeColorsByFreq);
 
   const [pixels, pixelsDispatch] = useContext(PixelsContext);
 
   const [isToolbarExpanded, setToolbarExpanded] = useState(false);
 
-  const [colorPalette, setColorPalette] = useState({
-    main: activeColorsByFreq
+  const [colorPalette, setColorPalette] = useState(
+    activeColorsByFreq
       .map(([colorName, _]) => colorName)
-      .slice(0, HIGHEST_FREQ_COLORS_NUM),
-    recentlyUsed: [],
-  });
+      .slice(0, NUM_RECENTLY_USED)
+  );
+
+  const [curColorHovered, setCurColorHovered] = useState(null);
+  console.log(colorPalette);
 
   const availSpotsLeft = [];
-  for (
-    let i = 0;
-    i < NUM_RECENTLY_USED - colorPalette.recentlyUsed.length;
-    i++
-  ) {
-    availSpotsLeft.push(<ColorSwatch size={25} empty />);
+  for (let i = 0; i < NUM_RECENTLY_USED - colorPalette.length; i++) {
+    availSpotsLeft.push(<ColorSwatch size={"2.6vw"} empty />);
   }
   const selectedPixels = pixels
     .flat()
     .filter((pixel) => pixel.singleSelected === true);
 
   const pixelInfoBox = (() => {
-    if (selectedPixels.length > 0) {
+    if (curColorHovered) {
+      return <SinglePixelInfo colorName={curColorHovered} />;
+    } else if (selectedPixels.length > 0) {
       return (
         <SinglePixelInfo
           pixel={
@@ -67,15 +69,12 @@ export default function ColorToolbar({
   })();
 
   const handlePaletteSelection = (colorName) => {
-    if (!colorPalette.recentlyUsed.includes(colorName)) {
-      let recentlyUsed = [...colorPalette.recentlyUsed, colorName];
-      if (recentlyUsed.length > NUM_RECENTLY_USED) {
-        recentlyUsed.shift();
+    if (!colorPalette.includes(colorName)) {
+      let newPalette = [...colorPalette, colorName];
+      if (newPalette.length > NUM_RECENTLY_USED) {
+        newPalette.shift();
       }
-      setColorPalette({
-        ...colorPalette,
-        recentlyUsed: recentlyUsed,
-      });
+      setColorPalette(newPalette);
     }
     switch (toolSelections.selectionOption) {
       case "multi_pixel_select":
@@ -93,70 +92,61 @@ export default function ColorToolbar({
     }
   };
   return (
-    <section className={styles.container}>
-      {pixelInfoBox}
-      <div className={`detailContainer ${styles.colorPickerToolbar}`}>
-        <div className={styles.colorOptions}>
-          <h5>
-            <em>recently used</em>
-          </h5>
-          <div className={styles.palette}>
-            <div className={styles.main}>
-              {colorPalette.main.map((colorName) => (
-                <button
-                  className={styles.color}
-                  key={`${colors[colorName]}-main`}
-                  onClick={() => {
-                    handlePaletteSelection(colorName);
-                  }}
-                >
-                  <ColorSwatch size={25} color={colors[colorName]} hover />
-                </button>
-              ))}
-            </div>
-            <div className={styles.divider}></div>
-            <div className={styles.recentlyUsedContainer}>
-              <div className={styles.recentlyUsed}>
-                {colorPalette.recentlyUsed.map((colorName) => (
+    <>
+      {isToolbarExpanded && (
+        <div className={`detailContainer ${styles.expandedColors}`}>
+          {Object.entries(colors).map(([colorName, colorHex]) => (
+            <button
+              className={styles.color}
+              key={colorHex}
+              onClick={() => {
+                handlePaletteSelection(colorName);
+                setToolbarExpanded(!isToolbarExpanded);
+              }}
+            >
+              <ColorSwatch size={25} color={colorHex} hover />
+            </button>
+          ))}
+        </div>
+      )}
+
+      <section className={styles.container}>
+        {pixelInfoBox}
+        <div className={`detailContainer ${styles.colorPickerToolbar}`}>
+          <div className={styles.quickView}>
+            <div className={styles.paletteContainer}>
+              <h5>
+                <em>recently used</em>
+              </h5>
+              <div className={styles.palette}>
+                {colorPalette.map((colorName) => (
                   <button
                     className={styles.color}
-                    key={`${colors[colorName]}-frequent`}
+                    key={`${colors[colorName]}-main`}
                     onClick={() => {
                       handlePaletteSelection(colorName);
                     }}
+                    onMouseEnter={() => setCurColorHovered(colorName)}
+                    onMouseLeave={() => setCurColorHovered(null)}
                   >
-                    <ColorSwatch size={25} color={colors[colorName]} hover />
+                    <ColorSwatch size={"2vw"} color={colors[colorName]} hover />
                   </button>
                 ))}
                 {availSpotsLeft}
               </div>
             </div>
+            <button
+              className={`smallBtn ${styles.expand}`}
+              onClick={() => {
+                setToolbarExpanded(!isToolbarExpanded);
+              }}
+              title="expand"
+            >
+              <Image src={expand} alt="expand" />
+            </button>
           </div>
-          {isToolbarExpanded && (
-            <div className={styles.expandedColors}>
-              {Object.entries(colors).map(([colorName, colorHex]) => (
-                <button
-                  className={styles.color}
-                  key={colorHex}
-                  onClick={() => {
-                    handlePaletteSelection(colorName);
-                    setToolbarExpanded(!isToolbarExpanded);
-                  }}
-                >
-                  <ColorSwatch size={25} color={colorHex} hover />
-                </button>
-              ))}
-            </div>
-          )}
         </div>
-        <button
-          onClick={() => {
-            setToolbarExpanded(!isToolbarExpanded);
-          }}
-        >
-          m
-        </button>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

@@ -32,17 +32,19 @@
 
 .primaryBtn,
 .smallBtn {
-  background-color: var(--peach);
   border: none;
 }
 
 .primaryBtn {
+  background-color: var(--peach);
   border-radius: 5px;
   padding: 0.25em 0.5em;
   box-shadow: var(--small-shadow);
 }
 
 .smallBtn {
+  background-color: var(--flax);
+  border: 1px solid #000;
   width: 1.5em;
   height: 1.5em;
   border-radius: 50%;
@@ -51,10 +53,12 @@
 .primaryBtn:hover,
 .smallBtn:hover {
   cursor: pointer;
+  background-color: var(--amaranth);
+  color: #fff;
 }
 
 .primaryBtnActive {
-  background-color: var(--amaranth);
+  background-color: var(--wine);
   color: #fff;
 }
 

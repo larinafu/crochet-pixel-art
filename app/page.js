@@ -30,7 +30,9 @@ export default function Home() {
               setShowGridTools(true);
             }}
           >
-            <label htmlFor="image_uploads">upload image</label>
+            <label className={"primaryBtn"} htmlFor="image_uploads">
+              upload image
+            </label>
             <input
               ref={inputRef}
               type="file"
@@ -47,7 +49,9 @@ export default function Home() {
               )}
             </div>
 
-            <button disabled={!imageInfo[0]}>Generate grid!</button>
+            <button className={`primaryBtn`} disabled={!imageInfo[0]}>
+              Generate grid!
+            </button>
           </form>
         </>
       )}

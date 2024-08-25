@@ -14,7 +14,7 @@ export default function SizeDetails({
   console.log(numStitches);
   const [numStitchesDisplay, setNumStitchesDisplay] = useState(numStitches);
 
-  let maxStitches = 200;
+  let maxStitches = Math.min(200, imgDim.width);
   const maxStitchesWithRowLimit = Math.floor(
     (imgDim?.width * widthHeightRatio * 200) / imgDim?.height
   );

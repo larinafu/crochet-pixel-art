@@ -4,21 +4,13 @@
   position: fixed;
   bottom: 2vh;
   width: 50vw;
-  min-height: 10vh;
   z-index: 1;
   margin-top: 1vh;
 }
 
 .colorPickerToolbar {
-  display: flex;
-  justify-content: space-between;
-  flex-grow: 1;
-  width: 40vw;
-  min-height: 10vh;
-}
-
-.colorPickerToolbar h5 {
-  text-align: end;
+  width: 39vw;
+  margin-left: 1vw;
 }
 
 .colorOptions {
@@ -31,41 +23,20 @@
   margin: 0.2%;
 }
 
-.expandedColors {
-  border-top: 1px solid black;
-  padding-top: 1%;
+.quickView {
+    display: flex;
+}
+
+.paletteContainer {
+    flex-grow: 1;
 }
 
 .palette {
-  display: flex;
-  align-items: flex-end;
+    display: flex;
+    justify-content: space-between;
 }
 
-.main {
-  /* display: flex;
-    justify-content: space-around;
-    flex-grow: 1;
-    height:fit-content;
-    overflow-x: scroll; */
-}
-
-.main button {
-  display: inline-block;
-}
-
-.recentlyUsedContainer {
-  flex-grow: 1;
-  height: fit-content;
-}
-
-.recentlyUsed {
-  /* display: flex;
-    justify-content: space-around;
-    overflow-x: scroll; */
-}
-
-.divider {
-  height: 100%;
-  width: 1vw;
-  background-color: #000;
+.expand {
+    width: fit-content;
+    aspect-ratio: 1;
 }

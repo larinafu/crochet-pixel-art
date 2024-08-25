@@ -1,5 +1,6 @@
 import { PixelsContext } from "@/app/utils/context";
 import { useContext } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import styles from "./toolbar.module.css";
 
 export default function Toolbar({ toolSelections, setToolSelections }) {
@@ -15,9 +16,9 @@ export default function Toolbar({ toolSelections, setToolSelections }) {
       toolOption === toolSelections.selectionOption ? "primaryBtnActive" : ""
     }`;
   const btnClass = "primaryBtn";
-  const hasSelectedPixels = pixels
+  const numSelectedPixels = pixels
     .flat()
-    .some((pixel) => pixel.singleSelected === true);
+    .filter((pixel) => pixel.singleSelected === true).length;
   return (
     <section className="detailContainer">
       <h3>Edit Options</h3>
@@ -64,9 +65,10 @@ export default function Toolbar({ toolSelections, setToolSelections }) {
           onClick={() => {
             handleClick();
           }}
-          disabled={!hasSelectedPixels}
+          disabled={!numSelectedPixels}
         >
           clear all selections
+          {numSelectedPixels ? ` (${numSelectedPixels})` : ""}
         </button>
       </div>
     </section>

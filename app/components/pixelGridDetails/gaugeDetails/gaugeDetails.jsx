@@ -8,11 +8,13 @@ export default function GaugeDetails({
   handleGaugeChange,
 }) {
   const [tempSwatch, setTempSwatch] = useState(swatch);
+
+  const handleUpdate = () => {
+    handleGaugeChange(tempSwatch);
+  }
   return (
     <UpdateContainer
-      handleUpdate={() => {
-        handleGaugeChange(tempSwatch);
-      }}
+      handleUpdate={handleUpdate}
       handleCancelledForm={() => {
         setTempSwatch(swatch);
       }}
