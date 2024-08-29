@@ -1,7 +1,5 @@
 .container {
-  position: sticky;
   top: 1vh;
-  z-index: 1;
   height: 15vh;
   margin-bottom: 1vh;
 }
@@ -9,9 +7,6 @@
 .headerBtn {
   height: 5vh;
   background-color: #fff;
-}
-
-.headerBtn div {
 }
 
 .colorRow {

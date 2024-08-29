@@ -1,7 +1,6 @@
 import Image from "next/image";
 import expand from "../../../public/icons/expand.svg";
 import { PixelsContext } from "@/app/utils/context";
-import suggestedColorPicker from "@/app/utils/suggestedColorPicker";
 import { useContext, useState } from "react";
 import colors from "@/app/utils/colors2.json";
 import { motion, AnimatePresence } from "framer-motion";
@@ -93,25 +92,24 @@ export default function ColorToolbar({
   };
   return (
     <>
-      {isToolbarExpanded && (
-        <div className={`detailContainer ${styles.expandedColors}`}>
-          {Object.entries(colors).map(([colorName, colorHex]) => (
-            <button
-              className={styles.color}
-              key={colorHex}
-              onClick={() => {
-                handlePaletteSelection(colorName);
-                setToolbarExpanded(!isToolbarExpanded);
-              }}
-            >
-              <ColorSwatch size={25} color={colorHex} hover />
-            </button>
-          ))}
-        </div>
-      )}
-
       <section className={styles.container}>
         {pixelInfoBox}
+        {isToolbarExpanded && (
+          <div className={`detailContainer ${styles.expandedColors}`}>
+            {Object.entries(colors).map(([colorName, colorHex]) => (
+              <button
+                className={styles.color}
+                key={colorHex}
+                onClick={() => {
+                  handlePaletteSelection(colorName);
+                  setToolbarExpanded(!isToolbarExpanded);
+                }}
+              >
+                <ColorSwatch size={25} color={colorHex} hover />
+              </button>
+            ))}
+          </div>
+        )}
         <div className={`detailContainer ${styles.colorPickerToolbar}`}>
           <div className={styles.quickView}>
             <div className={styles.paletteContainer}>

@@ -3,16 +3,18 @@
 }
 
 .gaugeContainer {
+  position: relative;
   width: fit-content;
-  margin-left: 2vw;
-  display: flex;
-  align-items: flex-start;
+  height: fit-content;
+  margin: 0 auto;
+  margin-bottom: 30px;
 }
 
 .gaugeSquare {
-  width: 100%;
+  width: 7vw;
   aspect-ratio: 1;
   border: 1px solid black;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -26,20 +28,27 @@
 .stitchInput {
   height: 30px;
   width: 50px;
+  border-radius: 15%;
+  position: absolute;
+}
+
+.rowInput {
+  display: block;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  left: -52px;
+}
+
+.stitchInput {
+  display: block;
+  left: 0;
+  right: 0;
+  margin: auto;
+  margin-top: 0.25vh;
 }
 
 .updateBtn {
   display: block;
   margin: 0 0 0 auto;
-}
-
-.rowInput::-webkit-outer-spin-button,
-.stitchInput::-webkit-inner-spin-button {
-  -appearance: none;
-  margin: 0;
-}
-
-.rowInput,
-.stitchInput {
-  -appearance: textfield;
 }

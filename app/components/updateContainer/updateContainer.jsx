@@ -1,3 +1,6 @@
+import Image from "next/image";
+import exclamationRoundIcon from "@/public/icons/exclamation-round-icon.svg";
+
 import { useEffect, useRef, useState } from "react";
 
 import styles from "./updateContainer.module.css";
@@ -6,6 +9,8 @@ export default function UpdateContainer({
   children,
   handleUpdate,
   handleCancelledForm,
+  disabledMessages,
+  sectionHeader,
 }) {
   const containerRef = useRef(null);
   const [isFocused, setFocused] = useState(false);
@@ -21,11 +26,11 @@ export default function UpdateContainer({
       }
     };
     const handleOutsideClick = (e) => {
-        if (!containerRef.current.contains(e.target)) {
-            setFocused(false);
-            handleCancelledForm();
-        }
-    }
+      if (!containerRef.current.contains(e.target)) {
+        setFocused(false);
+        handleCancelledForm();
+      }
+    };
     const handleFocusOut = () => {
       setFocused(false);
       console.log(document.activeElement);
@@ -61,8 +66,33 @@ export default function UpdateContainer({
           setFocused(false);
         }}
       >
+        <div className={styles.headerContainer}>
+          <h3>{sectionHeader}</h3>
+          {disabledMessages?.length > 0 && (
+            <div className={styles.errorMessageContainer}>
+              <Image
+                src={exclamationRoundIcon}
+                className={styles.exclamationRoundIcon}
+                width="20"
+                alt="exclamation round icon"
+              />
+              <div className={styles.errorMessages}>
+                <ul>
+                  {disabledMessages.map((msg) => (
+                    <li>{msg}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+        </div>
         {children}
-        <button className={`primaryBtn ${styles.updateBtn}`}>update</button>
+        <button
+          disabled={disabledMessages && disabledMessages.length !== 0}
+          className={`primaryBtn ${styles.updateBtn}`}
+        >
+          update
+        </button>
       </form>
     </section>
   );
