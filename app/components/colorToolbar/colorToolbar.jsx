@@ -19,7 +19,6 @@ export default function ColorToolbar({
   const activeColorsByFreq = Object.entries(colorCounter).sort(
     (c1, c2) => c2[1] - c1[1]
   );
-  console.log(activeColorsByFreq);
 
   const [pixels, pixelsDispatch] = useContext(PixelsContext);
 

@@ -40,6 +40,7 @@ export default function PixelGridContainer({ curImg }) {
   const [gridScrollPos, setGridScrollPos] = useState(0);
   const [pixelSize, setPixelSize] = useState(0);
   const [viewableGridRatios, setViewableGridRatios] = useState(null);
+  const [maxPixelSize, setMaxPixelSize] = useState(40);
   const widthHeightRatio = swatch.width / swatch.height;
   const pixelsPerStitch = imgDim?.width / numStitches;
   const pixelsPerRow = pixelsPerStitch * widthHeightRatio;
@@ -64,6 +65,7 @@ export default function PixelGridContainer({ curImg }) {
       const red = y * (imgDim?.width * 4) + x * 4;
       return [red, red + 1, red + 2, red + 3];
     };
+
     const generateNewPixelGrid = (numStitches) => {
       if (imgData) {
         const nearestColor = require("nearest-color").from(colors);
@@ -128,11 +130,13 @@ export default function PixelGridContainer({ curImg }) {
     const initialPixelSize =
       Math.ceil(
         Math.min(
-          vhToPx(PIXELGRID_CONTAINER_HEIGHT) / pixels?.length,
+          (vhToPx(PIXELGRID_CONTAINER_HEIGHT) / pixels?.length) *
+            (1 / widthHeightRatio),
           vwToPx(PIXELGRID_CONTAINER_WIDTH) / pixels?.[0]?.length
         ) / 5
       ) * 5 || 0;
     setPixelSize(initialPixelSize);
+    setMaxPixelSize(Math.max(maxPixelSize, initialPixelSize));
   }, [
     imgData,
     imgDim,
@@ -184,7 +188,13 @@ export default function PixelGridContainer({ curImg }) {
   }
 
   function handleGaugeChange(swatch) {
-    setNumStitches(Math.min(numStitches, 150));
+    let maxStitches = Math.min(200, imgDim.width);
+    const maxStitchesWithRowLimit = Math.floor(
+      (imgDim?.width * (swatch.width / swatch.height) * maxStitches) /
+        imgDim?.height
+    );
+    maxStitches = Math.min(maxStitches, maxStitchesWithRowLimit);
+    setNumStitches(Math.min(numStitches, maxStitches));
     setSwatch(swatch);
     setCurRow(null);
   }
@@ -218,6 +228,7 @@ export default function PixelGridContainer({ curImg }) {
                     setPixelSize={setPixelSize}
                     imgDim={imgDim}
                     pixelsPerRow={pixelsPerRow}
+                    maxPixelSize={maxPixelSize}
                   />
                   <Toolbar
                     toolSelections={toolSelections}

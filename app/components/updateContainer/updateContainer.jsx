@@ -78,8 +78,8 @@ export default function UpdateContainer({
               />
               <div className={styles.errorMessages}>
                 <ul>
-                  {disabledMessages.map((msg) => (
-                    <li>{msg}</li>
+                  {disabledMessages.map((msg, idx) => (
+                    <li key={idx}>{msg}</li>
                   ))}
                 </ul>
               </div>

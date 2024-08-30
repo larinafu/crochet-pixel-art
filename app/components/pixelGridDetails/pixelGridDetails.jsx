@@ -9,8 +9,6 @@ import ZoomDetails from "./zoomDetails/zoomDetails";
 
 export default function PixelGridDetails({
   numStitches,
-  numRows,
-  maxStitches,
   handleStitchChange,
   setCurColor,
   swatch,
@@ -20,7 +18,7 @@ export default function PixelGridDetails({
   pixelSize,
   setPixelSize,
   imgDim,
-  pixelsPerRow
+  maxPixelSize
 }) {
   console.log("left panel rerendered");
   return (
@@ -38,8 +36,9 @@ export default function PixelGridDetails({
         imgDim={imgDim}
       />
       <ZoomDetails
-        pixelSize={pixelSize}f
+        pixelSize={pixelSize}
         setPixelSize={setPixelSize}
+        maxPixelSize={maxPixelSize}
         key={`initSize-${pixelSize}`}
       />
       <ColorDetails setCurColor={setCurColor} colorCounter={colorCounter} />

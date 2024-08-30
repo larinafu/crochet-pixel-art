@@ -2,9 +2,8 @@ import { useState } from "react";
 
 import styles from "./zoomDetails.module.css";
 
-export default function ZoomDetails({ pixelSize, setPixelSize }) {
+export default function ZoomDetails({ pixelSize, setPixelSize, maxPixelSize }) {
   const [pixelSizePreview, setPixelSizePreview] = useState(pixelSize);
-  console.log(pixelSize, pixelSizePreview);
   return (
     <section className={`detailContainer ${styles.container}`}>
       <h3>View</h3>
@@ -25,7 +24,7 @@ export default function ZoomDetails({ pixelSize, setPixelSize }) {
           id="pixelSize"
           name="pixelSize"
           min="5"
-          max="40"
+          max={maxPixelSize}
           step="5"
           value={pixelSizePreview}
           className={styles.slider}
@@ -47,7 +46,7 @@ export default function ZoomDetails({ pixelSize, setPixelSize }) {
             setPixelSizePreview(pixelSizePreview + 5);
             setPixelSize(pixelSize + 5);
           }}
-          disabled={pixelSize >= 40}
+          disabled={pixelSize >= maxPixelSize}
         >
           +
         </button>

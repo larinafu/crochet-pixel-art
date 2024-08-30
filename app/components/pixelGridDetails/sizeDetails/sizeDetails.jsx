@@ -14,10 +14,12 @@ export default function SizeDetails({
   console.log(numStitches);
   const [numStitchesDisplay, setNumStitchesDisplay] = useState(numStitches);
 
-  let maxStitches = Math.min(200, imgDim.width);
+  let maxStitches = Math.min(200, imgDim?.width);
+  console.log(maxStitches);
   const maxStitchesWithRowLimit = Math.floor(
-    (imgDim?.width * widthHeightRatio * 200) / imgDim?.height
+    (imgDim?.width * widthHeightRatio * maxStitches) / imgDim?.height
   );
+  console.log(maxStitchesWithRowLimit);
   maxStitches = Math.min(maxStitches, maxStitchesWithRowLimit);
 
   const pixelsPerStitch = imgDim?.width / numStitchesDisplay;
@@ -43,7 +45,7 @@ export default function SizeDetails({
         type="range"
         id="numStitches"
         name="numStitches"
-        min="15"
+        min="1"
         max={maxStitches}
         value={numStitchesDisplay}
         onChange={(e) => {
