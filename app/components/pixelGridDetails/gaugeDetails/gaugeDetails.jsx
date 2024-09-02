@@ -7,7 +7,6 @@ export default function GaugeDetails({ swatch, handleGaugeChange }) {
   const [tempSwatch, setTempSwatch] = useState(swatch);
 
   const handleUpdate = () => {
-    // Math.max(3, Math.min(e.target.value, 50))
     handleGaugeChange(tempSwatch);
   };
 

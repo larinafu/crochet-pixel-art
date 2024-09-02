@@ -13,11 +13,6 @@
   width: 20vw;
 }
 
-.leftPanel > div {
-  position: sticky;
-  top: 1vw;
-}
-
 .centerPanel {
   width: 50vw;
 }

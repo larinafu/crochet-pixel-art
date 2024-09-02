@@ -14,11 +14,11 @@ export default function UpdateContainer({
 }) {
   const containerRef = useRef(null);
   const [isFocused, setFocused] = useState(false);
+  const [showErrorMsgs, setShowErrorMsgs] = useState(false);
 
   useEffect(() => {
     const handleFocus = () => {
       if (containerRef.current.contains(document.activeElement)) {
-        console.log("here");
         setFocused(true);
       } else {
         handleCancelledForm();
@@ -33,9 +33,6 @@ export default function UpdateContainer({
     };
     const handleFocusOut = () => {
       setFocused(false);
-      console.log(document.activeElement);
-      console.log(containerRef.current.node);
-      //   console.log(document)
       if (!containerRef.current.contains(document.activeElement)) {
         handleCancelledForm();
       }
@@ -43,11 +40,7 @@ export default function UpdateContainer({
 
     document.addEventListener("focusin", handleFocus);
     document.addEventListener("mousedown", handleOutsideClick);
-    // containerRef.current?.addEventListener("focusin", handleFocus);
-    // containerRef.current?.addEventListener("focusout", handleFocusOut);
     return () => {
-      //   containerRef.current?.removeEventListener("focusin", handleFocus);
-      //   containerRef.current?.removeEventListener("focusout", handleFocusOut);
       document.removeEventListener("focusin", handleFocus);
       document.removeEventListener("mousedown", handleOutsideClick);
     };
@@ -75,14 +68,18 @@ export default function UpdateContainer({
                 className={styles.exclamationRoundIcon}
                 width="20"
                 alt="exclamation round icon"
+                onMouseEnter={() => setShowErrorMsgs(true)}
+                onMouseLeave={() => setShowErrorMsgs(false)}
               />
-              <div className={styles.errorMessages}>
-                <ul>
-                  {disabledMessages.map((msg, idx) => (
-                    <li key={idx}>{msg}</li>
-                  ))}
-                </ul>
-              </div>
+              {showErrorMsgs && (
+                <div className={styles.errorMessages}>
+                  <ul>
+                    {disabledMessages.map((msg, idx) => (
+                      <li key={idx}>{msg}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           )}
         </div>

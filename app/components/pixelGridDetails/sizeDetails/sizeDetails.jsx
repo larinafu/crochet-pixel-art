@@ -11,15 +11,12 @@ export default function SizeDetails({
   imgDim,
 }) {
   console.log("size details rerendered");
-  console.log(numStitches);
   const [numStitchesDisplay, setNumStitchesDisplay] = useState(numStitches);
 
   let maxStitches = Math.min(200, imgDim?.width);
-  console.log(maxStitches);
   const maxStitchesWithRowLimit = Math.floor(
     (imgDim?.width * widthHeightRatio * maxStitches) / imgDim?.height
   );
-  console.log(maxStitchesWithRowLimit);
   maxStitches = Math.min(maxStitches, maxStitchesWithRowLimit);
 
   const pixelsPerStitch = imgDim?.width / numStitchesDisplay;
@@ -35,7 +32,6 @@ export default function SizeDetails({
         handleStitchChange(numStitchesDisplay);
       }}
       handleCancelledForm={() => {
-        console.log(numStitches);
         setNumStitchesDisplay(numStitches);
       }}
     >

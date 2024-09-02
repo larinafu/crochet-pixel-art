@@ -1,20 +1,22 @@
 .container {
+  position: relative;
   display: flex;
   align-items: flex-end;
-  position: fixed;
-  bottom: 2vh;
   width: 50vw;
-  z-index: 1;
   margin-top: 1vh;
 }
 
 .colorPickerToolbar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   width: 39vw;
+  height: 10vh;
   margin-left: 1vw;
 }
 
 .colorOptions {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .color {
@@ -24,25 +26,25 @@
 }
 
 .quickView {
-    display: flex;
-}
-
-.paletteContainer {
-    flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
 }
 
 .palette {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  /* justify-content: space-between; */
+  flex-wrap: wrap;
+  flex-grow: 1;
 }
 
 .expandedColors {
-    position: absolute;
-    width: 39vw;
-    bottom: 7vh;
+  position: absolute;
+  width: 39vw;
+  bottom: 11vh;
+  right: 0;
 }
 
 .expand {
-    width: fit-content;
-    aspect-ratio: 1;
+  width: fit-content;
+  aspect-ratio: 1;
 }

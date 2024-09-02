@@ -1,5 +1,6 @@
 import Image from "next/image";
-import expand from "../../../public/icons/expand.svg";
+import collapse from "@/public/icons/angle-bottom-icon.svg";
+import expand from "@/public/icons/angle-top-icon.svg";
 import { PixelsContext } from "@/app/utils/context";
 import { useContext, useState } from "react";
 import colors from "@/app/utils/colors2.json";
@@ -31,7 +32,6 @@ export default function ColorToolbar({
   );
 
   const [curColorHovered, setCurColorHovered] = useState(null);
-  console.log(colorPalette);
 
   const availSpotsLeft = [];
   for (let i = 0; i < NUM_RECENTLY_USED - colorPalette.length; i++) {
@@ -94,7 +94,12 @@ export default function ColorToolbar({
       <section className={styles.container}>
         {pixelInfoBox}
         {isToolbarExpanded && (
-          <div className={`detailContainer ${styles.expandedColors}`}>
+          <div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className={`detailContainer ${styles.expandedColors}`}
+          >
             {Object.entries(colors).map(([colorName, colorHex]) => (
               <button
                 className={styles.color}
@@ -110,27 +115,25 @@ export default function ColorToolbar({
           </div>
         )}
         <div className={`detailContainer ${styles.colorPickerToolbar}`}>
+          <h5>
+            <em>recently used</em>
+          </h5>
           <div className={styles.quickView}>
-            <div className={styles.paletteContainer}>
-              <h5>
-                <em>recently used</em>
-              </h5>
-              <div className={styles.palette}>
-                {colorPalette.map((colorName) => (
-                  <button
-                    className={styles.color}
-                    key={`${colors[colorName]}-main`}
-                    onClick={() => {
-                      handlePaletteSelection(colorName);
-                    }}
-                    onMouseEnter={() => setCurColorHovered(colorName)}
-                    onMouseLeave={() => setCurColorHovered(null)}
-                  >
-                    <ColorSwatch size={"2vw"} color={colors[colorName]} hover />
-                  </button>
-                ))}
-                {availSpotsLeft}
-              </div>
+            <div className={styles.palette}>
+              {colorPalette.map((colorName) => (
+                <button
+                  className={styles.color}
+                  key={`${colors[colorName]}-main`}
+                  onClick={() => {
+                    handlePaletteSelection(colorName);
+                  }}
+                  onMouseEnter={() => setCurColorHovered(colorName)}
+                  onMouseLeave={() => setCurColorHovered(null)}
+                >
+                  <ColorSwatch size={25} color={colors[colorName]} hover />
+                </button>
+              ))}
+              {availSpotsLeft}
             </div>
             <button
               className={`smallBtn ${styles.expand}`}
@@ -139,7 +142,11 @@ export default function ColorToolbar({
               }}
               title="expand"
             >
-              <Image src={expand} alt="expand" />
+              {isToolbarExpanded ? (
+                <Image src={collapse} alt="collapse" />
+              ) : (
+                <Image src={expand} alt="expand" />
+              )}
             </button>
           </div>
         </div>

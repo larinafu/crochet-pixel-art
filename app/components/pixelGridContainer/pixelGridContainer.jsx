@@ -46,7 +46,6 @@ export default function PixelGridContainer({ curImg }) {
   const pixelsPerRow = pixelsPerStitch * widthHeightRatio;
   const numRows = Math.floor(imgDim?.height / pixelsPerRow);
   let colorCounter = null;
-  console.log(pixels);
   if (pixels) {
     colorCounter = {};
     for (const colorName of Object.keys(colors)) {
@@ -212,29 +211,27 @@ export default function PixelGridContainer({ curImg }) {
           <section className={styles.pixelGridContainer}>
             <PixelsContext.Provider value={[pixels, pixelsDispatch]}>
               <div className={styles.leftPanel}>
-                <div>
-                  <PixelGridDetails
-                    curColor={curColor}
-                    handleStitchChange={handleStitchChange}
-                    numStitches={numStitches}
-                    numRows={numRows}
-                    setCurColor={setCurColor}
-                    swatch={swatch}
-                    setSwatch={setSwatch}
-                    handleGaugeChange={handleGaugeChange}
-                    widthHeightRatio={widthHeightRatio}
-                    colorCounter={colorCounter}
-                    pixelSize={pixelSize}
-                    setPixelSize={setPixelSize}
-                    imgDim={imgDim}
-                    pixelsPerRow={pixelsPerRow}
-                    maxPixelSize={maxPixelSize}
-                  />
-                  <Toolbar
-                    toolSelections={toolSelections}
-                    setToolSelections={setToolSelections}
-                  />
-                </div>
+                <PixelGridDetails
+                  curColor={curColor}
+                  handleStitchChange={handleStitchChange}
+                  numStitches={numStitches}
+                  numRows={numRows}
+                  setCurColor={setCurColor}
+                  swatch={swatch}
+                  setSwatch={setSwatch}
+                  handleGaugeChange={handleGaugeChange}
+                  widthHeightRatio={widthHeightRatio}
+                  colorCounter={colorCounter}
+                  pixelSize={pixelSize}
+                  setPixelSize={setPixelSize}
+                  imgDim={imgDim}
+                  pixelsPerRow={pixelsPerRow}
+                  maxPixelSize={maxPixelSize}
+                />
+                <Toolbar
+                  toolSelections={toolSelections}
+                  setToolSelections={setToolSelections}
+                />
               </div>
               <div className={styles.centerPanel}>
                 <RowDetails curRow={curRow} />

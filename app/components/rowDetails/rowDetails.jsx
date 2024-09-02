@@ -1,3 +1,5 @@
+import Image from "next/image";
+import rightArrow from "@/public/icons/arrow-long-right-icon.svg";
 import ColorSwatch from "../colorSwatch/colorSwatch";
 import styles from "./rowDetails.module.css";
 import { useContext } from "react";
@@ -42,7 +44,9 @@ export default function RowDetails({ curRow }) {
       </table>
       <div className={styles.colorListContainer}>
         <h3>Color order</h3>
-        <h4>from left {"->"} right</h4>
+        <h4>
+          from left <Image src={rightArrow} width={20}/> right
+        </h4>
         <ul className={styles.colorList}>
           {rowColors.map((segment, idx) => (
             <li key={idx}>

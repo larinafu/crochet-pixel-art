@@ -23,7 +23,7 @@ export default function ColorDetails({ colorCounter }) {
             {colorTooltip?.colorName === colorName && (
               <div className={styles.colorTooltip}>
                 <h4>{colorTooltip.colorName}</h4>
-                <p>stitch count: {colorTooltip.count}</p>
+                <p>count: {colorTooltip.count}</p>
               </div>
             )}
             <button
