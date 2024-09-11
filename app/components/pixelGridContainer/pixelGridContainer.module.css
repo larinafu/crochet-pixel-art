@@ -11,6 +11,9 @@
 
 .leftPanel {
   width: 20vw;
+  height: 98vh;
+  padding: .5em .5em;
+  overflow-y: scroll;
 }
 
 .centerPanel {

@@ -1,0 +1,52 @@
+.container {
+  top: 1vh;
+  height: 15vh;
+  margin-bottom: 1vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header button {
+  vertical-align: middle;
+  border: none;
+  background-color: inherit;
+  margin: 0 0.25em;
+}
+
+.header button img {
+  display: block;
+}
+
+.colorRow {
+  width: 100%;
+  display: flex;
+  border: 1px solid #000;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.colorRec {
+  height: 20px;
+  flex-grow: 1;
+}
+
+.colorList {
+  display: flex;
+  flex-wrap: wrap;
+  overflow-x: scroll;
+}
+
+.colorList li {
+  display: flex;
+  flex-direction: row;
+  margin-right: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.colorList li p {
+  margin-left: 0.5em;
+  white-space: nowrap;
+}

@@ -1,20 +1,20 @@
 import { useReducer, useState, useTransition, useEffect, useRef } from "react";
 import { pixelsReducer } from "@/app/utils/pixelsReducer";
 import { useImageData } from "@/app/utils/customHooks";
-import PixelGrid from "../pixelGrid/pixelGrid";
-import PixelGridDetails from "../pixelGridDetails/pixelGridDetails";
+import PixelGrid from "./pixelGrid/pixelGrid";
 import styles from "./pixelGridContainer.module.css";
 import colors from "@/app/utils/colors2.json";
 import { PixelsContext } from "@/app/utils/context";
-import RowDetails from "../rowDetails/rowDetails";
-import PixelEditor from "../pixelEditor/pixelEditor";
-import ColorEditor from "../colorEditor/colorEditor";
-import ColorToolbar from "../colorToolbar/colorToolbar";
-import Toolbar from "../toolbar/toolbar";
-import { pxToVh, pxToVw, vhToPx, vwToPx } from "@/app/utils/screenConversions";
-import ImageViewbox from "../imageViewbox/imageViewbox";
+import RowDetails from "./rowDetails/rowDetails";
+import ColorToolbar from "./colorToolbar/colorToolbar";
+import Toolbar from "./toolbar/toolbar";
+import GaugeDetails from "./gaugeDetails/gaugeDetails";
+import SizeDetails from "./sizeDetails/sizeDetails";
+import ZoomDetails from "./zoomDetails/zoomDetails";
+import ColorDetails from "./colorDetails/colorDetails";
+import { vhToPx, vwToPx } from "@/app/utils/screenConversions";
+import ImageViewbox from "./imageViewbox/imageViewbox";
 
-const PIXELGRID_CONTAINER_PADDING = 1;
 const PIXELGRID_CONTAINER_HEIGHT = 68;
 const PIXELGRID_CONTAINER_WIDTH = 50;
 
@@ -30,16 +30,14 @@ export default function PixelGridContainer({ curImg }) {
   }); // width, height
   const [pixels, pixelsDispatch] = useReducer(pixelsReducer, null);
   const [curColor, setCurColor] = useState(null);
-  const [curRow, setCurRow] = useState(null);
+  const [curRow, setCurRow] = useState(0);
   const [isColorSelected, setColorSelected] = useState(false);
   const [curPixelHovered, setCurPixelHovered] = useState(null);
   const [toolSelections, setToolSelections] = useState({
     // single_pixel_select, multi_pixel_select, single_color_select, row_preview_select
     selectionOption: "multi_pixel_select",
   });
-  const [gridScrollPos, setGridScrollPos] = useState(0);
   const [pixelSize, setPixelSize] = useState(0);
-  const [viewableGridRatios, setViewableGridRatios] = useState(null);
   const [maxPixelSize, setMaxPixelSize] = useState(40);
   const widthHeightRatio = swatch.width / swatch.height;
   const pixelsPerStitch = imgDim?.width / numStitches;
@@ -146,42 +144,8 @@ export default function PixelGridContainer({ curImg }) {
     widthHeightRatio,
   ]);
 
-  useEffect(() => {
-    const containerRef = gridContainerRef.current;
-    const padding = vwToPx(PIXELGRID_CONTAINER_PADDING);
-    const handleScroll = () => {
-      setGridScrollPos({
-        x: containerRef?.scrollLeft / (pixelSize * numStitches),
-        y: containerRef?.scrollTop / (pixelSize * widthHeightRatio * numRows),
-      });
-    };
-    const handleResize = () => {
-      setViewableGridRatios({
-        width: Math.min(
-          1,
-          PIXELGRID_CONTAINER_WIDTH /
-            (pxToVw(pixelSize * numStitches) + PIXELGRID_CONTAINER_PADDING * 2)
-        ),
-        height: Math.min(
-          1,
-          PIXELGRID_CONTAINER_HEIGHT /
-            pxToVh(pixelSize * widthHeightRatio * numRows + padding * 2)
-        ),
-      });
-    };
-
-    handleResize();
-    handleScroll();
-    containerRef?.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleResize);
-    return () => {
-      containerRef?.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [pixelSize, numStitches, numRows, widthHeightRatio]);
-
   function handleStitchChange(stitchNum) {
-    setCurRow(null);
+    setCurRow(0);
     setNumStitches(stitchNum);
     setCurColor(null);
   }
@@ -195,7 +159,7 @@ export default function PixelGridContainer({ curImg }) {
     maxStitches = Math.min(maxStitches, maxStitchesWithRowLimit);
     setNumStitches(Math.min(numStitches, maxStitches));
     setSwatch(swatch);
-    setCurRow(null);
+    setCurRow(0);
   }
 
   return (
@@ -211,22 +175,27 @@ export default function PixelGridContainer({ curImg }) {
           <section className={styles.pixelGridContainer}>
             <PixelsContext.Provider value={[pixels, pixelsDispatch]}>
               <div className={styles.leftPanel}>
-                <PixelGridDetails
-                  curColor={curColor}
-                  handleStitchChange={handleStitchChange}
-                  numStitches={numStitches}
-                  numRows={numRows}
-                  setCurColor={setCurColor}
-                  swatch={swatch}
-                  setSwatch={setSwatch}
+                <GaugeDetails
                   handleGaugeChange={handleGaugeChange}
+                  swatch={swatch}
+                />
+                <SizeDetails
+                  key={`whRatio-${widthHeightRatio}`}
+                  numStitches={numStitches}
+                  swatch={swatch}
                   widthHeightRatio={widthHeightRatio}
-                  colorCounter={colorCounter}
+                  handleStitchChange={handleStitchChange}
+                  imgDim={imgDim}
+                />
+                <ZoomDetails
                   pixelSize={pixelSize}
                   setPixelSize={setPixelSize}
-                  imgDim={imgDim}
-                  pixelsPerRow={pixelsPerRow}
                   maxPixelSize={maxPixelSize}
+                  key={`initSize-${pixelSize}`}
+                />
+                <ColorDetails
+                  setCurColor={setCurColor}
+                  colorCounter={colorCounter}
                 />
                 <Toolbar
                   toolSelections={toolSelections}
@@ -234,7 +203,7 @@ export default function PixelGridContainer({ curImg }) {
                 />
               </div>
               <div className={styles.centerPanel}>
-                <RowDetails curRow={curRow} />
+                <RowDetails curRow={curRow} setCurRow={setCurRow} />
                 <PixelGrid
                   curPixelHovered={curPixelHovered}
                   setCurPixelHovered={setCurPixelHovered}
@@ -257,16 +226,7 @@ export default function PixelGridContainer({ curImg }) {
                 />
               </div>
               <div className={styles.rightPanel}>
-                {/* {toolSelections.selectionOption === "multi_color_select" && (
-                  <ColorEditor colorCounter={colorCounter} />
-                )}
-                <PixelEditor colorCounter={colorCounter} /> */}
-                <ImageViewbox
-                  curImg={curImg}
-                  viewableGridRatios={viewableGridRatios}
-                  gridScrollPos={gridScrollPos}
-                  pixelSize={pixelSize}
-                />
+                <ImageViewbox curImg={curImg} />
               </div>
             </PixelsContext.Provider>
           </section>

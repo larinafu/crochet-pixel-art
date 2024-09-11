@@ -1,0 +1,70 @@
+.container {
+  margin-bottom: 2vh;
+}
+
+.colorAndTooltipContainer {
+  display: inline-block;
+  position: relative;
+}
+
+.colorBtn {
+  background-color: inherit;
+  border: none;
+  margin: 0.1em;
+  vertical-align: middle;
+}
+
+.colorBtn:hover {
+  cursor: pointer;
+}
+
+.colorTooltip {
+  position: absolute;
+  left: 25px;
+  bottom: 30px;
+  background-color: white;
+  z-index: 1;
+  display: auto;
+  padding: 0.2em;
+  border: 1px solid black;
+  border-radius: 5px;
+  border-bottom-left-radius: 0px;
+  width: fit-content;
+}
+
+.colorTooltip p,
+.colorTooltip h4 {
+  white-space: nowrap;
+}
+
+.colorSwitchContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arrowContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.arrowContainer p,
+.arrowContainer div {
+  width: fit-content;
+}
+
+.colorSwapperName {
+  width: 20%;
+  max-height: 8vh;
+  overflow-wrap: break-word;
+  overflow-y: scroll;
+}
+
+.colorSwapCancelBtn {
+  width: 90%;
+  height: 90%;
+  background-color: inherit;
+  border: none;
+  border-radius: 5px;
+}
