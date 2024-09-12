@@ -1,6 +1,8 @@
 import { PixelsContext } from "@/app/utils/context";
 import { useContext } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+
+import TextButton from "../../general/textButton/textButton";
+
 import styles from "./toolbar.module.css";
 
 export default function Toolbar({ toolSelections, setToolSelections }) {
@@ -12,10 +14,7 @@ export default function Toolbar({ toolSelections, setToolSelections }) {
     });
   };
   const addBtnStyle = (toolOption) =>
-    `primaryBtn ${
-      toolOption === toolSelections.selectionOption ? "primaryBtnActive" : ""
-    }`;
-  const btnClass = "primaryBtn";
+    toolOption === toolSelections.selectionOption ? styles.active : "";
   const numSelectedPixels = pixels
     .flat()
     .filter((pixel) => pixel.singleSelected === true).length;
@@ -23,9 +22,9 @@ export default function Toolbar({ toolSelections, setToolSelections }) {
     <section className="detailContainer">
       <h3>Edit Options</h3>
       <div className={styles.optionsContainer}>
-        <button
+        <TextButton
           className={addBtnStyle("multi_pixel_select")}
-          onClick={() => {
+          handleClick={() => {
             handleClick(() =>
               setToolSelections({
                 ...toolSelections,
@@ -35,10 +34,10 @@ export default function Toolbar({ toolSelections, setToolSelections }) {
           }}
         >
           select by pixel
-        </button>
-        <button
+        </TextButton>
+        <TextButton
           className={addBtnStyle("single_color_select")}
-          onClick={() => {
+          handleClick={() => {
             handleClick(() =>
               setToolSelections({
                 ...toolSelections,
@@ -48,10 +47,10 @@ export default function Toolbar({ toolSelections, setToolSelections }) {
           }}
         >
           select by color
-        </button>
-        <button
+        </TextButton>
+        <TextButton
           className={addBtnStyle("row_preview_select")}
-          onClick={() => {
+          handleClick={() => {
             setToolSelections({
               ...toolSelections,
               selectionOption: "row_preview_select",
@@ -59,17 +58,16 @@ export default function Toolbar({ toolSelections, setToolSelections }) {
           }}
         >
           highlight row
-        </button>
-        <button
-          className={btnClass}
-          onClick={() => {
+        </TextButton>
+        <TextButton
+          handleClick={() => {
             handleClick();
           }}
           disabled={!numSelectedPixels}
         >
           clear all selections
           {numSelectedPixels ? ` (${numSelectedPixels})` : ""}
-        </button>
+        </TextButton>
       </div>
     </section>
   );

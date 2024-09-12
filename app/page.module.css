@@ -12,7 +12,7 @@
   width: 0;
 }
 
-.imgUploadContainer{
+.imgUploadContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,4 +27,18 @@
 .uploadedImg {
   max-width: 90%;
   max-height: 90%;
+}
+
+.label {
+  border: none;
+  background-color: var(--peach);
+  border-radius: 5px;
+  padding: 0.25em 0.5em;
+  box-shadow: var(--small-shadow);
+}
+
+.label:hover {
+  cursor: pointer;
+  background-color: var(--amaranth);
+  color: #fff;
 }

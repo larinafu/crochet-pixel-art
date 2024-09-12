@@ -1,11 +1,14 @@
 import Image from "next/image";
-import rightArrow from "@/public/icons/arrow-long-right-icon.svg";
-import ColorSwatch from "../../general/colorSwatch/colorSwatch";
-import styles from "./rowDetails.module.css";
-import downArrow from "@/public/icons/round-black-bottom-arrow-icon.svg";
-import upArrow from "@/public/icons/round-black-top-arrow-icon.svg";
 import { useContext } from "react";
 import { PixelsContext } from "@/app/utils/context";
+import rightArrow from "@/public/icons/arrow-long-right-icon.svg";
+import ColorSwatch from "../../general/colorSwatch/colorSwatch";
+import downArrow from "@/public/icons/round-black-bottom-arrow-icon.svg";
+import upArrow from "@/public/icons/round-black-top-arrow-icon.svg";
+
+import NumberContainer from "../../general/numberContainer/numberContainer";
+
+import styles from "./rowDetails.module.css";
 
 export default function RowDetails({ curRow, setCurRow }) {
   console.log("row details rerendered");
@@ -24,32 +27,40 @@ export default function RowDetails({ curRow, setCurRow }) {
 
   return (
     <section className={`${styles.container} detailContainer`}>
-      <div className={styles.colorRow}>
-        {pixels[curRow]?.map((pixel, pixelIdx) => {
-          return (
-            <div
-              className={styles.colorRec}
-              key={pixelIdx}
-              style={{
-                backgroundColor: pixel.colorHex,
-              }}
-            ></div>
-          );
-        })}
-      </div>
-      <div className={styles.header}>
-        <h3>
-          Color order (from left <Image src={rightArrow} width={20} /> right)
-        </h3>
-        <div>
-          <button onClick={() => curRow > 0 && setCurRow(curRow - 1)}>
-            <Image width={25} src={upArrow} alt="up arrow" />
-          </button>
-          <button
-            onClick={() => curRow < pixels.length - 1 && setCurRow(curRow + 1)}
-          >
-            <Image width={25} src={downArrow} alt="down arrow" />
-          </button>
+      <div className={styles.headerContainer}>
+        <div className={styles.header}>
+          <h3>
+            Color order (from left <Image src={rightArrow} width={20} /> right)
+          </h3>
+          <div className={styles.rowController}>
+            <p className={styles.rowNumberLabel}>
+              <strong>row</strong>
+            </p>
+            <NumberContainer number={curRow} />
+            <button onClick={() => curRow > 0 && setCurRow(curRow - 1)}>
+              <Image width={25} src={upArrow} alt="up arrow" />
+            </button>
+            <button
+              onClick={() =>
+                curRow < pixels.length - 1 && setCurRow(curRow + 1)
+              }
+            >
+              <Image width={25} src={downArrow} alt="down arrow" />
+            </button>
+          </div>
+        </div>
+        <div className={styles.colorRow}>
+          {pixels[curRow]?.map((pixel, pixelIdx) => {
+            return (
+              <div
+                className={styles.colorRec}
+                key={pixelIdx}
+                style={{
+                  backgroundColor: pixel.colorHex,
+                }}
+              ></div>
+            );
+          })}
         </div>
       </div>
       <ul className={styles.colorList}>

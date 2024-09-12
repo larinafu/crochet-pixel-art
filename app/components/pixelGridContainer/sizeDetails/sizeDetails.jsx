@@ -3,6 +3,7 @@ import { Courier_Prime } from "next/font/google";
 import UpdateContainer from "../../general/updateContainer/updateContainer";
 
 import styles from "./sizeDetails.module.css";
+import NumberContainer from "../../general/numberContainer/numberContainer";
 
 export const courier = Courier_Prime({
   weight: ["400"],
@@ -57,27 +58,19 @@ export default function SizeDetails({
           }}
         />
         <div className={styles.specItem}>
-          <div className={styles.specNumber}>
-            <p className={courier.className}>{numRowsDisplay}</p>
-          </div>
+          <NumberContainer number={numRowsDisplay} />
           <p className={styles.specDesc}>rows</p>
         </div>
         <div className={styles.specItem}>
-          <div className={styles.specNumber}>
-            <p className={courier.className}>{numRowsDisplay}</p>
-          </div>
+          <NumberContainer number={numStitchesDisplay} />
           <p className={styles.specDesc}>stitches per row</p>
         </div>
         <div className={styles.specItem}>
-          <div className={styles.specNumber}>
-            <p className={courier.className}>{estHeight}</p>
-          </div>
+          <NumberContainer number={estHeight} />
           <p className={styles.specDesc}>in. tall (height)</p>
         </div>
         <div className={styles.specItem}>
-          <div className={styles.specNumber}>
-            <p className={courier.className}>{estWidth}</p>
-          </div>
+          <NumberContainer number={estWidth} />
           <p className={styles.specDesc}>in. wide (width)</p>
         </div>
       </div>

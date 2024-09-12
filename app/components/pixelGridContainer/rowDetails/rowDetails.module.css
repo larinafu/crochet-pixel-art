@@ -4,9 +4,16 @@
   margin-bottom: 1vh;
 }
 
+.headerContainer {
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .header button {
@@ -20,12 +27,22 @@
   display: block;
 }
 
+.rowController {
+  display: flex;
+  align-items: center;
+}
+
+.rowNumberLabel {
+  margin-right: .5em;
+}
+
 .colorRow {
   width: 100%;
   display: flex;
   border: 1px solid #000;
   border-radius: 10px;
   overflow: hidden;
+  margin: .25em 0;
 }
 
 .colorRec {
@@ -34,9 +51,10 @@
 }
 
 .colorList {
+  height: 50%;
   display: flex;
   flex-wrap: wrap;
-  overflow-x: scroll;
+  overflow-y: scroll;
 }
 
 .colorList li {

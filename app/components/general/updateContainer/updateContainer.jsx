@@ -1,8 +1,9 @@
 import Image from "next/image";
 import exclamationRoundIcon from "@/public/icons/exclamation-round-icon.svg";
-
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+
+import TextButton from "../textButton/textButton";
+import Toast from "../toast/toast";
 
 import styles from "./updateContainer.module.css";
 
@@ -72,32 +73,23 @@ export default function UpdateContainer({
                 onMouseEnter={() => setShowErrorMsgs(true)}
                 onMouseLeave={() => setShowErrorMsgs(false)}
               />
-              <AnimatePresence>
-                {showErrorMsgs && (
-                  <motion.div
-                    className={`detailContainer ${styles.errorMessages}`}
-                    initial={{ opacity: 0, y: "-50%" }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: "-50%" }}
-                  >
-                    <ul>
-                      {disabledMessages.map((msg, idx) => (
-                        <li key={idx}>{msg}</li>
-                      ))}
-                    </ul>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <Toast isDisplayed={showErrorMsgs}>
+                <ul className={styles.errorMsgs}>
+                  {disabledMessages.map((msg, idx) => (
+                    <li key={idx}>{msg}</li>
+                  ))}
+                </ul>
+              </Toast>
             </div>
           )}
         </div>
         {children}
-        <button
+        <TextButton
           disabled={disabledMessages && disabledMessages.length !== 0}
-          className={`primaryBtn ${styles.updateBtn}`}
+          className={styles.updateBtn}
         >
           update
-        </button>
+        </TextButton>
       </form>
     </section>
   );

@@ -1,0 +1,15 @@
+.specNumber {
+  display: inline-block;
+  width: 2.25em;
+  height: 2.25em;
+  border: 1px solid #000;
+  border-radius: 10%;
+  margin-right: 0.1em;
+  background-color: blanchedalmond;
+}
+
+.specNumber p {
+  height: 2.25em;
+  line-height: 2.25em;
+  text-align: center;
+}

@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef } from "react";
+import TextButton from "./components/general/textButton/textButton";
 import PixelGridContainer from "./components/pixelGridContainer/pixelGridContainer";
 import styles from "./page.module.css";
 
@@ -30,9 +31,10 @@ export default function Home() {
               setShowGridTools(true);
             }}
           >
-            <label className={"primaryBtn"} htmlFor="image_uploads">
+            <label className={styles.label} htmlFor="image_uploads">
               upload image
             </label>
+
             <input
               ref={inputRef}
               type="file"
@@ -49,9 +51,9 @@ export default function Home() {
               )}
             </div>
 
-            <button className={`primaryBtn`} disabled={!imageInfo[0]}>
+            <TextButton disabled={!imageInfo[0]}>
               Generate grid!
-            </button>
+            </TextButton>
           </form>
         </>
       )}
