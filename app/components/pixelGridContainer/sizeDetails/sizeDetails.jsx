@@ -5,7 +5,7 @@ import UpdateContainer from "../../general/updateContainer/updateContainer";
 import styles from "./sizeDetails.module.css";
 import NumberContainer from "../../general/numberContainer/numberContainer";
 
-export const courier = Courier_Prime({
+const courier = Courier_Prime({
   weight: ["400"],
   style: ["normal"],
   subsets: ["latin"],

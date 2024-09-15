@@ -1,24 +1,42 @@
 import ColorSwatch from "../../../general/colorSwatch/colorSwatch";
-import colors from "@/app/utils/colors2.json";
+import { Courier_Prime } from "next/font/google";
 
 import styles from "./singlePixelInfo.module.css";
 
-export default function SinglePixelInfo({ faded, pixel, colorName }) {
+const courier = Courier_Prime({
+  weight: ["400"],
+  style: ["normal"],
+  subsets: ["latin"],
+});
+
+export default function SinglePixelInfo({ faded, pixel, colorHex }) {
   return (
     <section className={`detailContainer ${styles.container}`}>
-      {pixel ? (
+      {pixel && (
         <>
           <p>
-            row {pixel.rowNum} stitch {pixel.stitchNum}
+            row <span className={courier.className}>{pixel.rowNum}</span>
           </p>
-          <p>{pixel.colorName}</p>
+          <p>
+            stitch <span className={courier.className}>{pixel.stitchNum}</span>
+          </p>
+        </>
+      )}
+      {pixel && (
+        <div className={styles.colorContainer}>
           <ColorSwatch size={20} color={pixel.colorHex} emphasized={!faded} />
-        </>
-      ) : (
-        <>
-          <p>{colorName}</p>
-          <ColorSwatch size={20} color={colors[colorName]} emphasized={!faded} />
-        </>
+          <p className={styles.hex}>
+            <strong>{pixel.colorHex}</strong>
+          </p>
+        </div>
+      )}
+      {colorHex && (
+        <div className={styles.singleColorContainer}>
+          <ColorSwatch size={20} color={colorHex} emphasized={!faded} />
+          <p className={styles.hex}>
+            <strong>{colorHex}</strong>
+          </p>
+        </div>
       )}
     </section>
   );

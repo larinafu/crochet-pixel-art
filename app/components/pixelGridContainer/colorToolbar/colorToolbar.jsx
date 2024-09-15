@@ -43,17 +43,7 @@ export default function ColorToolbar({
 
   const pixelInfoBox = (() => {
     if (curColorHovered) {
-      return <SinglePixelInfo colorName={curColorHovered} />;
-    } else if (selectedPixels.length > 0) {
-      return (
-        <SinglePixelInfo
-          pixel={
-            pixels[selectedPixels[selectedPixels.length - 1].rowNum][
-              selectedPixels[selectedPixels.length - 1].stitchNum
-            ]
-          }
-        />
-      );
+      return <SinglePixelInfo colorHex={colors[curColorHovered]} />;
     } else if (curPixelHovered) {
       return (
         <SinglePixelInfo
@@ -74,19 +64,17 @@ export default function ColorToolbar({
       }
       setColorPalette(newPalette);
     }
-    switch (toolSelections.selectionOption) {
-      case "multi_pixel_select":
-        pixelsDispatch({
-          type: "multi_pixel_selection_color_change",
-          selectedPixels: selectedPixels,
-          newColorName: colorName,
-        });
-        break;
-      case "single_color_select":
-        pixelsDispatch({
-          type: "single_color_selection_color_change",
-          newColorName: colorName,
-        });
+    if (toolSelections.multiPixelSelect) {
+      pixelsDispatch({
+        type: "multi_pixel_selection_color_change",
+        selectedPixels: selectedPixels,
+        newColorName: colorName,
+      });
+    } else if (toolSelections.singleColorSelect) {
+      pixelsDispatch({
+        type: "single_color_selection_color_change",
+        newColorName: colorName,
+      });
     }
   };
   return (
@@ -108,6 +96,8 @@ export default function ColorToolbar({
                   handlePaletteSelection(colorName);
                   setToolbarExpanded(!isToolbarExpanded);
                 }}
+                onMouseEnter={() => setCurColorHovered(colorName)}
+                onMouseLeave={() => setCurColorHovered(null)}
               >
                 <ColorSwatch size={25} color={colorHex} hover />
               </button>
@@ -115,9 +105,7 @@ export default function ColorToolbar({
           </div>
         )}
         <div className={`detailContainer ${styles.colorPickerToolbar}`}>
-          <h5>
-            <em>recently used</em>
-          </h5>
+          <h5>recently used</h5>
           <div className={styles.quickView}>
             <div className={styles.palette}>
               {colorPalette.map((colorName) => (
@@ -130,7 +118,7 @@ export default function ColorToolbar({
                   onMouseEnter={() => setCurColorHovered(colorName)}
                   onMouseLeave={() => setCurColorHovered(null)}
                 >
-                  <ColorSwatch size={25} color={colors[colorName]} hover />
+                  <ColorSwatch size={25} color={colorName} hover />
                 </button>
               ))}
               {availSpotsLeft}

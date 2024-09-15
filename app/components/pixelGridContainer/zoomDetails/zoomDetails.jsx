@@ -6,14 +6,14 @@ export default function ZoomDetails({ pixelSize, setPixelSize, maxPixelSize }) {
   const [pixelSizePreview, setPixelSizePreview] = useState(pixelSize);
   return (
     <section className={`detailContainer ${styles.container}`}>
-      <h3>View</h3>
+      <h3>Zoom Level</h3>
       <label htmlFor="pixelSize">zoom level</label>
       <div>
         <button
           className={`smallBtn`}
           onClick={() => {
-            setPixelSizePreview(pixelSizePreview - 5);
-            setPixelSize(pixelSize - 5);
+            setPixelSizePreview(pixelSizePreview - 1);
+            setPixelSize(pixelSize - 1);
           }}
           disabled={pixelSize <= 5}
         >
@@ -25,7 +25,6 @@ export default function ZoomDetails({ pixelSize, setPixelSize, maxPixelSize }) {
           name="pixelSize"
           min="5"
           max={maxPixelSize}
-          step="5"
           value={pixelSizePreview}
           className={styles.slider}
           onChange={(e) => {
@@ -43,8 +42,8 @@ export default function ZoomDetails({ pixelSize, setPixelSize, maxPixelSize }) {
         <button
           className={`smallBtn`}
           onClick={() => {
-            setPixelSizePreview(pixelSizePreview + 5);
-            setPixelSize(pixelSize + 5);
+            setPixelSizePreview(pixelSizePreview + 1);
+            setPixelSize(pixelSize + 1);
           }}
           disabled={pixelSize >= maxPixelSize}
         >

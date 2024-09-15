@@ -15,7 +15,7 @@ import ColorDetails from "./colorDetails/colorDetails";
 import { vhToPx, vwToPx } from "@/app/utils/screenConversions";
 import ImageViewbox from "./imageViewbox/imageViewbox";
 
-const PIXELGRID_CONTAINER_HEIGHT = 68;
+const PIXELGRID_CONTAINER_HEIGHT = 90;
 const PIXELGRID_CONTAINER_WIDTH = 50;
 
 export default function PixelGridContainer({ curImg }) {
@@ -35,7 +35,9 @@ export default function PixelGridContainer({ curImg }) {
   const [curPixelHovered, setCurPixelHovered] = useState(null);
   const [toolSelections, setToolSelections] = useState({
     // single_pixel_select, multi_pixel_select, single_color_select, row_preview_select
-    selectionOption: "multi_pixel_select",
+    multiPixelSelect: true,
+    singleColorSelect: false,
+    highlightRow: false,
   });
   const [pixelSize, setPixelSize] = useState(0);
   const [maxPixelSize, setMaxPixelSize] = useState(40);
@@ -44,6 +46,7 @@ export default function PixelGridContainer({ curImg }) {
   const pixelsPerRow = pixelsPerStitch * widthHeightRatio;
   const numRows = Math.floor(imgDim?.height / pixelsPerRow);
   let colorCounter = null;
+  console.log(curPixelHovered);
   if (pixels) {
     colorCounter = {};
     for (const colorName of Object.keys(colors)) {
@@ -197,13 +200,12 @@ export default function PixelGridContainer({ curImg }) {
                   setCurColor={setCurColor}
                   colorCounter={colorCounter}
                 />
+              </div>
+              <div className={styles.centerPanel}>
                 <Toolbar
                   toolSelections={toolSelections}
                   setToolSelections={setToolSelections}
                 />
-              </div>
-              <div className={styles.centerPanel}>
-                <RowDetails curRow={curRow} setCurRow={setCurRow} />
                 <PixelGrid
                   curPixelHovered={curPixelHovered}
                   setCurPixelHovered={setCurPixelHovered}
@@ -226,6 +228,12 @@ export default function PixelGridContainer({ curImg }) {
                 />
               </div>
               <div className={styles.rightPanel}>
+                <RowDetails
+                  curRow={curRow}
+                  setCurRow={setCurRow}
+                  toolSelections={toolSelections}
+                  setToolSelections={setToolSelections}
+                />
                 <ImageViewbox curImg={curImg} />
               </div>
             </PixelsContext.Provider>

@@ -2,7 +2,7 @@ import { Courier_Prime } from "next/font/google";
 
 import styles from "./numberContainer.module.css";
 
-export const courier = Courier_Prime({
+const courier = Courier_Prime({
   weight: ["400"],
   style: ["normal"],
   subsets: ["latin"],

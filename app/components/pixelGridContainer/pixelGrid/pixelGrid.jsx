@@ -1,6 +1,5 @@
 import { PixelsContext } from "@/app/utils/context";
-import { useState, useContext, useEffect, useRef, forwardRef } from "react";
-import PixelEditingBlock from "../pixelEditor/pixelEditingBlock/pixelEditingBlock";
+import { useContext} from "react";
 import styles from "./pixelGrid.module.css";
 
 export default function PixelGrid({
@@ -12,9 +11,11 @@ export default function PixelGrid({
   isPending,
   toolSelections,
   pixelSize,
-  gridContainerRef
+  gridContainerRef,
 }) {
+  console.log("pixel grid rerendered");
   const [pixels, pixelsDispatch] = useContext(PixelsContext);
+
   const pixelStyles = {
     width: `${pixelSize}px`,
     aspectRatio: 1 / widthHeightRatio,
@@ -35,95 +36,89 @@ export default function PixelGrid({
       styles.leftGoldBorder,
     ];
 
-    switch (toolSelections.selectionOption) {
-      case "single_pixel_select":
-        if (pixel.singleSelected) {
-          borders.push(top);
-          borders.push(right);
-          borders.push(bottom);
-          borders.push(left);
-        }
-        break;
-      case "multi_pixel_select":
-      case "single_color_select":
-        if (pixel.singleSelected) {
-          for (const [rowStep, stitchStep] of [
-            [0, 1],
-            [0, -1],
-            [1, 0],
-            [-1, 0],
-          ]) {
-            const [newRow, newStitch] = [
-              pixel.rowNum + rowStep,
-              pixel.stitchNum + stitchStep,
-            ];
+    const [topRow, rightRow, bottomRow, leftRow] = [
+      styles.topPurpBorder,
+      styles.rightPurpBorder,
+      styles.bottomPurpBorder,
+      styles.leftPurpBorder,
+    ];
 
-            // check if out of bounds
-            if (
-              newRow < 0 ||
-              newRow === pixels.length ||
-              newStitch < 0 ||
-              newStitch === pixels[0].length
-            ) {
-              if (newRow < 0) borders.push(top);
-              else if (newRow === pixels.length) borders.push(bottom);
-              else if (newStitch < 0) borders.push(left);
-              else borders.push(right);
-            } else {
-              if (!pixels[newRow][newStitch].singleSelected) {
-                if (rowStep === 1) borders.push(bottom);
-                else if (rowStep === -1) borders.push(top);
-                else if (stitchStep === 1) borders.push(right);
-                else borders.push(left);
-              }
-            }
+    if (toolSelections.highlightRow) {
+      if (pixel.rowNum === curRow) {
+        borders.push(topRow);
+        borders.push(bottomRow);
+        if (pixel.stitchNum + 1 === pixels[0].length) borders.push(rightRow);
+        if (pixel.stitchNum - 1 === -1) borders.push(leftRow);
+      }
+    }
+
+    if (pixel.singleSelected) {
+      for (const [rowStep, stitchStep] of [
+        [0, 1],
+        [0, -1],
+        [1, 0],
+        [-1, 0],
+      ]) {
+        const [newRow, newStitch] = [
+          pixel.rowNum + rowStep,
+          pixel.stitchNum + stitchStep,
+        ];
+
+        // check if out of bounds
+        if (
+          newRow < 0 ||
+          newRow === pixels.length ||
+          newStitch < 0 ||
+          newStitch === pixels[0].length
+        ) {
+          if (newRow < 0) borders.push(top);
+          else if (newRow === pixels.length) borders.push(bottom);
+          else if (newStitch < 0) borders.push(left);
+          else borders.push(right);
+        } else {
+          if (!pixels[newRow][newStitch].singleSelected) {
+            if (rowStep === 1) borders.push(bottom);
+            else if (rowStep === -1) borders.push(top);
+            else if (stitchStep === 1) borders.push(right);
+            else borders.push(left);
           }
         }
-        break;
-      case "row_preview_select":
-        if (pixel.rowNum === curRow) {
-          borders.push(top);
-          borders.push(bottom);
-          if (pixel.stitchNum + 1 === pixels[0].length) borders.push(right);
-          if (pixel.stitchNum - 1 === -1) borders.push(left);
-        }
-        break;
-
+      }
     }
     return `${borders.join(" ")}`;
   };
 
   const handlePixelClick = (pixel) => {
     const pixelLoc = { rowNum: pixel.rowNum, stitchNum: pixel.stitchNum };
-    switch (toolSelections.selectionOption) {
-      case "multi_pixel_select":
-        if (pixel.singleSelected) {
-          pixelsDispatch({ type: "pixel_deselection", pixel: pixel });
-        } else {
-          pixelsDispatch({
-            type: "pixel_selection",
-            pixel: pixel,
-          });
-        }
-        break;
-      case "single_color_select":
-        if (pixel.singleSelected) {
-          pixelsDispatch({
-            type: "color_deselection",
-            colorHex: pixel.colorHex,
-          });
-        } else {
-          pixelsDispatch({
-            type: "color_selection",
-            colorHex: pixel.colorHex,
-          });
-        }
-        break;
+    if (toolSelections.singleColorSelect) {
+      if (pixel.singleSelected) {
+        pixelsDispatch({
+          type: "color_deselection",
+          colorHex: pixel.colorHex,
+        });
+      } else {
+        pixelsDispatch({
+          type: "color_selection",
+          colorHex: pixel.colorHex,
+        });
+      }
+    } else if (toolSelections.multiPixelSelect) {
+      if (pixel.singleSelected) {
+        pixelsDispatch({ type: "pixel_deselection", pixel: pixel });
+      } else {
+        pixelsDispatch({
+          type: "pixel_selection",
+          pixel: pixel,
+        });
+      }
     }
   };
 
   return (
-    <section className={`${styles.pixelGridContainer} detailContainer`} ref={gridContainerRef}>
+    <section
+      className={`${styles.pixelGridContainer} detailContainer`}
+      ref={gridContainerRef}
+    >
       {isPending && (
         <div className={styles.loadingBanner}>
           <p>Recalculating...</p> <span className={styles.loader}></span>
@@ -140,7 +135,7 @@ export default function PixelGrid({
               <div
                 key={idx}
                 onClick={() => {
-                  setCurRow(idx);
+                  toolSelections.highlightRow && setCurRow(idx);
                 }}
                 className={`${styles.colorCells}`}
               >
@@ -172,4 +167,4 @@ export default function PixelGrid({
       </div>
     </section>
   );
-};
+}

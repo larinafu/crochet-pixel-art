@@ -1,9 +1,9 @@
 .button {
   border: none;
-  background-color: var(--peach);
+  background-color: var(--amaranth);
   border-radius: 5px;
   padding: 0.25em 0.5em;
-  box-shadow: var(--small-shadow);
+  color: #fff;
 }
 .disabled {
   cursor: not-allowed;
@@ -11,6 +11,6 @@
 
 .active:hover {
   cursor: pointer;
-  background-color: var(--amaranth);
+  background-color: var(--wine);
   color: #fff;
 }

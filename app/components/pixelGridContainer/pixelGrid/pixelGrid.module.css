@@ -6,7 +6,7 @@
 .pixelGridContainer {
   padding: 1vw;
   background-color: var(--primary-accent);
-  height: 68vh;
+  height: 75vh;
   overflow: scroll;
 }
 
@@ -29,6 +29,22 @@
   z-index: 1;
 }
 
+.leftPurpBorder {
+  border-left: 1.5px solid #B026FF;
+}
+
+.bottomPurpBorder {
+  border-bottom: 1.5px solid #B026FF;
+}
+
+.rightPurpBorder {
+  border-right: 1.5px solid #B026FF;
+}
+
+.topPurpBorder {
+  border-top: 1.5px solid #B026FF;
+}
+
 .leftGoldBorder {
   border-left: 1.5px solid gold;
 }
@@ -43,27 +59,6 @@
 
 .topGoldBorder {
   border-top: 1.5px solid gold;
-}
-
-.activePixel {
-  border: 0.5px solid gold;
-}
-
-.activeColor {
-  border: 0.5px solid blue;
-}
-
-.activeRow {
-  box-shadow: 0 0 4px gold;
-  transform: scale(1);
-}
-
-.mutedColor {
-  background-color: aliceblue;
-}
-
-.activeRow {
-  border: 0.01% solid gold;
 }
 
 .loadingState {

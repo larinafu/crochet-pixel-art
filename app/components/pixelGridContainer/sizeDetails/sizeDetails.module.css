@@ -76,5 +76,6 @@
 .specDesc {
   height: fit-content;
   margin: auto 0;
+  margin-left: .25em;
 }
 

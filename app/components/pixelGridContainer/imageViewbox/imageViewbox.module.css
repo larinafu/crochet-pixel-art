@@ -1,14 +1,11 @@
 .smallImg {
   margin: 0 auto;
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 20vw;
+  max-height: 33vh;
   display: block;
 }
 
 .container {
-  position: absolute;
-  bottom: 2em;
-  width: 20vw;
-  height: 20vw;
-  padding: 1em;
+  width: fit-content;
+  height: fit-content;
 }

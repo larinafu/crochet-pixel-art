@@ -5,6 +5,7 @@
 
 .heading {
   margin: 2vh 0;
+  text-align: center;
 }
 
 .imgUploadForm input {
@@ -18,10 +19,6 @@
   align-items: center;
   width: 40vw;
   height: 40vw;
-  background-color: lightgray;
-  border-radius: 5px;
-  border: 1px dashed black;
-  font-size: 0.8rem;
 }
 
 .uploadedImg {

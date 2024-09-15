@@ -6,6 +6,7 @@ import styles from "./page.module.css";
 
 export default function Home() {
   console.log("home rerendered");
+
   const inputRef = useRef(null);
   const [imageInfo, setImageInfo] = useState([null, ""]);
   const [showGridTools, setShowGridTools] = useState(false);
@@ -22,7 +23,7 @@ export default function Home() {
       ) : (
         <>
           <h1 className={styles.heading}>
-            Knitting/Crochet Pixel Art Generator
+            Knitting and Crochet Pixel Art Generator Tool
           </h1>
           <form
             className={styles.imgUploadForm}
@@ -45,15 +46,17 @@ export default function Home() {
                 handleFileUpload(e);
               }}
             />
-            <div className={styles.imgUploadContainer}>
-              {imageInfo && (
-                <img className={styles.uploadedImg} src={imageInfo[0]} />
+            <div className={`detailContainer ${styles.imgUploadContainer}`}>
+              {imageInfo?.[0] && (
+                <img
+                  className={styles.uploadedImg}
+                  src={imageInfo[0]}
+                  alt="uploaded image"
+                />
               )}
             </div>
 
-            <TextButton disabled={!imageInfo[0]}>
-              Generate grid!
-            </TextButton>
+            <TextButton disabled={!imageInfo[0]}>Generate grid!</TextButton>
           </form>
         </>
       )}
