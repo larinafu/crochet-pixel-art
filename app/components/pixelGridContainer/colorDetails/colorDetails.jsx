@@ -22,13 +22,11 @@ export default function ColorDetails({ colorCounter }) {
   };
 
   useLayoutEffect(() => {
-    console.log(containerRef, tooltipRef);
     if (tooltipRef.current) {
       const { x: containerStart, width: containerWidth } =
         containerRef?.current?.getBoundingClientRect();
       const { x: tooltipStart, width: tooltipWidth } =
         tooltipRef?.current?.getBoundingClientRect();
-      console.log(tooltipStart, tooltipWidth, containerWidth);
       if (tooltipStart + tooltipWidth > containerStart + containerWidth) {
         setTooltipSide("left");
       }

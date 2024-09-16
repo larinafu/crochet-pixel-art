@@ -12,7 +12,7 @@ export default function ColorSwatch({
   const customStyles = {
     backgroundColor: color,
     width: size,
-    height: size,
+    aspectRatio: 1,
   };
   if (fadedOut) {
     customStyles.opacity = "50%";

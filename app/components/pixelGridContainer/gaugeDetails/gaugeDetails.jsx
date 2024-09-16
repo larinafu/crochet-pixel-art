@@ -43,7 +43,7 @@ export default function GaugeDetails({ swatch, handleGaugeChange }) {
     } else {
       const rowNum = parseInt(tempSwatch.height);
       if (rowNum > 50 || rowNum < 1) {
-        errors.push("Number of rows must be between 1 and 50");
+        errors.push("Number of rows must be less than 50");
       }
     }
 

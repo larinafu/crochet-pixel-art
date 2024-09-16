@@ -46,7 +46,6 @@ export default function PixelGridContainer({ curImg }) {
   const pixelsPerRow = pixelsPerStitch * widthHeightRatio;
   const numRows = Math.floor(imgDim?.height / pixelsPerRow);
   let colorCounter = null;
-  console.log(curPixelHovered);
   if (pixels) {
     colorCounter = {};
     for (const colorName of Object.keys(colors)) {

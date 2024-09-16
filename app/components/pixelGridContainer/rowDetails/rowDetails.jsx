@@ -4,8 +4,11 @@ import { PixelsContext } from "@/app/utils/context";
 import rightArrow from "@/public/icons/arrow-long-right-icon.svg";
 import ColorSwatch from "../../general/colorSwatch/colorSwatch";
 import downArrow from "@/public/icons/round-black-bottom-arrow-icon.svg";
+import downArrowHover from "@/public/icons/round-hover-bottom-arrow-icon.svg";
 import upArrow from "@/public/icons/round-black-top-arrow-icon.svg";
-import downArrowActive from "@/public/icons/round-gold-bottom-arrow-icon.svg";
+import upArrowHover from "@/public/icons/round-hover-top-arrow-icon.svg";
+
+import SvgIconButton from "../../general/svgIcons/svgIconButton/svgIconButton";
 import { Courier_Prime } from "next/font/google";
 
 import NumberContainer from "../../general/numberContainer/numberContainer";
@@ -18,7 +21,7 @@ const courier = Courier_Prime({
   subsets: ["latin"],
 });
 
-// const upArrow = () => 
+// const upArrow = () =>
 
 export default function RowDetails({
   curRow,
@@ -49,28 +52,26 @@ export default function RowDetails({
           </h3>
           <div className={styles.rowController}>
             <NumberContainer number={curRow} />
-            <button
-              className={styles.arrowBtn}
-              onClick={() => {
+            <SvgIconButton
+              icon={upArrow}
+              hoverIcon={upArrowHover}
+              handleClick={() => {
                 curRow > 0 && setCurRow(curRow - 1);
                 setToolSelections({ ...toolSelections, highlightRow: true });
               }}
-            >
-              <Image width={25} src={upArrow} alt="up arrow" />
-            </button>
-            <button
-              className={styles.arrowBtn}
-              onClick={() => {
+              size={25}
+              alt="up arrow"
+            />
+            <SvgIconButton
+              icon={downArrow}
+              hoverIcon={downArrowHover}
+              handleClick={() => {
                 curRow < pixels.length - 1 && setCurRow(curRow + 1);
                 setToolSelections({ ...toolSelections, highlightRow: true });
               }}
-            >
-              <Image
-                width={25}
-                src={downArrow}
-                alt="down arrow"
-              />
-            </button>
+              size={25}
+              alt="down arrow"
+            />
           </div>
         </div>
         <div className={styles.colorRow}>

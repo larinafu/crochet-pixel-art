@@ -10,7 +10,7 @@ export default function Checkmark({ size }) {
       y="0px"
       width={size}
       viewBox="0 0 122.881 89.842"
-      enable-background="new 0 0 122.881 89.842"
+      enableBackground="new 0 0 122.881 89.842"
       xmlSpace="preserve"
     >
       <g>

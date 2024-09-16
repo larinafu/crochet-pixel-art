@@ -23,15 +23,18 @@
   border: none;
   background-color: white;
   margin: 0.2%;
+  flex-grow: 1;
 }
 
 .quickView {
   display: flex;
   justify-content: space-between;
+  flex-grow: 1;
 }
 
 .palette {
   display: flex;
+  justify-content: space-evenly;
   flex-wrap: wrap;
   flex-grow: 1;
 }
@@ -46,4 +49,6 @@
 .expand {
   width: fit-content;
   aspect-ratio: 1;
+  margin: auto;
+  margin-left: .2em;
 }

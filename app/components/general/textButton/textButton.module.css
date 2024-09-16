@@ -9,7 +9,8 @@
   cursor: not-allowed;
 }
 
-.active:hover {
+.active:hover,
+.active:focus {
   cursor: pointer;
   background-color: var(--wine);
   color: #fff;

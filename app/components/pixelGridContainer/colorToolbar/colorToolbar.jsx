@@ -118,7 +118,7 @@ export default function ColorToolbar({
                   onMouseEnter={() => setCurColorHovered(colorName)}
                   onMouseLeave={() => setCurColorHovered(null)}
                 >
-                  <ColorSwatch size={25} color={colorName} hover />
+                  <ColorSwatch size={"100%"} color={colorName} hover />
                 </button>
               ))}
               {availSpotsLeft}

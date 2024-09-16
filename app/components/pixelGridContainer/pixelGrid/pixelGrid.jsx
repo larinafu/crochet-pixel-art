@@ -1,5 +1,5 @@
 import { PixelsContext } from "@/app/utils/context";
-import { useContext} from "react";
+import { useContext } from "react";
 import styles from "./pixelGrid.module.css";
 
 export default function PixelGrid({
@@ -89,7 +89,6 @@ export default function PixelGrid({
   };
 
   const handlePixelClick = (pixel) => {
-    const pixelLoc = { rowNum: pixel.rowNum, stitchNum: pixel.stitchNum };
     if (toolSelections.singleColorSelect) {
       if (pixel.singleSelected) {
         pixelsDispatch({
@@ -137,10 +136,12 @@ export default function PixelGrid({
                 onClick={() => {
                   toolSelections.highlightRow && setCurRow(idx);
                 }}
+                onTouchStart={() => {
+                  toolSelections.highlightRow && setCurRow(idx);
+                }}
                 className={`${styles.colorCells}`}
               >
                 {resRow.map((pixel) => {
-                  const borderStyle = `${addBorder(pixel)}`;
                   return (
                     <div
                       key={pixel.stitchNum}
@@ -153,11 +154,14 @@ export default function PixelGrid({
                       onClick={() => {
                         handlePixelClick(pixel);
                       }}
+                      onTouchStart={() => {
+                        handlePixelClick(pixel);
+                      }}
                       style={{
                         ...pixelStyles,
                         backgroundColor: pixel.colorHex,
                       }}
-                      className={`${styles.colorCell} ${borderStyle}`}
+                      className={`${styles.colorCell} ${addBorder(pixel)}`}
                     ></div>
                   );
                 })}

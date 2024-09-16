@@ -33,12 +33,6 @@ export default function UpdateContainer({
         handleCancelledForm();
       }
     };
-    const handleFocusOut = () => {
-      setFocused(false);
-      if (!containerRef.current.contains(document.activeElement)) {
-        handleCancelledForm();
-      }
-    };
 
     document.addEventListener("focusin", handleFocus);
     document.addEventListener("mousedown", handleOutsideClick);
