@@ -5,7 +5,6 @@ import PixelGridContainer from "./components/pixelGridContainer/pixelGridContain
 import styles from "./page.module.css";
 
 export default function Home() {
-  console.log("home rerendered");
 
   const inputRef = useRef(null);
   const [imageInfo, setImageInfo] = useState([null, ""]);
@@ -33,7 +32,6 @@ export default function Home() {
             onSubmit={(e) => {
               e.preventDefault();
               if (imageInfo[0]) {
-                console.log(imageInfo);
                 setShowGridTools(true);
               }
             }}

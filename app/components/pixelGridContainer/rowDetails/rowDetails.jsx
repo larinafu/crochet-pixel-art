@@ -29,7 +29,6 @@ export default function RowDetails({
   toolSelections,
   setToolSelections,
 }) {
-  console.log("row details rerendered");
   const [pixels, _] = useContext(PixelsContext);
   let rowColors = [];
   for (const pixel of pixels[curRow]) {

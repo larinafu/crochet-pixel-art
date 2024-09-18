@@ -18,7 +18,6 @@ export default function SizeDetails({
   widthHeightRatio,
   imgDim,
 }) {
-  console.log("size details rerendered");
   const [numStitchesDisplay, setNumStitchesDisplay] = useState(numStitches);
 
   let maxStitches = Math.min(200, imgDim?.width);

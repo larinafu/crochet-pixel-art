@@ -5,10 +5,7 @@ import PixelEditingBlock from "./pixelEditingBlock/pixelEditingBlock";
 
 import styles from "./pixelEditor.module.css";
 
-export default function PixelEditor({
-  colorCounter,
-}) {
-  console.log(`pixelEditor rerendered`);
+export default function PixelEditor({colorCounter}) {
   const [pixels, pixelsDispatch] = useContext(PixelsContext);
 
   const pixelsSelected = pixels.flat().filter((pixel) => pixel.singleSelected);

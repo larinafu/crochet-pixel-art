@@ -13,7 +13,6 @@ export default function PixelGrid({
   pixelSize,
   gridContainerRef,
 }) {
-  console.log("pixel grid rerendered");
   const [pixels, pixelsDispatch] = useContext(PixelsContext);
   const setLastAction = useContext(ActionContext);
 

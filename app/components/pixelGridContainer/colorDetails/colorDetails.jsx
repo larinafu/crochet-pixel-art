@@ -5,7 +5,6 @@ import styles from "./colorDetails.module.css";
 import { PixelsContext } from "@/app/utils/context";
 
 export default function ColorDetails({ colorCounter }) {
-  console.log("colorDetails rerendered");
   const [pixels, pixelsDispatch] = useContext(PixelsContext);
   const tooltipRef = useRef(null);
   const containerRef = useRef(null);

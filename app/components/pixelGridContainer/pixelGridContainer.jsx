@@ -1,10 +1,4 @@
-import {
-  useEffect,
-  useReducer,
-  useRef,
-  useState,
-  useTransition,
-} from "react";
+import { useEffect, useReducer, useRef, useState, useTransition } from "react";
 import { pixelsReducer } from "@/app/utils/pixelsReducer";
 import { useImageData } from "@/app/utils/customHooks";
 import { ActionContext } from "@/app/utils/context";
@@ -26,7 +20,6 @@ const PIXELGRID_CONTAINER_HEIGHT = 90;
 const PIXELGRID_CONTAINER_WIDTH = 50;
 
 export default function PixelGridContainer({ curImg }) {
-  console.log("pixelGridContainer rerendered");
   const gridContainerRef = useRef(null);
   const [isPending, startTransition] = useTransition();
   const [imgData, imgDim, canvasRef] = useImageData(curImg);
@@ -145,7 +138,7 @@ export default function PixelGridContainer({ curImg }) {
         ) / 5
       ) * 5 || 0;
     setPixelSize(initialPixelSize);
-    setMaxPixelSize(Math.max(maxPixelSize, initialPixelSize));
+    setMaxPixelSize((m) => Math.max(m, initialPixelSize));
     setLastAction("regeneration");
   }, [
     imgData,
