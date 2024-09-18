@@ -9,7 +9,7 @@
   flex-direction: column;
   justify-content: space-between;
   height: 20%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .header {
@@ -63,7 +63,7 @@
   box-shadow: none;
   border: 1px solid #000;
   height: 80%;
-  overflow-y: scroll;
+  overflow-y: auto;
   margin-top: .2em;
 }
 

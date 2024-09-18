@@ -10,7 +10,7 @@
 
 .container p {
     white-space: nowrap;
-    overflow-x: scroll;
+    overflow-x: auto;
 }
 
 .colorContainer {

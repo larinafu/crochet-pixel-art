@@ -1,4 +1,4 @@
-import { useContext, useState, useRef, useLayoutEffect } from "react";
+import { useContext, useLayoutEffect, useState, useRef } from "react";
 import ColorSwatch from "@/app/components/general/colorSwatch/colorSwatch";
 import colors from "@/app/utils/colors2.json";
 import styles from "./colorDetails.module.css";
@@ -13,12 +13,12 @@ export default function ColorDetails({ colorCounter }) {
   const [tooltipSide, setTooltipSide] = useState("right");
   const tooltipRightStyle = {
     left: 25,
-    borderBottomLeftRadius: 0
+    borderBottomLeftRadius: 0,
   };
 
   const tooltipLeftStyle = {
     right: 25,
-    borderBottomRightRadius: 0
+    borderBottomRightRadius: 0,
   };
 
   useLayoutEffect(() => {

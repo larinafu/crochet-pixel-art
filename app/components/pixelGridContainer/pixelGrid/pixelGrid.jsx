@@ -1,4 +1,4 @@
-import { PixelsContext } from "@/app/utils/context";
+import { PixelsContext, ActionContext } from "@/app/utils/context";
 import { useContext } from "react";
 import styles from "./pixelGrid.module.css";
 
@@ -15,6 +15,7 @@ export default function PixelGrid({
 }) {
   console.log("pixel grid rerendered");
   const [pixels, pixelsDispatch] = useContext(PixelsContext);
+  const setLastAction = useContext(ActionContext);
 
   const pixelStyles = {
     width: `${pixelSize}px`,
@@ -111,6 +112,7 @@ export default function PixelGrid({
         });
       }
     }
+    // setLastAction("pixel_click");
   };
 
   return (
@@ -136,9 +138,9 @@ export default function PixelGrid({
                 onClick={() => {
                   toolSelections.highlightRow && setCurRow(idx);
                 }}
-                onTouchStart={() => {
-                  toolSelections.highlightRow && setCurRow(idx);
-                }}
+                // onTouchStart={() => {
+                //   toolSelections.highlightRow && setCurRow(idx);
+                // }}
                 className={`${styles.colorCells}`}
               >
                 {resRow.map((pixel) => {
@@ -147,6 +149,7 @@ export default function PixelGrid({
                       key={pixel.stitchNum}
                       onMouseOver={() => {
                         setCurPixelHovered(pixel);
+                        // setLastAction("pixel_hover")
                       }}
                       onMouseLeave={() => {
                         setCurPixelHovered(null);
@@ -154,9 +157,9 @@ export default function PixelGrid({
                       onClick={() => {
                         handlePixelClick(pixel);
                       }}
-                      onTouchStart={() => {
-                        handlePixelClick(pixel);
-                      }}
+                      // onTouchStart={() => {
+                      //   handlePixelClick(pixel);
+                      // }}
                       style={{
                         ...pixelStyles,
                         backgroundColor: pixel.colorHex,

@@ -1,7 +1,7 @@
 .container {
   height: 10vh;
   margin-bottom: 1vh;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .optionsContainer button {

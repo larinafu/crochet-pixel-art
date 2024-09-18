@@ -1,6 +1,13 @@
-import { useReducer, useState, useTransition, useEffect, useRef } from "react";
+import {
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import { pixelsReducer } from "@/app/utils/pixelsReducer";
 import { useImageData } from "@/app/utils/customHooks";
+import { ActionContext } from "@/app/utils/context";
 import PixelGrid from "./pixelGrid/pixelGrid";
 import styles from "./pixelGridContainer.module.css";
 import colors from "@/app/utils/colors2.json";
@@ -39,24 +46,27 @@ export default function PixelGridContainer({ curImg }) {
     singleColorSelect: false,
     highlightRow: false,
   });
+  const [lastAction, setLastAction] = useState("");
   const [pixelSize, setPixelSize] = useState(0);
   const [maxPixelSize, setMaxPixelSize] = useState(40);
   const widthHeightRatio = swatch.width / swatch.height;
   const pixelsPerStitch = imgDim?.width / numStitches;
   const pixelsPerRow = pixelsPerStitch * widthHeightRatio;
   const numRows = Math.floor(imgDim?.height / pixelsPerRow);
-  let colorCounter = null;
-  if (pixels) {
-    colorCounter = {};
-    for (const colorName of Object.keys(colors)) {
-      colorCounter[colorName] = 0;
-    }
-    for (const pixelRow of pixels) {
-      for (const pixel of pixelRow) {
-        colorCounter[pixel.colorName] += 1;
+  const colorCounter = (() => {
+    let colorCount = {};
+    if (pixels) {
+      for (const colorName of Object.keys(colors)) {
+        colorCount[colorName] = 0;
+      }
+      for (const pixelRow of pixels) {
+        for (const pixel of pixelRow) {
+          colorCount[pixel.colorName] += 1;
+        }
       }
     }
-  }
+    return colorCount;
+  })();
 
   // generate grid when img data collected
   useEffect(() => {
@@ -136,6 +146,7 @@ export default function PixelGridContainer({ curImg }) {
       ) * 5 || 0;
     setPixelSize(initialPixelSize);
     setMaxPixelSize(Math.max(maxPixelSize, initialPixelSize));
+    setLastAction("regeneration");
   }, [
     imgData,
     imgDim,
@@ -175,67 +186,66 @@ export default function PixelGridContainer({ curImg }) {
       {pixels && (
         <>
           <section className={styles.pixelGridContainer}>
-            <PixelsContext.Provider value={[pixels, pixelsDispatch]}>
-              <div className={styles.leftPanel}>
-                <GaugeDetails
-                  handleGaugeChange={handleGaugeChange}
-                  swatch={swatch}
-                />
-                <SizeDetails
-                  key={`whRatio-${widthHeightRatio}`}
-                  numStitches={numStitches}
-                  swatch={swatch}
-                  widthHeightRatio={widthHeightRatio}
-                  handleStitchChange={handleStitchChange}
-                  imgDim={imgDim}
-                />
-                <ZoomDetails
-                  pixelSize={pixelSize}
-                  setPixelSize={setPixelSize}
-                  maxPixelSize={maxPixelSize}
-                  key={`initSize-${pixelSize}`}
-                />
-                <ColorDetails
-                  setCurColor={setCurColor}
-                  colorCounter={colorCounter}
-                />
-              </div>
-              <div className={styles.centerPanel}>
-                <Toolbar
-                  toolSelections={toolSelections}
-                  setToolSelections={setToolSelections}
-                />
-                <PixelGrid
-                  curPixelHovered={curPixelHovered}
-                  setCurPixelHovered={setCurPixelHovered}
-                  curRow={curRow}
-                  setCurRow={setCurRow}
-                  pixelSize={pixelSize}
-                  isColorSelected={isColorSelected}
-                  setColorSelected={setColorSelected}
-                  curColor={curColor}
-                  widthHeightRatio={widthHeightRatio}
-                  isPending={isPending}
-                  toolSelections={toolSelections}
-                  imgData={imgData}
-                  gridContainerRef={gridContainerRef}
-                />
-                <ColorToolbar
-                  curPixelHovered={curPixelHovered}
-                  toolSelections={toolSelections}
-                  colorCounter={colorCounter}
-                />
-              </div>
-              <div className={styles.rightPanel}>
-                <RowDetails
-                  curRow={curRow}
-                  setCurRow={setCurRow}
-                  toolSelections={toolSelections}
-                  setToolSelections={setToolSelections}
-                />
-                <ImageViewbox curImg={curImg} />
-              </div>
-            </PixelsContext.Provider>
+            <ActionContext.Provider value={setLastAction}>
+              <PixelsContext.Provider value={[pixels, pixelsDispatch]}>
+                <div className={styles.leftPanel}>
+                  <GaugeDetails
+                    handleGaugeChange={handleGaugeChange}
+                    swatch={swatch}
+                  />
+                  <SizeDetails
+                    key={`whRatio-${widthHeightRatio}`}
+                    numStitches={numStitches}
+                    swatch={swatch}
+                    widthHeightRatio={widthHeightRatio}
+                    handleStitchChange={handleStitchChange}
+                    imgDim={imgDim}
+                  />
+                  <ZoomDetails
+                    pixelSize={pixelSize}
+                    setPixelSize={setPixelSize}
+                    maxPixelSize={maxPixelSize}
+                    key={`initSize-${pixelSize}`}
+                  />
+                  <ColorDetails colorCounter={colorCounter} />
+                </div>
+                <div className={styles.centerPanel}>
+                  <Toolbar
+                    toolSelections={toolSelections}
+                    setToolSelections={setToolSelections}
+                  />
+                  <PixelGrid
+                    curPixelHovered={curPixelHovered}
+                    setCurPixelHovered={setCurPixelHovered}
+                    curRow={curRow}
+                    setCurRow={setCurRow}
+                    pixelSize={pixelSize}
+                    isColorSelected={isColorSelected}
+                    setColorSelected={setColorSelected}
+                    curColor={curColor}
+                    widthHeightRatio={widthHeightRatio}
+                    isPending={isPending}
+                    toolSelections={toolSelections}
+                    imgData={imgData}
+                    gridContainerRef={gridContainerRef}
+                  />
+                  <ColorToolbar
+                    curPixelHovered={curPixelHovered}
+                    toolSelections={toolSelections}
+                    colorCounter={colorCounter}
+                  />
+                </div>
+                <div className={styles.rightPanel}>
+                  <RowDetails
+                    curRow={curRow}
+                    setCurRow={setCurRow}
+                    toolSelections={toolSelections}
+                    setToolSelections={setToolSelections}
+                  />
+                  <ImageViewbox curImg={curImg} />
+                </div>
+              </PixelsContext.Provider>
+            </ActionContext.Provider>
           </section>
           <section className={styles.userOptions}></section>
         </>

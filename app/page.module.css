@@ -8,6 +8,11 @@
   text-align: center;
 }
 
+.imgUploadForm {
+  width: fit-content;
+  margin: 0 auto;
+}
+
 .imgUploadForm input {
   opacity: 0;
   width: 0;
@@ -27,15 +32,22 @@
 }
 
 .label {
+  display: inline-block;
   border: none;
   background-color: var(--peach);
   border-radius: 5px;
   padding: 0.25em 0.5em;
   box-shadow: var(--small-shadow);
+  margin-bottom: 1vh;
 }
 
 .label:hover {
   cursor: pointer;
   background-color: var(--amaranth);
   color: #fff;
+}
+
+.uploadBtn {
+  display: block;
+  margin: 1vh 0 1vh auto;
 }

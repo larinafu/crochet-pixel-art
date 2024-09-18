@@ -56,7 +56,7 @@
   width: 20%;
   max-height: 8vh;
   overflow-wrap: break-word;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .colorSwapCancelBtn {

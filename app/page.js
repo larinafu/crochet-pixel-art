@@ -25,11 +25,17 @@ export default function Home() {
           <h1 className={styles.heading}>
             Knitting and Crochet Pixel Art Generator Tool
           </h1>
+          <h2 className={styles.heading}>
+            Pixelate any image for your next yarn creation.
+          </h2>
           <form
             className={styles.imgUploadForm}
             onSubmit={(e) => {
               e.preventDefault();
-              setShowGridTools(true);
+              if (imageInfo[0]) {
+                console.log(imageInfo);
+                setShowGridTools(true);
+              }
             }}
           >
             <label className={styles.label} htmlFor="image_uploads">
@@ -41,7 +47,7 @@ export default function Home() {
               type="file"
               id="image_uploads"
               name="image_uploads"
-              accept=".jpg, .jpeg, .png"
+              accept="image/jpg, image/jpeg, image/png, image/heic"
               onChange={(e) => {
                 handleFileUpload(e);
               }}
@@ -56,7 +62,9 @@ export default function Home() {
               )}
             </div>
 
-            <TextButton disabled={!imageInfo[0]}>Generate grid!</TextButton>
+            <TextButton className={styles.uploadBtn} disabled={!imageInfo[0]}>
+              Generate grid!
+            </TextButton>
           </form>
         </>
       )}
