@@ -1,0 +1,48 @@
+.pixelGridContainer {
+  padding: 1vw;
+  background-color: var(--primary-accent);
+  height: 75vh;
+  overflow: scroll;
+}
+
+.colorCell {
+  /* position: relative; */
+  border: 0.05px solid black;
+}
+
+.hoveredBorder {
+  outline: 0.1vw solid red;
+  z-index: 1;
+}
+
+.leftPurpBorder {
+  border-left: 1.5px solid #b026ff;
+}
+
+.bottomPurpBorder {
+  border-bottom: 1.5px solid #b026ff;
+}
+
+.rightPurpBorder {
+  border-right: 1.5px solid #b026ff;
+}
+
+.topPurpBorder {
+  border-top: 1.5px solid #b026ff;
+}
+
+.leftGoldBorder {
+  border-left: 1.5px solid gold;
+}
+
+.bottomGoldBorder {
+  border-bottom: 1.5px solid gold;
+}
+
+.rightGoldBorder {
+  border-right: 1.5px solid gold;
+}
+
+.topGoldBorder {
+  border-top: 1.5px solid gold;
+}

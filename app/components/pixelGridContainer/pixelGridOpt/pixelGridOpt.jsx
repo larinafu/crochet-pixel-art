@@ -1,24 +1,22 @@
+import { Grid, AutoSizer } from "react-virtualized";
 import { PixelsContext, ActionContext } from "@/app/utils/context";
 import { useContext } from "react";
-import styles from "./pixelGrid.module.css";
 
-export default function PixelGrid({
+import styles from "./pixelGridOpt.module.css";
+
+export default function PixelGridOpt({
   curPixelHovered,
   setCurPixelHovered,
   curRow,
   setCurRow,
   widthHeightRatio,
-  isPending,
   toolSelections,
   pixelSize,
   gridContainerRef,
 }) {
   const [pixels, pixelsDispatch] = useContext(PixelsContext);
 
-  const pixelStyles = {
-    width: `${pixelSize}px`,
-    aspectRatio: 1 / widthHeightRatio,
-  };
+  const pixelStyles = {};
 
   const addBorder = (pixel) => {
     let borders = [];
@@ -110,66 +108,50 @@ export default function PixelGrid({
         });
       }
     }
-    // setLastAction("pixel_click");
   };
+
+  function cellRenderer({ columnIndex, key, rowIndex, style }) {
+    const pixel = pixels[rowIndex][columnIndex];
+    return (
+      <div
+        key={key}
+        className={`${styles.colorCell} ${addBorder(pixel)}`}
+        style={{
+          ...style,
+          backgroundColor: pixel.colorHex,
+        }}
+        onMouseOver={() => {
+          setCurPixelHovered(pixel);
+          // setLastAction("pixel_hover")
+        }}
+        onMouseLeave={() => {
+          setCurPixelHovered(null);
+        }}
+        onClick={() => {
+          handlePixelClick(pixel);
+        }}
+      ></div>
+    );
+  }
 
   return (
     <section
       className={`${styles.pixelGridContainer} detailContainer`}
       ref={gridContainerRef}
     >
-      {isPending && (
-        <div className={styles.loadingBanner}>
-          <p>Recalculating...</p> <span className={styles.loader}></span>
-        </div>
-      )}
-      <div
-        className={`${styles.pixelGrid} ${
-          isPending ? styles.loadingState : ""
-        }`}
-      >
-        {pixels &&
-          pixels.map((resRow, idx) => {
-            return (
-              <div
-                key={idx}
-                onClick={() => {
-                  toolSelections.highlightRow && setCurRow(idx);
-                }}
-                // onTouchStart={() => {
-                //   toolSelections.highlightRow && setCurRow(idx);
-                // }}
-                className={`${styles.colorCells}`}
-              >
-                {resRow.map((pixel) => {
-                  return (
-                    <div
-                      key={pixel.stitchNum}
-                      onMouseOver={() => {
-                        setCurPixelHovered(pixel);
-                        // setLastAction("pixel_hover")
-                      }}
-                      onMouseLeave={() => {
-                        setCurPixelHovered(null);
-                      }}
-                      onClick={() => {
-                        handlePixelClick(pixel);
-                      }}
-                      // onTouchStart={() => {
-                      //   handlePixelClick(pixel);
-                      // }}
-                      style={{
-                        ...pixelStyles,
-                        backgroundColor: pixel.colorHex,
-                      }}
-                      className={`${styles.colorCell} ${addBorder(pixel)}`}
-                    ></div>
-                  );
-                })}
-              </div>
-            );
-          })}
-      </div>
+      <AutoSizer>
+        {({ height, width }) => (
+          <Grid
+            cellRenderer={cellRenderer}
+            columnCount={pixels[0].length}
+            columnWidth={pixelSize}
+            height={height}
+            rowCount={pixels.length}
+            rowHeight={pixelSize / widthHeightRatio}
+            width={width}
+          />
+        )}
+      </AutoSizer>
     </section>
   );
 }
