@@ -47,6 +47,15 @@
   color: #fff;
 }
 
+.Toastify__toast {
+  box-shadow: var(--shadow);
+  border-radius: 10px;
+}
+
+.Toastify__toast-body {
+  color: black;
+}
+
 /* @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;

@@ -53,3 +53,7 @@
   display: block;
   margin: 0 0 0 auto;
 }
+
+.toast{
+  box-shadow: var(--small-shadow);
+}

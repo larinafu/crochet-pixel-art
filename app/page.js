@@ -1,22 +1,52 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, Suspense } from "react";
+import { ToastContainer } from "react-toastify";
+import imageCompression from "browser-image-compression";
+
 import TextButton from "./components/general/textButton/textButton";
 import PixelGridContainer from "./components/pixelGridContainer/pixelGridContainer";
+
 import styles from "./page.module.css";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
-
   const inputRef = useRef(null);
   const [imageInfo, setImageInfo] = useState([null, ""]);
   const [showGridTools, setShowGridTools] = useState(false);
-  function handleFileUpload(e) {
+  const handleFileUpload = async (e) => {
     const imageFile = inputRef.current.files[0];
     if (imageFile) {
-      setImageInfo([URL.createObjectURL(imageFile), e.target.value]);
+      console.log("originalFile instanceof Blob", imageFile instanceof Blob); // true
+      console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
+
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 500,
+        useWebWorker: true,
+      };
+      try {
+        const compressedFile = await imageCompression(imageFile, options);
+        console.log(
+          "compressedFile instanceof Blob",
+          compressedFile instanceof Blob
+        ); // true
+        console.log(
+          `compressedFile size ${compressedFile.size / 1024 / 1024} MB`
+        ); // smaller than maxSizeMB
+
+        setImageInfo([URL.createObjectURL(compressedFile), e.target.value]);
+        // setImageInfo([URL.createObjectURL(imageFile), e.target.value]);
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }
+    // if (imageFile) {
+    //   setImageInfo([URL.createObjectURL(imageFile), e.target.value]);
+    // }
+  };
   return (
     <main className={styles.main}>
+      <ToastContainer position="top-right" autoClose="5000" />
       {showGridTools ? (
         <PixelGridContainer key={imageInfo[1]} curImg={imageInfo[0]} />
       ) : (

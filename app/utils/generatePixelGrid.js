@@ -1,19 +1,18 @@
-import { NextResponse } from "next/server";
-import colors from "@/app/utils/colors2.json";
+import colors from "./colors2.json";
 
 const getColorIndicesForCoord = (x, y, imgDim) => {
   const red = y * (imgDim?.width * 4) + x * 4;
   return [red, red + 1, red + 2, red + 3];
 };
 
-const generateNewPixelGrid = (
+export const generateNewPixelGrid = ({
   imgData,
   numRows,
   numStitches,
   pixelsPerRow,
   pixelsPerStitch,
-  imgDim
-) => {
+  imgDim,
+}) => {
   const nearestColor = require("nearest-color").from(colors);
   const pixelGrid = [];
   for (let yInterval = 0; yInterval < numRows; yInterval += 1) {
@@ -68,24 +67,3 @@ const generateNewPixelGrid = (
   );
   return pixelGridWithColors;
 };
-
-// export async function GET() {
-//   return NextResponse.json({
-//     hello: "world",
-//   });
-// }
-
-export async function POST(req) {
-  const data = await req.json();
-  const grid = generateNewPixelGrid(
-    data.imgData,
-    data.numRows,
-    data.numStitches,
-    data.pixelsPerRow,
-    data.pixelsPerStitch,
-    data.imgDim
-  );
-  return NextResponse.json({
-    grid: grid,
-  });
-}

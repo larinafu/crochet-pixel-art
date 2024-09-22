@@ -1,7 +1,7 @@
 import Image from "next/image";
 import collapse from "@/public/icons/angle-bottom-icon.svg";
 import expand from "@/public/icons/angle-top-icon.svg";
-import { PixelsContext, ActionContext } from "@/app/utils/context";
+import { PixelsContext } from "@/app/utils/context";
 import { useContext, useState } from "react";
 import colors from "@/app/utils/colors2.json";
 import { motion, AnimatePresence } from "framer-motion";
@@ -22,7 +22,6 @@ export default function ColorToolbar({
   );
 
   const [pixels, pixelsDispatch] = useContext(PixelsContext);
-  const setLastAction = useContext(ActionContext);
 
   const [isToolbarExpanded, setToolbarExpanded] = useState(false);
 
@@ -77,7 +76,6 @@ export default function ColorToolbar({
         newColorName: colorName,
       });
     }
-    setLastAction("color_change")
   };
   return (
     <>

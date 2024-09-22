@@ -122,7 +122,6 @@ export default function PixelGridOpt({
         }}
         onMouseOver={() => {
           setCurPixelHovered(pixel);
-          // setLastAction("pixel_hover")
         }}
         onMouseLeave={() => {
           setCurPixelHovered(null);
@@ -147,7 +146,7 @@ export default function PixelGridOpt({
             columnWidth={pixelSize}
             height={height}
             rowCount={pixels.length}
-            rowHeight={pixelSize / widthHeightRatio}
+            rowHeight={pixelSize * widthHeightRatio}
             width={width}
           />
         )}

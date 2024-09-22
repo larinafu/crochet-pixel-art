@@ -110,7 +110,6 @@ export default function PixelGrid({
         });
       }
     }
-    // setLastAction("pixel_click");
   };
 
   return (
@@ -147,7 +146,6 @@ export default function PixelGrid({
                       key={pixel.stitchNum}
                       onMouseOver={() => {
                         setCurPixelHovered(pixel);
-                        // setLastAction("pixel_hover")
                       }}
                       onMouseLeave={() => {
                         setCurPixelHovered(null);
