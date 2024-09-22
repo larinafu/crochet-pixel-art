@@ -1,11 +1,5 @@
-import { Roboto, Lato } from "next/font/google";
+import { lato } from "./utils/fonts";
 import "./globals.css";
-
-export const lato = Lato({
-  weight: ["400", "700"],
-  style: ["normal", "italic"],
-  subsets: ["latin"],
-});
 
 export const metadata = {
   title: "Create Next App",
@@ -15,7 +9,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={lato.className}>{children}</body>
+      <body className={lato.className}>
+        {children}
+      </body>
     </html>
   );
 }

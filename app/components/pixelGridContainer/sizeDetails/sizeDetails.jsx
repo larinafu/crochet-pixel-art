@@ -1,15 +1,10 @@
 import { useState } from "react";
-import { Courier_Prime } from "next/font/google";
+import { toast } from "react-toastify";
+
+import NumberContainer from "../../general/numberContainer/numberContainer";
 import UpdateContainer from "../../general/updateContainer/updateContainer";
 
 import styles from "./sizeDetails.module.css";
-import NumberContainer from "../../general/numberContainer/numberContainer";
-
-const courier = Courier_Prime({
-  weight: ["400"],
-  style: ["normal"],
-  subsets: ["latin"],
-});
 
 export default function SizeDetails({
   numStitches,
@@ -33,11 +28,19 @@ export default function SizeDetails({
   const estWidth = Math.round((numStitchesDisplay * 4) / swatch.width);
   const estHeight = Math.round((numRowsDisplay * 4) / swatch.height);
 
+  const handleUpdate = () => {
+    if (numStitchesDisplay === numStitches) {
+      toast("No changes detected", {
+        toastId: "."
+      })
+    } else {
+      handleStitchChange(numStitchesDisplay);
+    }
+  }
+
   return (
     <UpdateContainer
-      handleUpdate={() => {
-        handleStitchChange(numStitchesDisplay);
-      }}
+      handleUpdate={handleUpdate}
       handleCancelledForm={() => {
         setNumStitchesDisplay(numStitches);
       }}

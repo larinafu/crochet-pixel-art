@@ -11,7 +11,7 @@
   --ruddy-blue: #79addc;
   --peach: #ffc09f;
   --flax: #ffee93;
-  --lemon-chif: #fbf9e6;
+  --lemon-chif: #faf8ed;
   --celadon: #adf7b6;
   --rust: #bf3100;
   --amaranth: #a93f55;
@@ -20,6 +20,7 @@
   --small-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),
     0 3px 10px 0 rgba(0, 0, 0, 0.2);
   --highlighted-shadow: 0 2px 4px 0 gold, 0 3px 10px 0 gold;
+  --border: 1px solid #d8d8d8;
 }
 
 .detailContainer {

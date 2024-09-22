@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { courier } from "@/app/utils/fonts";
 
 import UpdateContainer from "../../general/updateContainer/updateContainer";
 import Toast from "../../general/toast/toast";
@@ -89,7 +90,7 @@ export default function GaugeDetails({ swatch, handleGaugeChange }) {
                 });
               }
             }}
-            className={styles.rowInput}
+            className={`${styles.rowInput} ${courier.className}`}
           />
           <label htmlFor="numRows" className={styles.gaugeLabel}>
             Number of rows
@@ -105,7 +106,7 @@ export default function GaugeDetails({ swatch, handleGaugeChange }) {
             inputMode="numeric"
             id="numStitches"
             name="numStitches"
-            className={styles.stitchInput}
+            className={`${styles.stitchInput} ${courier.className}`}
             value={tempSwatch.width}
             onChange={(e) => {
               if (/^[0*]+$/.test(e.target.value)) {

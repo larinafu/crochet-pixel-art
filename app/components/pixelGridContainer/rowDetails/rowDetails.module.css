@@ -61,7 +61,7 @@
 .colorList {
   background-color: var(--lemon-chif);
   box-shadow: none;
-  border: 1px solid #000;
+  border: var(--border);
   height: 80%;
   overflow-y: auto;
   margin-top: .2em;

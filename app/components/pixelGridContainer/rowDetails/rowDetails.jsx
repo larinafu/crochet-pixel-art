@@ -1,27 +1,18 @@
 import Image from "next/image";
 import { useContext } from "react";
 import { PixelsContext } from "@/app/utils/context";
+import { courier } from "@/app/utils/fonts";
+
 import rightArrow from "@/public/icons/arrow-long-right-icon.svg";
 import ColorSwatch from "../../general/colorSwatch/colorSwatch";
 import downArrow from "@/public/icons/round-black-bottom-arrow-icon.svg";
 import downArrowHover from "@/public/icons/round-hover-bottom-arrow-icon.svg";
 import upArrow from "@/public/icons/round-black-top-arrow-icon.svg";
 import upArrowHover from "@/public/icons/round-hover-top-arrow-icon.svg";
-
 import SvgIconButton from "../../general/svgIcons/svgIconButton/svgIconButton";
-import { Courier_Prime } from "next/font/google";
-
 import NumberContainer from "../../general/numberContainer/numberContainer";
 
 import styles from "./rowDetails.module.css";
-
-const courier = Courier_Prime({
-  weight: ["400"],
-  style: ["normal"],
-  subsets: ["latin"],
-});
-
-// const upArrow = () =>
 
 export default function RowDetails({
   curRow,

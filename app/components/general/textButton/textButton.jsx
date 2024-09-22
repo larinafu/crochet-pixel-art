@@ -1,11 +1,6 @@
-import { Roboto, Lato } from "next/font/google";
+import { lato } from "@/app/utils/fonts";
 import styles from "./textButton.module.css";
 
-export const lato = Lato({
-  weight: ["400", "700"],
-  style: ["normal", "italic"],
-  subsets: ["latin"],
-});
 
 export default function TextButton({
   children,

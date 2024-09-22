@@ -1,13 +1,8 @@
+import { courier } from "@/app/utils/fonts";
+
 import ColorSwatch from "../../../general/colorSwatch/colorSwatch";
-import { Courier_Prime } from "next/font/google";
 
 import styles from "./singlePixelInfo.module.css";
-
-const courier = Courier_Prime({
-  weight: ["400"],
-  style: ["normal"],
-  subsets: ["latin"],
-});
 
 export default function SinglePixelInfo({ faded, pixel, colorHex }) {
   return (

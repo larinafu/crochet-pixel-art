@@ -1,12 +1,6 @@
-import { Courier_Prime } from "next/font/google";
+import { courier } from "@/app/utils/fonts";
 
 import styles from "./numberContainer.module.css";
-
-const courier = Courier_Prime({
-  weight: ["400"],
-  style: ["normal"],
-  subsets: ["latin"],
-});
 
 export default function NumberContainer({ number, size }) {
   return (
