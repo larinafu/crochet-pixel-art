@@ -9,6 +9,8 @@ export default function PixelGridOpt({
   setCurPixelHovered,
   curRow,
   setCurRow,
+  gridScrollPos,
+  setGridScrollPos,
   widthHeightRatio,
   toolSelections,
   pixelSize,
@@ -16,7 +18,8 @@ export default function PixelGridOpt({
 }) {
   const [pixels, pixelsDispatch] = useContext(PixelsContext);
 
-  const pixelStyles = {};
+  const gridHeight = pixels.length * (pixelSize * widthHeightRatio);
+  const gridWidth = pixels[0].length * pixelSize;
 
   const addBorder = (pixel) => {
     let borders = [];
@@ -139,17 +142,32 @@ export default function PixelGridOpt({
       ref={gridContainerRef}
     >
       <AutoSizer>
-        {({ height, width }) => (
-          <Grid
-            cellRenderer={cellRenderer}
-            columnCount={pixels[0].length}
-            columnWidth={pixelSize}
-            height={height}
-            rowCount={pixels.length}
-            rowHeight={pixelSize * widthHeightRatio}
-            width={width}
-          />
-        )}
+        {({ height, width }) => {
+          return (
+            <Grid
+              cellRenderer={cellRenderer}
+              columnCount={pixels[0].length}
+              columnWidth={pixelSize}
+              height={height}
+              rowCount={pixels.length}
+              rowHeight={pixelSize * widthHeightRatio}
+              width={width}
+              onScroll={(e) => {
+                setGridScrollPos({
+                  top: e.scrollTop / gridHeight,
+                  left: e.scrollLeft / gridWidth,
+                });
+                console.log(gridScrollPos);
+              }}
+              scrollLeft={
+                gridWidth < width ? 0 : gridScrollPos.left * gridWidth
+              }
+              scrollTop={
+                gridHeight < height ? 0 : gridScrollPos.top * gridHeight
+              }
+            />
+          );
+        }}
       </AutoSizer>
     </section>
   );

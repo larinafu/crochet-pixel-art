@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ToastContainer, toast, cssTransition } from "react-toastify";
+import { toast } from "react-toastify";
 
 import UpdateContainer from "../../general/updateContainer/updateContainer";
 import Toast from "../../general/toast/toast";
@@ -9,12 +9,6 @@ import styles from "./gaugeDetails.module.css";
 export default function GaugeDetails({ swatch, handleGaugeChange }) {
   const [tempSwatch, setTempSwatch] = useState(swatch);
   const [showToast, setShowToast] = useState(false);
-
-  const Zoom = cssTransition({
-    enter: "zoomIn",
-    exit: "zoomOut",
-    duration: 500, // both transition duration will be 500ms
-  });
 
   const activateToast = () => {
     setShowToast(true);
@@ -28,9 +22,8 @@ export default function GaugeDetails({ swatch, handleGaugeChange }) {
       tempSwatch.width === swatch.width &&
       tempSwatch.height === swatch.height
     ) {
-      // activateToast();
-      toast("im here", {
-        toastId: "here",
+      toast("No changes detected.", {
+        toastId: "hi",
       });
     } else if (!(disabledMessages.length !== 0)) {
       handleGaugeChange(tempSwatch);

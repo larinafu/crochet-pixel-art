@@ -1,6 +1,6 @@
 .swatch,
 .swatchWithHover {
-  border: 0.1rem solid black;
+  border: 0.1rem solid #000;
   border-radius: 25%;
 }
 

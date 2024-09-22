@@ -11,7 +11,7 @@
   --ruddy-blue: #79addc;
   --peach: #ffc09f;
   --flax: #ffee93;
-  --lemon-chif: #fcf5c7;
+  --lemon-chif: #fbf9e6;
   --celadon: #adf7b6;
   --rust: #bf3100;
   --amaranth: #a93f55;
@@ -31,11 +31,7 @@
 
 .smallBtn {
   border: none;
-}
-
-.smallBtn {
-  background-color: var(--flax);
-  border: 1px solid #000;
+  background-color: var(--amaranth);
   width: 1.5em;
   height: 1.5em;
   border-radius: 50%;
@@ -55,6 +51,7 @@
 .Toastify__toast-body {
   color: black;
 }
+
 
 /* @media (prefers-color-scheme: dark) {
   :root {

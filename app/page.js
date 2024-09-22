@@ -2,6 +2,7 @@
 import { useState, useRef, Suspense } from "react";
 import { ToastContainer } from "react-toastify";
 import imageCompression from "browser-image-compression";
+import { motion } from "framer-motion";
 
 import TextButton from "./components/general/textButton/textButton";
 import PixelGridContainer from "./components/pixelGridContainer/pixelGridContainer";
@@ -46,17 +47,27 @@ export default function Home() {
   };
   return (
     <main className={styles.main}>
-      <ToastContainer position="top-right" autoClose="5000" />
+      <ToastContainer position="top-right" autoClose="3000" />
       {showGridTools ? (
         <PixelGridContainer key={imageInfo[1]} curImg={imageInfo[0]} />
       ) : (
         <>
-          <h1 className={styles.heading}>
+          <motion.h1
+            className={styles.heading}
+            initial={{ opacity: 0, y: "50%" }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{duration: 1}}
+          >
             Knitting and Crochet Pixel Art Generator Tool
-          </h1>
-          <h2 className={styles.heading}>
+          </motion.h1>
+          <motion.h2
+            className={styles.heading}
+            initial={{ opacity: 0, y: "50%" }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{duration: 1}}
+          >
             Pixelate any image for your next yarn creation.
-          </h2>
+          </motion.h2>
           <form
             className={styles.imgUploadForm}
             onSubmit={(e) => {

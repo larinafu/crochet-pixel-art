@@ -1,4 +1,11 @@
+import { Roboto, Lato } from "next/font/google";
 import styles from "./textButton.module.css";
+
+export const lato = Lato({
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+});
 
 export default function TextButton({
   children,
@@ -15,7 +22,7 @@ export default function TextButton({
       className={`${styles.button} ${additionalClassNames}`}
       onClick={handleClick}
     >
-      {children}
+      <p className={lato.className}>{children}</p>
     </button>
   );
 }

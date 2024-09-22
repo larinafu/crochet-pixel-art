@@ -55,6 +55,7 @@ export default function SizeDetails({
           onChange={(e) => {
             setNumStitchesDisplay(e.target.valueAsNumber);
           }}
+          className={styles.sizeInput}
         />
         <div className={styles.specItem}>
           <NumberContainer number={numRowsDisplay} />

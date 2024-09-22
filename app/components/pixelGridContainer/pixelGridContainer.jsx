@@ -50,6 +50,10 @@ export default function PixelGridContainer({ curImg }) {
   });
   const [pixelSize, setPixelSize] = useState(0);
   const [maxPixelSize, setMaxPixelSize] = useState(40);
+  const [gridScrollPos, setGridScrollPos] = useState({
+    top: 0,
+    left: 0
+  })
   const widthHeightRatio = swatch.width / swatch.height;
   const pixelsPerStitch = imgDim?.width / numStitches;
   const pixelsPerRow = pixelsPerStitch * widthHeightRatio;
@@ -166,6 +170,8 @@ export default function PixelGridContainer({ curImg }) {
                     setCurPixelHovered={setCurPixelHovered}
                     curRow={curRow}
                     setCurRow={setCurRow}
+                    gridScrollPos={gridScrollPos}
+                    setGridScrollPos={setGridScrollPos}
                     widthHeightRatio={widthHeightRatio}
                     toolSelections={toolSelections}
                     pixelSize={pixelSize}
