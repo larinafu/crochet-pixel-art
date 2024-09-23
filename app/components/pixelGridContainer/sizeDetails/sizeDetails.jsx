@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { lato } from "@/app/utils/fonts";
 
 import NumberContainer from "../../general/numberContainer/numberContainer";
 import UpdateContainer from "../../general/updateContainer/updateContainer";
@@ -15,7 +16,7 @@ export default function SizeDetails({
 }) {
   const [numStitchesDisplay, setNumStitchesDisplay] = useState(numStitches);
 
-  let maxStitches = Math.min(200, imgDim?.width);
+  let maxStitches = Math.min(150, imgDim?.width);
   const maxStitchesWithRowLimit = Math.floor(
     (imgDim?.width * widthHeightRatio * maxStitches) / imgDim?.height
   );
@@ -30,8 +31,9 @@ export default function SizeDetails({
 
   const handleUpdate = () => {
     if (numStitchesDisplay === numStitches) {
-      toast("No changes detected", {
-        toastId: "."
+      toast("No size changes detected", {
+        toastId: "size",
+        bodyClassName: lato.className
       })
     } else {
       handleStitchChange(numStitchesDisplay);

@@ -6,3 +6,17 @@
     vertical-align: middle;
     margin: 0 .25em;
 }
+
+.label {
+    opacity: 0;
+}
+
+.zoomBtn {
+    width: fit-content;
+}
+
+.zoomIcon {
+    display: block;
+    margin: 0 auto;
+    margin: .3em;
+}

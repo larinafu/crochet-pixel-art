@@ -12,6 +12,7 @@ export default function ImageViewbox({
         className={styles.smallImg}
         src={curImg}
         alt="uploaded image"
+        draggable={false}
       />
     </section>
   );

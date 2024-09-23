@@ -32,7 +32,7 @@ export default function PixelGridContainer({ curImg }) {
   const gridContainerRef = useRef(null);
   const [isPending, startTransition] = useTransition();
   const [imgData, imgDim, canvasRef] = useImageData(curImg);
-  const [numStitches, setNumStitches] = useState(30);
+  const [numStitches, setNumStitches] = useState(60);
   const [swatch, setSwatch] = useState({
     width: 30,
     height: 30,
@@ -43,17 +43,32 @@ export default function PixelGridContainer({ curImg }) {
   const [isColorSelected, setColorSelected] = useState(false);
   const [curPixelHovered, setCurPixelHovered] = useState(null);
   const [toolSelections, setToolSelections] = useState({
-    // single_pixel_select, multi_pixel_select, single_color_select, row_preview_select
-    multiPixelSelect: true,
+    pixelSelect: true,
     singleColorSelect: false,
     highlightRow: false,
+    multiPixelDeselect: false,
   });
+
+  // const [toolSelections, setToolSelections] = useState({
+  //   curOption: "select",
+  //   options: {
+  //     select: {
+  //       options: ["select pixels", "select colors"],
+  //       curOption: "select pixels",
+  //     },
+  //     deselect: {
+  //       options: ["deselect pixels", "deselect colors", "deselect all"],
+  //       curOption: "deselect pixels",
+  //     },
+  //     highlightRow: false,
+  //   },
+  // });
   const [pixelSize, setPixelSize] = useState(0);
   const [maxPixelSize, setMaxPixelSize] = useState(40);
   const [gridScrollPos, setGridScrollPos] = useState({
     top: 0,
-    left: 0
-  })
+    left: 0,
+  });
   const widthHeightRatio = swatch.width / swatch.height;
   const pixelsPerStitch = imgDim?.width / numStitches;
   const pixelsPerRow = pixelsPerStitch * widthHeightRatio;
@@ -114,7 +129,7 @@ export default function PixelGridContainer({ curImg }) {
   }
 
   function handleGaugeChange(swatch) {
-    let maxStitches = Math.min(200, imgDim.width);
+    let maxStitches = Math.min(150, imgDim.width);
     const maxStitchesWithRowLimit = Math.floor(
       (imgDim?.width * (swatch.width / swatch.height) * maxStitches) /
         imgDim?.height
@@ -163,21 +178,19 @@ export default function PixelGridContainer({ curImg }) {
                   toolSelections={toolSelections}
                   setToolSelections={setToolSelections}
                 />
-                <Suspense fallback={<p>loading...</p>}>
-                  <PixelGridOpt
-                    key={`${pixelSize}-${numStitches}-${widthHeightRatio}`}
-                    curPixelHovered={curPixelHovered}
-                    setCurPixelHovered={setCurPixelHovered}
-                    curRow={curRow}
-                    setCurRow={setCurRow}
-                    gridScrollPos={gridScrollPos}
-                    setGridScrollPos={setGridScrollPos}
-                    widthHeightRatio={widthHeightRatio}
-                    toolSelections={toolSelections}
-                    pixelSize={pixelSize}
-                    gridContainerRef={gridContainerRef}
-                  />
-                </Suspense>
+                <PixelGridOpt
+                  key={`${pixelSize}-${numStitches}-${widthHeightRatio}`}
+                  curPixelHovered={curPixelHovered}
+                  setCurPixelHovered={setCurPixelHovered}
+                  curRow={curRow}
+                  setCurRow={setCurRow}
+                  gridScrollPos={gridScrollPos}
+                  setGridScrollPos={setGridScrollPos}
+                  widthHeightRatio={widthHeightRatio}
+                  toolSelections={toolSelections}
+                  pixelSize={pixelSize}
+                  gridContainerRef={gridContainerRef}
+                />
                 <ColorToolbar
                   curPixelHovered={curPixelHovered}
                   toolSelections={toolSelections}

@@ -1,4 +1,7 @@
 "use client";
+import Image from "next/image";
+import { lato } from "./utils/fonts";
+import { earth } from "@/public/icons/earth.jpg";
 import { useState, useRef, Suspense } from "react";
 import { ToastContainer } from "react-toastify";
 import imageCompression from "browser-image-compression";
@@ -17,7 +20,6 @@ export default function Home() {
   const handleFileUpload = async (e) => {
     const imageFile = inputRef.current.files[0];
     if (imageFile) {
-
       const options = {
         maxSizeMB: 1,
         maxWidthOrHeight: 500,
@@ -38,27 +40,28 @@ export default function Home() {
   };
   return (
     <main className={styles.main}>
-      <ToastContainer position="top-right" autoClose="3000" />
+      <ToastContainer
+        position="top-right"
+        autoClose="3000"
+        className={lato.className}
+      />
       {showGridTools ? (
         <PixelGridContainer key={imageInfo[1]} curImg={imageInfo[0]} />
       ) : (
         <>
-          <motion.h1
-            className={styles.heading}
+          <motion.header
             initial={{ opacity: 0, y: "50%" }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{duration: 1}}
+            transition={{ duration: 1 }}
           >
-            Knitting and Crochet Pixel Art Generator Tool
-          </motion.h1>
-          <motion.h2
-            className={styles.heading}
-            initial={{ opacity: 0, y: "50%" }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{duration: 1}}
-          >
-            Pixelate any image for your next yarn creation.
-          </motion.h2>
+            <h1 className={styles.heading}>
+              Knitting and Crochet Pixel Art Generator Tool
+            </h1>
+            <h2 className={styles.heading}>
+              Pixelate any image for your next yarn creation.
+            </h2>
+          </motion.header>
+          <Image src={earth} alt="earth drawing" width={100} />
           <form
             className={styles.imgUploadForm}
             onSubmit={(e) => {
@@ -92,9 +95,17 @@ export default function Home() {
               )}
             </div>
 
-            <TextButton className={styles.uploadBtn} disabled={!imageInfo[0]}>
-              Generate grid!
-            </TextButton>
+            {imageInfo[0] && (
+              <motion.div
+                initial={{ opacity: 0, y: "50%" }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1 }}
+              >
+                <TextButton className={styles.uploadBtn}>
+                  Generate grid!
+                </TextButton>
+              </motion.div>
+            )}
           </form>
         </>
       )}

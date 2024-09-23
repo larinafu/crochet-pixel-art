@@ -1,6 +1,6 @@
 import { Grid, AutoSizer } from "react-virtualized";
-import { PixelsContext, ActionContext } from "@/app/utils/context";
-import { useContext, useState } from "react";
+import { PixelsContext } from "@/app/utils/context";
+import { useContext, useEffect, useState } from "react";
 
 import styles from "./pixelGridOpt.module.css";
 
@@ -17,7 +17,24 @@ export default function PixelGridOpt({
   gridContainerRef,
 }) {
   const [pixels, pixelsDispatch] = useContext(PixelsContext);
-  const [isMouseDown, setMouseDown] = useState(false);
+  const [isPointerDown, setPointerDown] = useState(false);
+
+  useEffect(() => {
+    const handlePointerDown = (e) => {
+      // e.preventDefault();
+      setPointerDown(true);
+    };
+    const handlePointerUp = (e) => {
+      // e.preventDefault(e);
+      setPointerDown(false);
+    };
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("pointerup", handlePointerUp);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("pointerup", handlePointerUp);
+    };
+  }, []);
 
   const gridHeight = pixels.length * (pixelSize * widthHeightRatio);
   const gridWidth = pixels[0].length * pixelSize;
@@ -102,7 +119,7 @@ export default function PixelGridOpt({
           colorHex: pixel.colorHex,
         });
       }
-    } else if (toolSelections.multiPixelSelect) {
+    } else if (toolSelections.pixelSelect) {
       if (pixel.singleSelected) {
         pixelsDispatch({ type: "pixel_deselection", pixel: pixel });
       } else {
@@ -119,29 +136,21 @@ export default function PixelGridOpt({
     return (
       <div
         key={key}
-        // draggable={true}
         className={`${styles.colorCell} ${addBorder(pixel)}`}
         style={{
           ...style,
           backgroundColor: pixel.colorHex,
         }}
-        onMouseOver={() => {
-          if (isMouseDown) {
+        onPointerOver={() => {
+          if (isPointerDown) {
             handlePixelClick(pixel);
           }
           setCurPixelHovered(pixel);
         }}
-        onMouseLeave={() => {
+        onPointerLeave={() => {
           setCurPixelHovered(null);
         }}
-        onMouseDown={() => {
-          handlePixelClick(pixel);
-          setMouseDown(true);
-        }}
-        onMouseUp={() => {
-          setMouseDown(false);
-        }}
-        onTouchStart={() => {
+        onPointerDown={() => {
           handlePixelClick(pixel);
         }}
       ></div>
@@ -151,6 +160,14 @@ export default function PixelGridOpt({
   return (
     <section
       className={`${styles.pixelGridContainer} detailContainer`}
+      onPointerDown={(e) => {
+        e.preventDefault();
+        setPointerDown(true);
+      }}
+      onPointerUp={(e) => {
+        e.preventDefault();
+        setPointerDown(false);
+      }}
       ref={gridContainerRef}
     >
       <AutoSizer>

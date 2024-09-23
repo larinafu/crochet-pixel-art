@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
-import zoomIn from "@/public/icons/zoom-in-icon.svg";
-import zoomOut from "@/public/icons/zoom-out-icon.svg";
+import zoomIn from "@/public/icons/plus-icon.svg";
+import zoomOut from "@/public/icons/minus-icon.svg";
 
 import styles from "./zoomDetails.module.css";
 
@@ -10,17 +10,26 @@ export default function ZoomDetails({ pixelSize, setPixelSize, maxPixelSize }) {
   return (
     <section className={`detailContainer ${styles.container}`}>
       <h3>Zoom Level</h3>
-      <label htmlFor="pixelSize">zoom level</label>
+      <label htmlFor="pixelSize" className={styles.label}>
+        zoom level
+      </label>
       <div>
         <button
-          className={`smallBtn`}
-          onClick={() => {
+          className={`smallBtn ${styles.zoomBtn}`}
+          onClick={(e) => {
+            e.preventDefault();
             setPixelSizePreview(pixelSizePreview - 1);
             setPixelSize(pixelSize - 1);
           }}
           disabled={pixelSize <= 5}
         >
-          <Image src={zoomOut} alt="zoom out" width={20} />
+          <Image
+            src={zoomOut}
+            alt="zoom out"
+            width={15}
+            className={styles.zoomIcon}
+            draggable={false}
+          />
         </button>
         <input
           type="range"
@@ -43,14 +52,21 @@ export default function ZoomDetails({ pixelSize, setPixelSize, maxPixelSize }) {
           }}
         />
         <button
-          className={`smallBtn`}
-          onClick={() => {
+          className={`smallBtn ${styles.zoomBtn}`}
+          onClick={(e) => {
+            e.preventDefault();
             setPixelSizePreview(pixelSizePreview + 1);
             setPixelSize(pixelSize + 1);
           }}
           disabled={pixelSize >= maxPixelSize}
         >
-          <Image src={zoomIn} alt="zoom in" width={20} />
+          <Image
+            src={zoomIn}
+            alt="zoom in"
+            width={15}
+            className={styles.zoomIcon}
+            draggable={false}
+          />
         </button>
       </div>
     </section>

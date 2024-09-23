@@ -30,17 +30,17 @@ export default function Toolbar({ toolSelections, setToolSelections }) {
               highlightRow: !toolSelections.highlightRow,
             });
             break;
-          case "multiPixelSelect":
+          case "pixelSelect":
             if (toolSelections.singleColorSelect) {
               setToolSelections({
                 ...toolSelections,
                 singleColorSelect: false,
-                multiPixelSelect: true,
+                pixelSelect: true,
               });
             } else {
               setToolSelections({
                 ...toolSelections,
-                multiPixelSelect: !toolSelections.multiPixelSelect,
+                pixelSelect: !toolSelections.pixelSelect,
               });
             }
             pixelsDispatch({
@@ -48,11 +48,11 @@ export default function Toolbar({ toolSelections, setToolSelections }) {
             });
             break;
           case "singleColorSelect":
-            if (toolSelections.multiPixelSelect) {
+            if (toolSelections.pixelSelect) {
               setToolSelections({
                 ...toolSelections,
                 singleColorSelect: true,
-                multiPixelSelect: false,
+                pixelSelect: false,
               });
             } else {
               setToolSelections({
@@ -78,7 +78,7 @@ export default function Toolbar({ toolSelections, setToolSelections }) {
     <section className={`detailContainer ${styles.container}`}>
       <h3>Edit Options</h3>
       <div className={styles.optionsContainer}>
-        <OptionButton selectionType="multiPixelSelect">
+        <OptionButton selectionType="pixelSelect">
           select pixels
         </OptionButton>
         <OptionButton selectionType="singleColorSelect">

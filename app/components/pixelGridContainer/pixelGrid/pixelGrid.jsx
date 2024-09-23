@@ -100,7 +100,7 @@ export default function PixelGrid({
           colorHex: pixel.colorHex,
         });
       }
-    } else if (toolSelections.multiPixelSelect) {
+    } else if (toolSelections.pixelSelect) {
       if (pixel.singleSelected) {
         pixelsDispatch({ type: "pixel_deselection", pixel: pixel });
       } else {

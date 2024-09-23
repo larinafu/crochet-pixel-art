@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { courier } from "@/app/utils/fonts";
+import { courier, lato } from "@/app/utils/fonts";
 
 import UpdateContainer from "../../general/updateContainer/updateContainer";
 import Toast from "../../general/toast/toast";
@@ -23,8 +23,9 @@ export default function GaugeDetails({ swatch, handleGaugeChange }) {
       tempSwatch.width === swatch.width &&
       tempSwatch.height === swatch.height
     ) {
-      toast("No changes detected.", {
-        toastId: "hi",
+      toast("No gauge changes detected.", {
+        toastId: "gauge",
+        bodyClassName: lato.className
       });
     } else if (!(disabledMessages.length !== 0)) {
       handleGaugeChange(tempSwatch);

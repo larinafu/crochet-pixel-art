@@ -41,7 +41,7 @@ export default function RowDetails({
             <strong>Row</strong>
           </h3>
           <div className={styles.rowController}>
-            <NumberContainer number={curRow} />
+            <NumberContainer number={curRow + 1} />
             <SvgIconButton
               icon={upArrow}
               hoverIcon={upArrowHover}

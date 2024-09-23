@@ -5,7 +5,6 @@ export default function ColorSwatch({
   hover,
   fadedOut,
   emphasized,
-  dotted,
   children,
   empty,
 }) {

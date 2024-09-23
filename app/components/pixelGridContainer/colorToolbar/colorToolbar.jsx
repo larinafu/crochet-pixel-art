@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ColorSwatch from "../../general/colorSwatch/colorSwatch";
 import styles from "./colorToolbar.module.css";
 import SinglePixelInfo from "./singlePixelInfo/singlePixelInfo";
+import { Nuosu_SIL } from "next/font/google";
 
 const NUM_RECENTLY_USED = 15;
 
@@ -33,10 +34,6 @@ export default function ColorToolbar({
 
   const [curColorHovered, setCurColorHovered] = useState(null);
 
-  const availSpotsLeft = [];
-  for (let i = 0; i < NUM_RECENTLY_USED - colorPalette.length; i++) {
-    availSpotsLeft.push(<ColorSwatch size={"2.6vw"} empty />);
-  }
   const selectedPixels = pixels
     .flat()
     .filter((pixel) => pixel.singleSelected === true);
@@ -48,7 +45,6 @@ export default function ColorToolbar({
       return (
         <SinglePixelInfo
           pixel={pixels[curPixelHovered.rowNum][curPixelHovered.stitchNum]}
-          faded
         />
       );
     } else {
@@ -58,13 +54,13 @@ export default function ColorToolbar({
 
   const handlePaletteSelection = (colorName) => {
     if (!colorPalette.includes(colorName)) {
-      let newPalette = [...colorPalette, colorName];
-      if (newPalette.length > NUM_RECENTLY_USED) {
-        newPalette.shift();
-      }
+      let newPalette = [
+        colorName,
+        ...colorPalette.slice(0, NUM_RECENTLY_USED - 1),
+      ];
       setColorPalette(newPalette);
     }
-    if (toolSelections.multiPixelSelect) {
+    if (toolSelections.pixelSelect) {
       pixelsDispatch({
         type: "multi_pixel_selection_color_change",
         selectedPixels: selectedPixels,
@@ -121,7 +117,6 @@ export default function ColorToolbar({
                   <ColorSwatch size={"100%"} color={colorName} hover />
                 </button>
               ))}
-              {availSpotsLeft}
             </div>
             <button
               className={`smallBtn ${styles.expand}`}
@@ -131,9 +126,9 @@ export default function ColorToolbar({
               title="expand"
             >
               {isToolbarExpanded ? (
-                <Image src={collapse} alt="collapse" />
+                <Image src={collapse} alt="collapse" draggable={false} />
               ) : (
-                <Image src={expand} alt="expand" />
+                <Image src={expand} alt="expand" draggable={false} />
               )}
             </button>
           </div>
