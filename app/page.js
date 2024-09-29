@@ -61,7 +61,7 @@ export default function Home() {
               Pixelate any image for your next yarn creation.
             </h2>
           </motion.header>
-          <Image src={earth} alt="earth drawing" width={100} />
+          {/* <Image src={earth} alt="earth drawing" width={100} /> */}
           <form
             className={styles.imgUploadForm}
             onSubmit={(e) => {

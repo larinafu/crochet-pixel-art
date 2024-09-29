@@ -1,4 +1,4 @@
-import colors from "./colors2.json";
+import colors from "@/app/utils/colors2.json";
 
 export function pixelsReducer(pixels, action) {
   switch (action.type) {

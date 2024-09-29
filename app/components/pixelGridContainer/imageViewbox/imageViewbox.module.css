@@ -8,4 +8,18 @@
 .container {
   width: fit-content;
   height: fit-content;
+  margin-bottom: 1vh;
+}
+
+.innerContainer {
+  position: relative;
+}
+
+.viewBox {
+  position: absolute;
+  border: 2px solid gold;
+}
+
+.viewBox:hover {
+  cursor: grab;
 }

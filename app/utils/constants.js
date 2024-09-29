@@ -1,1 +1,9 @@
-export const PIXEL_GRID_CONTAINER_PADDING = 1;
+export const constants = {
+    toolOptionText: {
+        pixelSelect: "select pixels",
+        colorSelect: "select colors",
+        highlightRow: "highlight row",
+        pixelDeselect: "deselect pixels",
+        colorDeselect: "deselect colors",
+    }
+}

@@ -3,10 +3,12 @@ import { useContext } from "react";
 
 import TextButton from "../../general/textButton/textButton";
 import Checkmark from "../../general/svgIcons/checkmark/checkmark";
+import Dropdown from "../../general/dropdown/dropdown";
 
 import styles from "./toolbar.module.css";
 
-export default function Toolbar({ toolSelections, setToolSelections }) {
+export default function Toolbar({ toolOptions, toolOptionsDispatch }) {
+  console.log(toolOptions.select);
   const [pixels, pixelsDispatch] = useContext(PixelsContext);
   const handleClick = (callback) => {
     callback?.();
@@ -78,7 +80,7 @@ export default function Toolbar({ toolSelections, setToolSelections }) {
     <section className={`detailContainer ${styles.container}`}>
       <h3>Edit Options</h3>
       <div className={styles.optionsContainer}>
-        <OptionButton selectionType="pixelSelect">
+        {/* <OptionButton selectionType="pixelSelect">
           select pixels
         </OptionButton>
         <OptionButton selectionType="singleColorSelect">
@@ -93,7 +95,13 @@ export default function Toolbar({ toolSelections, setToolSelections }) {
         >
           clear all selections
           {numSelectedPixels ? ` (${numSelectedPixels})` : ""}
-        </TextButton>
+        </TextButton> */}
+        <Dropdown
+          option={toolOptions.select}
+          handleChange={(subType) => {
+            toolOptionsDispatch({ type: "select", subType: subType });
+          }}
+        />
       </div>
     </section>
   );

@@ -44,6 +44,10 @@
   color: #fff;
 }
 
+.ReactVirtualized__Grid {
+  overflow: hidden !important;
+}
+
 .Toastify__toast {
   box-shadow: var(--shadow);
   border-radius: 10px;

@@ -1,0 +1,42 @@
+.container {
+  position: relative;
+  display: inline-block;
+}
+
+.main,
+.dropdown {
+  margin: 0 !important;
+  border-radius: 0;
+  border: none;
+  background-color: var(--amaranth);
+  padding: 0.25em 0.5em;
+  color: #fff;
+}
+
+.main {
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+.dropdown {
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+  border-left: 1px solid #fff;
+}
+
+.menu {
+  position: absolute;
+}
+
+.dropdownItem {
+  border-radius: 0;
+  border: none;
+  background-color: var(--amaranth);
+  padding: 0.25em 0.5em;
+  color: #fff;
+  width: 100%;
+}
+
+.dropdownItem button {
+  margin: 0;
+}

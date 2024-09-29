@@ -17,8 +17,8 @@ import styles from "./rowDetails.module.css";
 export default function RowDetails({
   curRow,
   setCurRow,
-  toolSelections,
-  setToolSelections,
+  toolOptions,
+  toolOptionsDispatch,
 }) {
   const [pixels, _] = useContext(PixelsContext);
   let rowColors = [];
@@ -47,7 +47,10 @@ export default function RowDetails({
               hoverIcon={upArrowHover}
               handleClick={() => {
                 curRow > 0 && setCurRow(curRow - 1);
-                setToolSelections({ ...toolSelections, highlightRow: true });
+                toolOptionsDispatch({
+                  type: "select",
+                  subType: "highlightRow",
+                });
               }}
               size={25}
               alt="up arrow"
@@ -57,7 +60,10 @@ export default function RowDetails({
               hoverIcon={downArrowHover}
               handleClick={() => {
                 curRow < pixels.length - 1 && setCurRow(curRow + 1);
-                setToolSelections({ ...toolSelections, highlightRow: true });
+                toolOptionsDispatch({
+                  type: "select",
+                  subType: "highlightRow",
+                });
               }}
               size={25}
               alt="down arrow"

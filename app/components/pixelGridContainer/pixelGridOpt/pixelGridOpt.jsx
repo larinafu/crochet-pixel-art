@@ -1,6 +1,6 @@
 import { Grid, AutoSizer } from "react-virtualized";
 import { PixelsContext } from "@/app/utils/context";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import styles from "./pixelGridOpt.module.css";
 
@@ -9,35 +9,29 @@ export default function PixelGridOpt({
   setCurPixelHovered,
   curRow,
   setCurRow,
+  gridContainerDim,
+  gridHeight,
+  gridWidth,
   gridScrollPos,
   setGridScrollPos,
   widthHeightRatio,
-  toolSelections,
+  toolOptions,
   pixelSize,
   gridContainerRef,
 }) {
   const [pixels, pixelsDispatch] = useContext(PixelsContext);
   const [isPointerDown, setPointerDown] = useState(false);
+  console.log(gridScrollPos);
 
   useEffect(() => {
-    const handlePointerDown = (e) => {
-      // e.preventDefault();
-      setPointerDown(true);
-    };
     const handlePointerUp = (e) => {
-      // e.preventDefault(e);
       setPointerDown(false);
     };
-    document.addEventListener("pointerdown", handlePointerDown);
     document.addEventListener("pointerup", handlePointerUp);
     return () => {
-      document.removeEventListener("pointerdown", handlePointerDown);
       document.removeEventListener("pointerup", handlePointerUp);
     };
   }, []);
-
-  const gridHeight = pixels.length * (pixelSize * widthHeightRatio);
-  const gridWidth = pixels[0].length * pixelSize;
 
   const addBorder = (pixel) => {
     let borders = [];
@@ -61,7 +55,7 @@ export default function PixelGridOpt({
       styles.leftPurpBorder,
     ];
 
-    if (toolSelections.highlightRow) {
+    if (toolOptions.highlight.subOptions.highlightRow) {
       if (pixel.rowNum === curRow) {
         borders.push(topRow);
         borders.push(bottomRow);
@@ -107,7 +101,7 @@ export default function PixelGridOpt({
   };
 
   const handlePixelClick = (pixel) => {
-    if (toolSelections.singleColorSelect) {
+    if (toolOptions.select.subOptions.colorSelect) {
       if (pixel.singleSelected) {
         pixelsDispatch({
           type: "color_deselection",
@@ -119,7 +113,7 @@ export default function PixelGridOpt({
           colorHex: pixel.colorHex,
         });
       }
-    } else if (toolSelections.pixelSelect) {
+    } else if (toolOptions.select.subOptions.pixelSelect) {
       if (pixel.singleSelected) {
         pixelsDispatch({ type: "pixel_deselection", pixel: pixel });
       } else {
@@ -131,7 +125,7 @@ export default function PixelGridOpt({
     }
   };
 
-  function cellRenderer({ columnIndex, key, rowIndex, style }) {
+  function cellRenderer({ key, columnIndex, rowIndex, style }) {
     const pixel = pixels[rowIndex][columnIndex];
     return (
       <div
@@ -181,19 +175,13 @@ export default function PixelGridOpt({
               rowCount={pixels.length}
               rowHeight={pixelSize * widthHeightRatio}
               width={width}
-              onScroll={(e) => {
-                setGridScrollPos({
-                  top: e.scrollTop / gridHeight,
-                  left: e.scrollLeft / gridWidth,
-                });
-              }}
               scrollLeft={
-                gridWidth < width ? 0 : gridScrollPos.left * gridWidth
+                (gridWidth * gridContainerDim.viewableGridLeftPercent) / 100
               }
               scrollTop={
-                gridHeight < height ? 0 : gridScrollPos.top * gridHeight
+                (gridHeight * gridContainerDim.viewableGridTopPercent) / 100
               }
-            />
+            ></Grid>
           );
         }}
       </AutoSizer>

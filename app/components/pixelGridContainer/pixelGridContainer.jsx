@@ -7,7 +7,12 @@ import {
   useTransition,
   Suspense,
 } from "react";
-import { pixelsReducer } from "@/app/utils/pixelsReducer";
+import { pixelsReducer } from "@/app/utils/reducers/pixelsReducer";
+import { useImmerReducer } from "use-immer";
+import {
+  toolOptionsReducer,
+  defaultToolOptions,
+} from "@/app/utils/reducers/toolSelectionReducer";
 import { useImageData } from "@/app/utils/customHooks";
 import { PixelsContext } from "@/app/utils/context";
 import { vhToPx, vwToPx } from "@/app/utils/screenConversions";
@@ -40,29 +45,19 @@ export default function PixelGridContainer({ curImg }) {
   const [pixels, pixelsDispatch] = useReducer(pixelsReducer, null);
   const [curColor, setCurColor] = useState(null);
   const [curRow, setCurRow] = useState(0);
-  const [isColorSelected, setColorSelected] = useState(false);
   const [curPixelHovered, setCurPixelHovered] = useState(null);
-  const [toolSelections, setToolSelections] = useState({
-    pixelSelect: true,
-    singleColorSelect: false,
-    highlightRow: false,
-    multiPixelDeselect: false,
-  });
-
   // const [toolSelections, setToolSelections] = useState({
-  //   curOption: "select",
-  //   options: {
-  //     select: {
-  //       options: ["select pixels", "select colors"],
-  //       curOption: "select pixels",
-  //     },
-  //     deselect: {
-  //       options: ["deselect pixels", "deselect colors", "deselect all"],
-  //       curOption: "deselect pixels",
-  //     },
-  //     highlightRow: false,
-  //   },
+  //   pixelSelect: true,
+  //   singleColorSelect: false,
+  //   highlightRow: false,
+  //   multiPixelDeselect: false,
   // });
+
+  const [toolOptions, toolOptionsDispatch] = useImmerReducer(
+    toolOptionsReducer,
+    defaultToolOptions
+  );
+  const [gridContainerDim, setGridContainerDim] = useState({});
   const [pixelSize, setPixelSize] = useState(0);
   const [maxPixelSize, setMaxPixelSize] = useState(40);
   const [gridScrollPos, setGridScrollPos] = useState({
@@ -87,6 +82,11 @@ export default function PixelGridContainer({ curImg }) {
     }
     return colorCount;
   })();
+
+  const [gridWidth, gridHeight] = [
+    numStitches * pixelSize,
+    numRows * pixelSize * widthHeightRatio,
+  ];
 
   // generate grid when img data collected
   useEffect(() => {
@@ -121,6 +121,34 @@ export default function PixelGridContainer({ curImg }) {
     pixelsPerStitch,
     widthHeightRatio,
   ]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (gridContainerRef.current) {
+        const windowRef = gridContainerRef.current.children[0].children[0];
+        const gridRef = windowRef.children[0];
+        if (gridRef) {
+          const windowDim = windowRef.getBoundingClientRect();
+          const gridDim = gridRef?.getBoundingClientRect();
+          setGridContainerDim({
+            viewableGridHeightPercent:
+              Math.min(1, windowDim.height / gridHeight) * 100,
+            viewableGridWidthPercent:
+              Math.min(1, windowDim.width / gridWidth) * 100,
+            viewableGridTopPercent:
+              ((windowDim.top - gridDim.top) / gridHeight) * 100,
+            viewableGridLeftPercent:
+              ((windowDim.left - gridDim.left) / gridWidth) * 100,
+          });
+        }
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [gridContainerRef.current, gridHeight, gridWidth]);
 
   function handleStitchChange(stitchNum) {
     setCurRow(0);
@@ -175,8 +203,8 @@ export default function PixelGridContainer({ curImg }) {
               </div>
               <div className={styles.centerPanel}>
                 <Toolbar
-                  toolSelections={toolSelections}
-                  setToolSelections={setToolSelections}
+                  toolOptions={toolOptions}
+                  toolOptionsDispatch={toolOptionsDispatch}
                 />
                 <PixelGridOpt
                   key={`${pixelSize}-${numStitches}-${widthHeightRatio}`}
@@ -187,24 +215,33 @@ export default function PixelGridContainer({ curImg }) {
                   gridScrollPos={gridScrollPos}
                   setGridScrollPos={setGridScrollPos}
                   widthHeightRatio={widthHeightRatio}
-                  toolSelections={toolSelections}
+                  toolOptions={toolOptions}
                   pixelSize={pixelSize}
                   gridContainerRef={gridContainerRef}
+                  gridWidth={gridWidth}
+                  gridHeight={gridHeight}
+                  gridContainerDim={gridContainerDim}
                 />
                 <ColorToolbar
                   curPixelHovered={curPixelHovered}
-                  toolSelections={toolSelections}
+                  toolOptions={toolOptions}
                   colorCounter={colorCounter}
                 />
               </div>
               <div className={styles.rightPanel}>
+                <ImageViewbox
+                  curImg={curImg}
+                  gridContainerDim={gridContainerDim}
+                  setGridContainerDim={setGridContainerDim}
+                  gridScrollPos={gridScrollPos}
+                  setGridScrollPos={setGridScrollPos}
+                />
                 <RowDetails
                   curRow={curRow}
                   setCurRow={setCurRow}
-                  toolSelections={toolSelections}
-                  setToolSelections={setToolSelections}
+                  toolOptions={toolOptions}
+                  toolOptionsDispatch={toolOptionsDispatch}
                 />
-                <ImageViewbox curImg={curImg} />
               </div>
             </PixelsContext.Provider>
           </section>

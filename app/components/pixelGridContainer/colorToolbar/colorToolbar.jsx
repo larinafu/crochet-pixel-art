@@ -15,7 +15,7 @@ const NUM_RECENTLY_USED = 15;
 
 export default function ColorToolbar({
   curPixelHovered,
-  toolSelections,
+  toolOptions,
   colorCounter,
 }) {
   const activeColorsByFreq = Object.entries(colorCounter).sort(
@@ -60,13 +60,14 @@ export default function ColorToolbar({
       ];
       setColorPalette(newPalette);
     }
-    if (toolSelections.pixelSelect) {
+    console.log(toolOptions);
+    if (toolOptions.select.subOptions.pixelSelect) {
       pixelsDispatch({
         type: "multi_pixel_selection_color_change",
         selectedPixels: selectedPixels,
         newColorName: colorName,
       });
-    } else if (toolSelections.singleColorSelect) {
+    } else if (toolOptions.select.subOptions.colorSelect) {
       pixelsDispatch({
         type: "single_color_selection_color_change",
         newColorName: colorName,
