@@ -2,7 +2,7 @@ import colors from "@/app/utils/colors2.json";
 
 export function pixelsReducer(pixels, action) {
   switch (action.type) {
-    case "refresh_pixels":
+    case "refreshPixels":
       return action.pixels;
 
     // changing color
@@ -48,7 +48,7 @@ export function pixelsReducer(pixels, action) {
       );
 
     // changing selected pixels
-    case "pixel_selection":
+    case "pixelSelect":
       return pixels.with(
         action.pixel.rowNum,
         pixels[action.pixel.rowNum].with(action.pixel.stitchNum, {
@@ -56,15 +56,15 @@ export function pixelsReducer(pixels, action) {
           singleSelected: true,
         })
       );
-    case "color_selection":
+    case "colorSelect":
       return pixels.map((pixelRow) =>
         pixelRow.map((pixel) => {
           if (pixel.colorHex === action.colorHex) {
             return { ...pixel, singleSelected: true };
-          } else return { ...pixel, singleSelected: false };
+          } else return pixel;
         })
       );
-    case "color_deselection":
+    case "colorDeselect":
       return pixels.map((pixelRow) =>
         pixelRow.map((pixel) => {
           if (pixel.colorHex === action.colorHex) {
@@ -72,7 +72,7 @@ export function pixelsReducer(pixels, action) {
           } else return pixel;
         })
       );
-    case "pixel_deselection":
+    case "pixelDeselect":
       return pixels.with(
         action.pixel.rowNum,
         pixels[action.pixel.rowNum].with(action.pixel.stitchNum, {

@@ -24,8 +24,13 @@
   border-left: 1px solid #fff;
 }
 
-.menu {
-  position: absolute;
+.menu li {
+  list-style-type: none;
+}
+
+.menu li:last-child button {
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 
 .dropdownItem {

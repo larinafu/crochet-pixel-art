@@ -100,7 +100,7 @@ export default function PixelGridContainer({ curImg }) {
         pixelsPerStitch: pixelsPerStitch,
         imgDim: imgDim,
       });
-      pixelsDispatch({ type: "refresh_pixels", pixels: pixels });
+      pixelsDispatch({ type: "refreshPixels", pixels: pixels });
       const initialPixelSize =
         Math.ceil(
           Math.min(

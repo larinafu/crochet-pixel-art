@@ -60,7 +60,6 @@ export default function ColorToolbar({
       ];
       setColorPalette(newPalette);
     }
-    console.log(toolOptions);
     if (toolOptions.select.subOptions.pixelSelect) {
       pixelsDispatch({
         type: "multi_pixel_selection_color_change",

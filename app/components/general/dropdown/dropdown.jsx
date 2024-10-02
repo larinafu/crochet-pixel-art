@@ -8,14 +8,14 @@ import Checkmark from "../../general/svgIcons/checkmark/checkmark";
 
 import styles from "./dropdown.module.css";
 
-const Option = ({ subOption, handleChange }) => {
-  console.log(subOption);
+const Option = ({ subOption, handleChange, setOpen }) => {
   return (
     <button
       onClick={() => {
         handleChange(subOption[0]);
+        setOpen(false);
       }}
-    className={styles.dropdownItem}
+      className={styles.dropdownItem}
     >
       {constants.toolOptionText[subOption[0]]}
     </button>
@@ -28,11 +28,14 @@ export default function Dropdown({ option, handleChange }) {
     ([_, active]) => active === true
   )[0];
 
-  console.log(option);
-
   return (
     <div className={styles.container}>
-      <button className={styles.main}>
+      <button
+        className={styles.main}
+        onClick={() => {
+          handleChange();
+        }}
+      >
         {constants.toolOptionText[curOption]}{" "}
         {option.active && <Checkmark size={13} />}
       </button>
@@ -51,6 +54,7 @@ export default function Dropdown({ option, handleChange }) {
                 <Option
                   subOption={subOption}
                   handleChange={handleChange}
+                  setOpen={setOpen}
                 />
               </li>
             );

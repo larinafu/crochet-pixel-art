@@ -71,7 +71,7 @@ export default function ColorDetails({ colorCounter }) {
               }}
               onClick={() => {
                 pixelsDispatch({
-                  type: "color_selection",
+                  type: "colorSelect",
                   colorHex: colors[colorName],
                 });
               }}

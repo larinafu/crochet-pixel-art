@@ -102,7 +102,7 @@ export default function PixelGrid({
       }
     } else if (toolSelections.pixelSelect) {
       if (pixel.singleSelected) {
-        pixelsDispatch({ type: "pixel_deselection", pixel: pixel });
+        pixelsDispatch({ type: "pixelSeselect", pixel: pixel });
       } else {
         pixelsDispatch({
           type: "pixel_selection",

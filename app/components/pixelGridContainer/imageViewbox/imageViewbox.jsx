@@ -9,7 +9,6 @@ export default function ImageViewbox({
   gridScrollPos,
   setGridScrollPos,
 }) {
-  console.log(gridContainerDim);
   const [pointerDownPos, setPointerDownPos] = useState(null);
   const [viewPos, setViewPos] = useState({ left: 0, top: 0 });
   const [draggingViewPos, setDraggingViewPos] = useState({ left: 0, top: 0 });
@@ -22,10 +21,8 @@ export default function ImageViewbox({
   const imgOffsetLeft = imgRefBoundingClient?.left;
   const maxLeft = 100 - gridContainerDim.viewableGridWidthPercent;
   const maxTop = 100 - gridContainerDim.viewableGridHeightPercent;
-  console.log(maxLeft, maxTop);
 
   const handleDrag = (e) => {
-    console.log("here");
     if (pointerDownPos) {
       const percentLeftMoved =
         ((e.pageX - pointerDownPos.left) / imgWidth) * 100;
@@ -46,8 +43,6 @@ export default function ImageViewbox({
           Math.max(0, viewPos.top + percentTopMoved)
         ),
       });
-      console.log(e.pageX - pointerDownPos.left, e.pageY - pointerDownPos.top);
-      console.log(percentLeftMoved, percentTopMoved);
     }
   };
 

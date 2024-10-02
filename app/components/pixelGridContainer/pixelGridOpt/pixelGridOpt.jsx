@@ -21,7 +21,6 @@ export default function PixelGridOpt({
 }) {
   const [pixels, pixelsDispatch] = useContext(PixelsContext);
   const [isPointerDown, setPointerDown] = useState(false);
-  console.log(gridScrollPos);
 
   useEffect(() => {
     const handlePointerUp = (e) => {
@@ -101,26 +100,24 @@ export default function PixelGridOpt({
   };
 
   const handlePixelClick = (pixel) => {
-    if (toolOptions.select.subOptions.colorSelect) {
-      if (pixel.singleSelected) {
-        pixelsDispatch({
-          type: "color_deselection",
-          colorHex: pixel.colorHex,
-        });
-      } else {
-        pixelsDispatch({
-          type: "color_selection",
-          colorHex: pixel.colorHex,
-        });
-      }
-    } else if (toolOptions.select.subOptions.pixelSelect) {
-      if (pixel.singleSelected) {
-        pixelsDispatch({ type: "pixel_deselection", pixel: pixel });
-      } else {
-        pixelsDispatch({
-          type: "pixel_selection",
-          pixel: pixel,
-        });
+    if (toolOptions.highlight.active) {
+      setCurRow(pixel.rowNum);
+    } else {
+      for (const option of Object.values(toolOptions)) {
+        if (option.active) {
+          for (const [subOption, isActive] of Object.entries(
+            option.subOptions
+          )) {
+            if (isActive) {
+              pixelsDispatch({
+                type: subOption,
+                colorHex: pixel.colorHex,
+                pixel: pixel,
+              });
+              return;
+            }
+          }
+        }
       }
     }
   };
@@ -135,7 +132,7 @@ export default function PixelGridOpt({
           ...style,
           backgroundColor: pixel.colorHex,
         }}
-        onPointerOver={() => {
+        onPointerMove={() => {
           if (isPointerDown) {
             handlePixelClick(pixel);
           }

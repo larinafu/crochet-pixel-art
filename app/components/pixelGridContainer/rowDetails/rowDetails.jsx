@@ -48,7 +48,7 @@ export default function RowDetails({
               handleClick={() => {
                 curRow > 0 && setCurRow(curRow - 1);
                 toolOptionsDispatch({
-                  type: "select",
+                  type: "highlight",
                   subType: "highlightRow",
                 });
               }}
@@ -61,7 +61,7 @@ export default function RowDetails({
               handleClick={() => {
                 curRow < pixels.length - 1 && setCurRow(curRow + 1);
                 toolOptionsDispatch({
-                  type: "select",
+                  type: "highlight",
                   subType: "highlightRow",
                 });
               }}

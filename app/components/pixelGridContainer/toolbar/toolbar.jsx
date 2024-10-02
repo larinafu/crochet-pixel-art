@@ -8,7 +8,6 @@ import Dropdown from "../../general/dropdown/dropdown";
 import styles from "./toolbar.module.css";
 
 export default function Toolbar({ toolOptions, toolOptionsDispatch }) {
-  console.log(toolOptions.select);
   const [pixels, pixelsDispatch] = useContext(PixelsContext);
   const handleClick = (callback) => {
     callback?.();
@@ -80,28 +79,15 @@ export default function Toolbar({ toolOptions, toolOptionsDispatch }) {
     <section className={`detailContainer ${styles.container}`}>
       <h3>Edit Options</h3>
       <div className={styles.optionsContainer}>
-        {/* <OptionButton selectionType="pixelSelect">
-          select pixels
-        </OptionButton>
-        <OptionButton selectionType="singleColorSelect">
-          select color
-        </OptionButton>
-        <OptionButton selectionType="highlightRow">highlight row</OptionButton>
-        <TextButton
-          handleClick={() => {
-            handleClick();
-          }}
-          disabled={!numSelectedPixels}
-        >
-          clear all selections
-          {numSelectedPixels ? ` (${numSelectedPixels})` : ""}
-        </TextButton> */}
-        <Dropdown
-          option={toolOptions.select}
-          handleChange={(subType) => {
-            toolOptionsDispatch({ type: "select", subType: subType });
-          }}
-        />
+        {Object.keys(toolOptions).map((optionName) => (
+          <Dropdown
+            key={optionName}
+            option={toolOptions[optionName]}
+            handleChange={(subType = null) => {
+              toolOptionsDispatch({ type: optionName, subType: subType });
+            }}
+          />
+        ))}
       </div>
     </section>
   );
