@@ -1,0 +1,22 @@
+.button {
+  border: none;
+  background-color: var(--amaranth);
+  border-radius: 5px;
+  padding: 0.25em 0.5em;
+  color: #fff;
+}
+
+.disabled {
+  cursor: not-allowed;
+}
+
+.selected {
+  background-color: var(--wine);
+  color: #fff;
+}
+
+.active:hover {
+  cursor: pointer;
+  background-color: var(--wine);
+  color: #fff;
+}

@@ -11,6 +11,7 @@
   "dependencies": {
     "browser-image-compression": "^2.0.2",
     "firebase": "^10.13.1",
+    "firebaseui": "^6.1.0",
     "framer-motion": "^11.3.8",
     "nearest-color": "^0.4.4",
     "next": "^14.2.12",

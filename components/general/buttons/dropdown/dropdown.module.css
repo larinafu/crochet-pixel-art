@@ -1,0 +1,39 @@
+.container {
+  position: relative;
+  display: inline-block;
+  margin: 0 .5vw;
+}
+
+.main {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.dropdown {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  border-left: 1px solid #fff;
+}
+
+.opened {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.menu li {
+  list-style-type: none;
+}
+
+.menu li:last-child button {
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.dropdownItem {
+  border-radius: 0;
+  width: 100%;
+}
+
+.dropdownItem button {
+  margin: 0;
+}

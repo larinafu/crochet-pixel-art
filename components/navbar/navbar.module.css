@@ -1,0 +1,28 @@
+.container {
+    padding: .25em;
+    background-color: var(--amaranth);
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+}
+
+.left a {
+    display: flex;
+    font-size: 2em;
+    justify-content: center;
+}
+
+.left p {
+    height: fit-content;
+    margin: auto;
+}
+
+.left p:first-child {
+    margin-left: .25em;
+}
+
+.center a {
+    margin: .5vw;
+    font-size: 1.5em;
+    display: inline-block;
+}

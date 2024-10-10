@@ -1,0 +1,28 @@
+.container {
+  height: 10vh;
+  margin-bottom: 1vh;
+  overflow-y: auto;
+}
+
+.optionsContainer {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  width: 48vw;
+  z-index: 1;
+}
+
+.active {
+  background-color: var(--wine);
+  color: #fff;
+}
+
+.checkMark {
+  margin-left: .25em;
+}
+
+.dropdown {
+  background-color: var(--wine);
+  color: #fff;
+  border-radius: 10px;
+}
